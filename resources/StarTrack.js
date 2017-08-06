@@ -1,0 +1,230 @@
+$(document).ready(function() {
+	$('#plot-container').hide();
+
+  $('#repo').keyup(function(event) {
+  	if (event.keyCode == 13) {
+  		go();
+  	}
+  });
+
+  $(window).scroll(function(){
+    if ($(this).scrollTop() > 100) {
+      $('.scrollToBottom').fadeOut();
+    } else {
+      $('.scrollToBottom').fadeIn();
+    }
+  });
+
+  $('.scrollToBottom').click(function(){
+    $('html, body').animate({scrollTop : $(document).height()-$(window).height() });
+    return false;
+  });
+});
+
+function showPlot(data, user, repo) {
+	var plot = document.getElementById('plot-container');
+	if ($('#add_or_replace').val() == "replace") {
+		Plotly.newPlot( plot, [{
+		x: data['xaxis'],
+		y: data['yaxis'],
+		name: user + '/' + repo	}], {
+		margin: { t: 0 } } );
+	}
+	else
+	{
+		Plotly.plot( plot, [{
+		x: data['xaxis'],
+		y: data['yaxis'],
+		name: user + '/' + repo }], {
+		margin: { t: 0 } } );
+	}
+}
+
+function showStats(stats, user, repo) {
+	var tableHTML = '<table><thead><th colspan="2">Stats for ' + user + '/' + repo + '</th></thead><tbody>';
+	$.each(stats, function(i, item) {
+		tableHTML += '<tr><td>' + item['text'] + '</td><td>' + item['data'] + '</td></tr>';
+	});
+	if ($('#add_or_replace').val() == "replace") {
+		$('#stats-table tbody').remove();
+	}
+
+	tableHTML += '</tbody></table>';
+	if ($('#add_or_replace').val() == "replace") {
+		$('#stats-container').empty();
+	}
+	$('#stats-container').append(tableHTML);
+}
+
+function calcStats(data) {
+	if (data['xaxis'].length == 0)
+		return;
+
+	dateFirst = new Date(data['xaxis'][0]);
+	dateLast = new Date(data['xaxis'][data['xaxis'].length-1]);
+	var numOfDays = Math.floor((new Date(dateLast - dateFirst))/1000/60/60/24);
+
+	result = [];
+
+	result.push({
+		'text': 'Number of stars',
+		'data': data['yaxis'][data['yaxis'].length-1]
+		});
+
+	result.push({
+		'text': 'Number of days',
+		'data': numOfDays
+		});
+
+	result.push({
+		'text': 'Average stars per day',
+		'data': (data['yaxis'].length / numOfDays).toFixed(3)
+		});
+
+	result.push({
+		'text': 'Average days per star',
+		'data': (numOfDays / data['yaxis'].length).toFixed(3)
+		});
+
+	var daysWithoutStars = 0;
+	var maxStarsPerDay = 0;
+	var curSameDays = 1;
+	var startDate = Math.floor(new Date(0)/1000/60/60/24);
+	var prevDate = startDate;
+	$.each(data['xaxis'], function(i, date) {
+		curDate = Math.floor(new Date(date)/1000/60/60/24);
+
+		if (curDate == prevDate) {
+			curSameDays += 1;
+		}
+		else {
+			if (prevDate != startDate) {
+				daysWithoutStars += curDate - prevDate - 1;
+			}
+
+			if (curSameDays > maxStarsPerDay) {
+				maxStarsPerDay = curSameDays;
+			}
+
+			curSameDays = 1;
+		}
+
+		prevDate = curDate;
+	});
+
+	if (curSameDays > maxStarsPerDay) {
+		maxStarsPerDay = curSameDays;
+	}
+
+	result.push({
+		'text': 'Max stars in one day',
+		'data': maxStarsPerDay
+		});
+
+
+	result.push({
+		'text': 'Days with stars',
+		'data': numOfDays - daysWithoutStars
+		});
+
+	result.push({
+		'text': 'Days with no stars',
+		'data': daysWithoutStars
+		});
+
+	return result;
+}
+
+function buildData(jsonData) {
+	var starCount = 0;
+	var xaxis = [];
+	var yaxis = [];
+	for (key in jsonData) {
+		starCount = starCount + 1;
+		xaxis.push(jsonData[key]['starred_at']);
+		yaxis.push(starCount);
+	};
+
+	return {
+		'xaxis': xaxis,
+		'yaxis': yaxis
+		};
+}
+
+function startLoading() {
+	$('#gobtn').hide();
+	$('#loading').show();
+}
+
+function stopLoading() {
+	$('#gobtn').show();
+	$('#loading').hide();
+}
+
+function finishLoading() {
+  stopLoading();
+  $('#plot-container').show();
+  $('#add_or_replace').prop('disabled', false);
+  $('.scrollToBottom').fadeIn();
+}
+
+var stargazersData = [];
+var done = false;
+
+
+function loadStargazers(user, repo, cur) {
+	var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
+	if (typeof(cur) == 'undefined') {
+		cur = 1;
+		stargazersData = [];
+		done = false;
+	}
+
+	if (done == false) {
+		startLoading();
+		url = stargazersURL.replace('{page}', cur).replace('{user}', user).replace('{repo}', repo);
+		//alert(url);
+		$.ajax({
+			beforeSend: function(request) {
+							request.setRequestHeader('Accept', 'application/vnd.github.v3.star+json');
+						},
+			datatype: 'json',
+			url: url,
+			success: function(data) {
+						if ($.isEmptyObject(data) == true) {
+							done = true;
+							return;
+						}
+						stargazersData = $.merge(stargazersData, data);
+					},
+			error: function(xhr, ajaxContext, thrownError) {
+						if (xhr.responseText != 'undefined') {
+							var responseText = $.parseJSON(xhr.responseText);
+							alert('Error occured: '+ responseText['message']);
+						}
+						else
+							alert('Error occured: ' + thrownError);
+
+						stopLoading();
+					}
+			}).done(function() {
+				cur = cur + 1;
+				loadStargazers(user, repo, cur);
+				});
+	}
+	else {
+		finishLoading();
+		xyData = buildData(stargazersData);
+		showStats(calcStats(xyData), user, repo);
+		showPlot(xyData, user, repo);
+	}
+}
+
+function go() {
+  if ($('#user').val() == "" || $('#repo').val() == "") {
+    alert("Please enter GitHub username and GitHub repository");
+    return;
+  }
+
+	loadStargazers($('#user').val(), $('#repo').val());
+}
