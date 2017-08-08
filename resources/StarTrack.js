@@ -1,24 +1,26 @@
 $(document).ready(function() {
 	$('#plot-container').hide();
 
-  $('#repo').keyup(function(event) {
-  	if (event.keyCode == 13) {
-  		go();
-  	}
-  });
+	$('#repo').keyup(function(event) {
+		if (event.keyCode == 13) {
+			go();
+		}
+	});
 
-  $(window).scroll(function(){
-    if ($(this).scrollTop() > 100) {
-      $('.scrollToBottom').fadeOut();
-    } else {
-      $('.scrollToBottom').fadeIn();
-    }
-  });
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 100) {
+			$('.scrollToBottom').fadeOut();
+		} else {
+			$('.scrollToBottom').fadeIn();
+		}
+	});
 
-  $('.scrollToBottom').click(function(){
-    $('html, body').animate({scrollTop : $(document).height()-$(window).height() });
-    return false;
-  });
+	$('.scrollToBottom').click(function(){
+		$('html, body').animate({scrollTop : $(document).height()-$(window).height() });
+		return false;
+	});
+
+	parseUrlParams();
 });
 
 function showPlot(data, user, repo) {
@@ -218,6 +220,53 @@ function loadStargazers(user, repo, cur) {
 		showStats(calcStats(xyData), user, repo);
 		showPlot(xyData, user, repo);
 	}
+}
+
+function loadRepos(repos) {
+	if (repos == undefined || repos.length == 0)
+		return;
+	
+	var pair = repos.shift();
+	$('#user').val(pair[0]);
+	$('#repo').val(pair[1]);
+	go();
+	$(document).ajaxStop(function() {
+		$('#add_or_replace').val('add');
+		loadRepos(repos);
+	});
+}
+
+function parseUrlParams() {
+	var params = window.location.href.split('?')[1];
+	if (params == undefined)
+		return;
+
+	params = params.split('&');
+	if (params == undefined)
+		return;
+
+	var repos = [];
+	var user = undefined;
+	var repo = undefined;
+	var turn = 'user';
+	for (i in params) {
+		if (turn == 'user' && params[i].startsWith('u=')) {
+			user = params[i].substring(2);
+			turn = 'repo';
+		}
+		else if (turn == 'repo' && params[i].startsWith('r=')) {
+			repo = params[i].substring(2);
+			turn = 'user';
+			repos.push([user, repo]);
+		}
+		else {
+			alert('Wrong URL parameter: ' + params[i]);
+			return;
+		}
+			
+	}
+	
+	loadRepos(repos);
 }
 
 function go() {
