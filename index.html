@@ -25,7 +25,7 @@
   <body>
     <div id="content">
       <a class="github-fork-ribbon" href="https://github.com/seladb/StarTrack.js" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
-      <div class="repo-details">
+      <div class="startrack-frame repo-details">
         <table class="">
           <tbody>
             <tr valign="top">
@@ -48,7 +48,7 @@
                 </select>
               </td>
               <td>
-                <input type="button" value="go" id="gobtn" onclick="javascript:go();">
+                <input type="button" value="go" id="gobtn" class="startrack-btn gobtn" onclick="javascript:go();">
                 <div class="loader" id="loading" style="display:none"></div>
               </td>
             </tr>
@@ -58,8 +58,20 @@
       <a href="#" class="scrollToBottom" title="Scroll to bottom">
         <img src="resources/down-circular-64.png" />
       </a>
-      <div id="plot-container" class="plot"></div>
+      <div id="plot-container" class="startrack-frame plot"></div>
       <div id="stats-container" class="stats-table"></div>
+	  <div id="url-container" class="startrack-frame url-container" >
+	    <table>
+		  <tr>
+		    <td>
+			  <a>URL:</a>
+			</td>
+		    <td>
+			  <input id="url-box" class="url-box" readonly="readonly" type="text" onclick="this.select();">
+			</td>
+		  </tr>
+		</table>
+	  </div>
     </div>
   </body>
 </html>

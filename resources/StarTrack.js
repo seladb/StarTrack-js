@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$('#plot-container').hide();
+	$('#url-container').hide();
 
 	$('#repo').keyup(function(event) {
 		if (event.keyCode == 13) {
@@ -56,6 +57,19 @@ function showStats(stats, user, repo) {
 		$('#stats-container').empty();
 	}
 	$('#stats-container').append(tableHTML);
+}
+
+function buildUrl(user, repo) {
+	var base_url = '';
+	var cur_repo = 'u=' + user + '&r=' + repo;
+	if ($('#add_or_replace').val() == "replace") {
+		base_url = window.location.href.split('?')[0] + '?';
+	}
+	else {
+		base_url = $('#url-box').val() + '&';
+	}
+	
+	$('#url-box').val(base_url + cur_repo);
 }
 
 function calcStats(data) {
@@ -166,6 +180,7 @@ function stopLoading() {
 function finishLoading() {
   stopLoading();
   $('#plot-container').show();
+  $('#url-container').show();
   $('#add_or_replace').prop('disabled', false);
   $('.scrollToBottom').fadeIn();
 }
@@ -219,6 +234,7 @@ function loadStargazers(user, repo, cur) {
 		xyData = buildData(stargazersData);
 		showStats(calcStats(xyData), user, repo);
 		showPlot(xyData, user, repo);
+		buildUrl(user, repo);
 	}
 }
 
