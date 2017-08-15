@@ -1,3 +1,5 @@
+var MAX_SUPPORTED_PAGES = 30;
+
 $(document).ready(function() {
 	$('#plot-container').hide();
 	$('#url-container').hide();
@@ -68,7 +70,7 @@ function buildUrl(user, repo) {
 	else {
 		base_url = $('#url-box').val() + '&';
 	}
-	
+
 	$('#url-box').val(base_url + cur_repo);
 }
 
@@ -185,8 +187,35 @@ function finishLoading() {
   $('.scrollToBottom').fadeIn();
 }
 
+function findLastPage(linkHeader) {
+	if (linkHeader == null || linkHeader.length == 0) {
+		return 0;
+	}
+
+	// Split parts by comma
+	var parts = linkHeader.split(',');
+
+	// Parse each part into a named link
+	for (i in parts) {
+		var section = parts[i].split(';');
+		if (section.length != 2) {
+			continue;
+		}
+
+		var url = section[0].replace(/<(.*)>/, '$1').trim();
+		var name = section[1].replace(/rel="(.*)"/, '$1').trim();
+
+		// if name is 'last' then extract page and return it
+		if (name == 'last') {
+			return url.replace(/(.*)&page=(.*)/, '$2').trim();
+		}
+	}
+}
+
+
 var stargazersData = [];
 var done = false;
+var loadError = false;
 
 
 function loadStargazers(user, repo, cur) {
@@ -195,6 +224,7 @@ function loadStargazers(user, repo, cur) {
 		cur = 1;
 		stargazersData = [];
 		done = false;
+		loadError = false;
 	}
 
 	if (done == false) {
@@ -207,11 +237,23 @@ function loadStargazers(user, repo, cur) {
 						},
 			datatype: 'json',
 			url: url,
-			success: function(data) {
+			success: function(data, textStatus, request) {
 						if ($.isEmptyObject(data) == true) {
 							done = true;
 							return;
 						}
+
+						if (cur == 1) {
+							linkHeader = request.getResponseHeader('Link');
+							if (findLastPage(linkHeader) > MAX_SUPPORTED_PAGES) {
+								alert('StarTrack-js currently supports repos with max ' + MAX_SUPPORTED_PAGES*100 + ' stars');
+								done = true;
+								loadError = true;
+								stopLoading();
+								return;
+							}
+						}
+
 						stargazersData = $.merge(stargazersData, data);
 					},
 			error: function(xhr, ajaxContext, thrownError) {
@@ -219,17 +261,21 @@ function loadStargazers(user, repo, cur) {
 							var responseText = $.parseJSON(xhr.responseText);
 							alert('Error occured: '+ responseText['message']);
 						}
-						else
+						else {
 							alert('Error occured: ' + thrownError);
+						}
 
 						stopLoading();
 					}
 			}).done(function() {
+				if (loadError == true) {
+					return;
+				}
 				cur = cur + 1;
 				loadStargazers(user, repo, cur);
 				});
 	}
-	else {
+	else if (loadError == false) {
 		finishLoading();
 		xyData = buildData(stargazersData);
 		showStats(calcStats(xyData), user, repo);
@@ -241,7 +287,7 @@ function loadStargazers(user, repo, cur) {
 function loadRepos(repos) {
 	if (repos == undefined || repos.length == 0)
 		return;
-	
+
 	var pair = repos.shift();
 	$('#user').val(pair[0]);
 	$('#repo').val(pair[1]);
@@ -279,9 +325,9 @@ function parseUrlParams() {
 			alert('Wrong URL parameter: ' + params[i]);
 			return;
 		}
-			
+
 	}
-	
+
 	loadRepos(repos);
 }
 
@@ -290,6 +336,9 @@ function go() {
     alert("Please enter GitHub username and GitHub repository");
     return;
   }
+
+	$('#user').val($('#user').val().trim());
+	$('#repo').val($('#repo').val().trim());
 
 	loadStargazers($('#user').val(), $('#repo').val());
 }
