@@ -36,7 +36,13 @@ $(document).ready(function() {
 			$('#token_input :input').attr('disabled', false);
 		}
 	});
-
+	
+	NProgress.configure({ 
+		showSpinner: false,
+		minimum: 0.0001,
+		trickle: false
+	});
+	
 	parseUrlParams();
 });
 
@@ -232,6 +238,7 @@ var done = false;
 var loadError = false;
 var access_token = '';
 var userandpass = '';
+var lastPage = 0;
 
 function checkGithubAuth(userpass, token, callback_on_success, callback_on_fail) {
 	url = 'https://api.github.com';
@@ -334,7 +341,6 @@ function openGithubAuthDialog(succes_auth_callback) {
 }
 
 function loadStargazers(user, repo, cur) {
-	//var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?access_token=5baf29e8197dbf819f6c0baacf44d93a5112c103&per_page=100&page={page}";
     var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
 	if (typeof(cur) == 'undefined') {
 		cur = 1;
@@ -368,8 +374,8 @@ function loadStargazers(user, repo, cur) {
 						}
 
 						if (cur == 1) {
-							linkHeader = request.getResponseHeader('Link');
-							if (findLastPage(linkHeader) > MAX_SUPPORTED_PAGES_NO_AUTH && access_token == '' && userandpass == '') {
+							lastPage = findLastPage(request.getResponseHeader('Link'));
+							if (lastPage > MAX_SUPPORTED_PAGES_NO_AUTH && access_token == '' && userandpass == '') {
 								done = true;
 								loadError = true;
 								stopLoading();
@@ -378,9 +384,11 @@ function loadStargazers(user, repo, cur) {
 								});
 								return;
 							}
+							NProgress.start();
 						}
 
 						stargazersData = $.merge(stargazersData, data);
+						NProgress.inc(1/lastPage);
 					},
 			error: function(xhr, ajaxContext, thrownError) {
 						if (xhr.responseText != 'undefined') {
@@ -403,6 +411,7 @@ function loadStargazers(user, repo, cur) {
 	}
 	else if (loadError == false) {
 		finishLoading();
+		NProgress.done(true);
 		xyData = buildData(stargazersData);
 		showStats(calcStats(xyData), user, repo);
 		showPlot(xyData, user, repo);

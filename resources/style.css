@@ -295,3 +295,8 @@ a {
 	border: 1px solid black;
 	padding: 4px;
 }
+
+#nprogress .bar {
+	background: #0483a0;
+	height: 7px;
+}
