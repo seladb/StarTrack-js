@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>GitHub Star History and Stats</title>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="resources/StarTrack.js"></script>
     <script>
@@ -16,6 +17,7 @@
       ga('send', 'pageview');
     </script>
     <link rel="icon" href="resources/StarTrack.ico">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="resources/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.min.css" />
   <!--[if lt IE 9]>
@@ -72,6 +74,28 @@
 		  </tr>
 		</table>
 	  </div>
+    </div>
+    <div id="github_auth_dialog" title="GitHub Authentication" style="display:none">
+        <p>GitHub API <a href="https://developer.github.com/v3/#rate-limiting" target="_blank">rate limiter</a> makes it impossible to collect stargazer data on repos with more than 3000 stars without GitHub authentication.</p>
+        <p>If you'd like to view stargazer data for this repo, please provide your GitHub auth details.</p>
+        <p>Please note these credentials aren't sent to any server. This application is based on pure javascript so the credentials are only used to send authenticated requests to GitHub API.</p>
+        <input type="radio" name="auth_group" value="userandpass" checked="true">Either provide GitHub username and password:</input>
+        <div id="userandpass_input" class="boxed">
+            <div>
+                <div><label>GitHub username</label></div>
+                <div><input type="text" id="github_username" class="text ui-widget-content ui-corner-all"></div>
+            </div>
+            <div>
+                <div><label>GitHub password</label></div>
+                <div><input type="password" id="github_password" class="text ui-widget-content ui-corner-all"></div>
+            </div>
+        </div>
+        <p></p>
+        <input type="radio" name="auth_group" value="token">Or provide GitHub access token:</input>
+        <div id="token_input" class="boxed">
+            <div><label>Access token</label></div>
+            <div><input type="text" id="github_token" size="50" class="text ui-widget-content ui-corner-all"></div>
+        </div>
     </div>
   </body>
 </html>

@@ -48,7 +48,7 @@ a {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-  color: #999;
+	color: #999;
 	float: left;
 	font: 16px Lucida Sans, Trebuchet MS, Tahoma, sans-serif;
 	height: 30px;
@@ -289,4 +289,9 @@ a {
 	padding: 10px;
 	width: 520px;
 	select: true;
+}
+
+.boxed {
+	border: 1px solid black;
+	padding: 4px;
 }

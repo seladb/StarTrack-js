@@ -1,4 +1,4 @@
-var MAX_SUPPORTED_PAGES = 30;
+var MAX_SUPPORTED_PAGES_NO_AUTH = 30;
 
 $(document).ready(function() {
 	$('#plot-container').hide();
@@ -10,7 +10,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$(window).scroll(function(){
+	$(window).scroll(function() {
 		if ($(this).scrollTop() > 100) {
 			$('.scrollToBottom').fadeOut();
 		} else {
@@ -18,9 +18,23 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.scrollToBottom').click(function(){
+	$('.scrollToBottom').click(function() {
 		$('html, body').animate({scrollTop : $(document).height()-$(window).height() });
 		return false;
+	});
+
+	$('#userandpass_input :input').attr('disabled', false);
+	$('#token_input :input').attr('disabled', true);
+	
+	$('input[type=radio][name=auth_group]').change(function() {
+		if (this.value == 'userandpass') {
+			$('#userandpass_input :input').attr('disabled', false);
+			$('#token_input :input').attr('disabled', true);
+		}
+		else if (this.value == 'token') {
+			$('#userandpass_input :input').attr('disabled', true);
+			$('#token_input :input').attr('disabled', false);
+		}
 	});
 
 	parseUrlParams();
@@ -216,10 +230,112 @@ function findLastPage(linkHeader) {
 var stargazersData = [];
 var done = false;
 var loadError = false;
+var access_token = '';
+var userandpass = '';
 
+function checkGithubAuth(userpass, token, callback_on_success, callback_on_fail) {
+	url = 'https://api.github.com';
+	
+	var auth_success = false;
+	
+	$.ajax({
+		beforeSend: function(request) {
+						if (token != undefined) {
+							var auth_string = 'token ' + token;
+							request.setRequestHeader('Authorization', auth_string);
+						}
+						else if (userpass != undefined) {
+							var auth_string = 'Basic ' + userpass;
+							request.setRequestHeader('Authorization', auth_string);
+						}
+					},
+		url: url,
+		success: function(data, textStatus, xhr) {
+			if (xhr.status == 200) {
+				auth_success = true;
+				callback_on_success();
+			} else {
+				callback_on_fail();
+			}
+		},
+		
+		complete: function(xhr, textStatus) {
+			if (auth_success == false && xhr.status != 200) {
+				callback_on_fail();
+			}
+		} 
+	});
+}
+
+function showMessageBox(message, title, callback) {
+	dialog = $('<div>' + message + '</div>').dialog({
+		modal: true,
+		title: title,
+		buttons: {
+			Ok: function() {
+				dialog.dialog('close');
+				callback();
+			}
+		}
+	});
+}
+
+function openGithubAuthDialog(succes_auth_callback) {
+    dialog = $('#github_auth_dialog').dialog({
+		modal: true,
+		height: 570,
+		width: 500,
+		buttons: {
+			Ok: function() {
+				if ($('#github_username').val() != '' && $('#github_password').val() != '') {
+					userandpass = window.btoa($('#github_username').val().trim() + ':' + $('#github_password').val().trim());
+					checkGithubAuth(
+						userandpass, 
+						null, 
+						function() {
+							succes_auth_callback();
+						},
+						function() {
+							userandpass = '';
+							showMessageBox(
+								'GitHub authentication failed, please try again',
+								'Error',
+								function() {
+									openGithubAuthDialog(succes_auth_callback);
+								});
+						});
+				}
+				else if ($('#github_token').val() != '') {
+					access_token = $('#github_token').val().trim();
+					checkGithubAuth(
+						null, 
+						access_token,
+						function() {
+							succes_auth_callback();
+						},
+						function() {
+							access_token = '';
+							showMessageBox(
+								'GitHub authentication failed, please try again',
+								'Error',
+								function() {
+									openGithubAuthDialog(succes_auth_callback);
+								});
+						});
+				}
+				
+				dialog.dialog('close');
+			},
+			Cancel: function() {
+				dialog.dialog('close');
+			}
+		}
+	});
+}
 
 function loadStargazers(user, repo, cur) {
-	var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
+	//var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?access_token=5baf29e8197dbf819f6c0baacf44d93a5112c103&per_page=100&page={page}";
+    var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
 	if (typeof(cur) == 'undefined') {
 		cur = 1;
 		stargazersData = [];
@@ -234,6 +350,14 @@ function loadStargazers(user, repo, cur) {
 		$.ajax({
 			beforeSend: function(request) {
 							request.setRequestHeader('Accept', 'application/vnd.github.v3.star+json');
+							if (access_token != '') {
+								var auth_string = 'token ' + access_token;
+								request.setRequestHeader('Authorization', auth_string);
+							}
+							else if (userandpass != '') {
+								var auth_string = 'Basic ' + userandpass;
+								request.setRequestHeader('Authorization', auth_string);
+							}
 						},
 			datatype: 'json',
 			url: url,
@@ -245,11 +369,13 @@ function loadStargazers(user, repo, cur) {
 
 						if (cur == 1) {
 							linkHeader = request.getResponseHeader('Link');
-							if (findLastPage(linkHeader) > MAX_SUPPORTED_PAGES) {
-								alert('StarTrack-js currently supports repos with max ' + MAX_SUPPORTED_PAGES*100 + ' stars');
+							if (findLastPage(linkHeader) > MAX_SUPPORTED_PAGES_NO_AUTH && access_token == '' && userandpass == '') {
 								done = true;
 								loadError = true;
 								stopLoading();
+								openGithubAuthDialog(function() {
+									loadStargazers(user, repo);
+								});
 								return;
 							}
 						}
@@ -259,10 +385,10 @@ function loadStargazers(user, repo, cur) {
 			error: function(xhr, ajaxContext, thrownError) {
 						if (xhr.responseText != 'undefined') {
 							var responseText = $.parseJSON(xhr.responseText);
-							alert('Error occured: '+ responseText['message']);
+							showMessageBox('Error occured: '+ responseText['message'], 'Error');
 						}
 						else {
-							alert('Error occured: ' + thrownError);
+							showMessageBox('Error occured: ' + thrownError, 'Error');
 						}
 
 						stopLoading();
@@ -322,7 +448,7 @@ function parseUrlParams() {
 			repos.push([user, repo]);
 		}
 		else {
-			alert('Wrong URL parameter: ' + params[i]);
+			showMessageBox('Wrong URL parameter: ' + params[i], 'Error');
 			return;
 		}
 
@@ -333,7 +459,7 @@ function parseUrlParams() {
 
 function go() {
   if ($('#user').val() == "" || $('#repo').val() == "") {
-    alert("Please enter GitHub username and GitHub repository");
+    showMessageBox('Please enter GitHub username and GitHub repository', 'Error');
     return;
   }
 
