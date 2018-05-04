@@ -340,7 +340,7 @@ function openGithubAuthDialog(succes_auth_callback) {
 	});
 }
 
-function loadStargazers(user, repo, cur) {
+function loadStargazers(user, repo, on_complete_callback, cur) {
     var stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
 	if (typeof(cur) == 'undefined') {
 		cur = 1;
@@ -352,7 +352,7 @@ function loadStargazers(user, repo, cur) {
 	if (done == false) {
 		startLoading();
 		url = stargazersURL.replace('{page}', cur).replace('{user}', user).replace('{repo}', repo);
-		//alert(url);
+		//console.log(url);
 		$.ajax({
 			beforeSend: function(request) {
 							request.setRequestHeader('Accept', 'application/vnd.github.v3.star+json');
@@ -380,7 +380,7 @@ function loadStargazers(user, repo, cur) {
 								loadError = true;
 								stopLoading();
 								openGithubAuthDialog(function() {
-									loadStargazers(user, repo);
+									loadStargazers(user, repo, on_complete_callback);
 								});
 								return;
 							}
@@ -402,11 +402,11 @@ function loadStargazers(user, repo, cur) {
 						stopLoading();
 					}
 			}).done(function() {
-				if (loadError == true) {
-					return;
-				}
-				cur = cur + 1;
-				loadStargazers(user, repo, cur);
+					if (loadError == true) {
+						return;
+					}
+					cur = cur + 1;
+					loadStargazers(user, repo, on_complete_callback, cur);
 				});
 	}
 	else if (loadError == false) {
@@ -416,6 +416,8 @@ function loadStargazers(user, repo, cur) {
 		showStats(calcStats(xyData), user, repo);
 		showPlot(xyData, user, repo);
 		buildUrl(user, repo);
+		if (on_complete_callback != undefined)
+			on_complete_callback();
 	}
 }
 
@@ -426,8 +428,7 @@ function loadRepos(repos) {
 	var pair = repos.shift();
 	$('#user').val(pair[0]);
 	$('#repo').val(pair[1]);
-	go();
-	$(document).ajaxStop(function() {
+	go(function() {
 		$('#add_or_replace').val('add');
 		loadRepos(repos);
 	});
@@ -466,14 +467,14 @@ function parseUrlParams() {
 	loadRepos(repos);
 }
 
-function go() {
-  if ($('#user').val() == "" || $('#repo').val() == "") {
-    showMessageBox('Please enter GitHub username and GitHub repository', 'Error');
-    return;
-  }
+function go(on_complete_callback) {
+	if ($('#user').val() == "" || $('#repo').val() == "") {
+		showMessageBox('Please enter GitHub username and GitHub repository', 'Error');
+	return;
+	}
 
 	$('#user').val($('#user').val().trim());
 	$('#repo').val($('#repo').val().trim());
 
-	loadStargazers($('#user').val(), $('#repo').val());
+	loadStargazers($('#user').val(), $('#repo').val(), on_complete_callback);
 }
