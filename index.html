@@ -27,6 +27,22 @@
   <![endif]-->
   </head>
   <body>
+    <div id="st-header" class="st-header">
+      <table>
+        <tr valign="top">
+          <td>
+            <div id="login-button" class="login-btn">
+              <a id="github-auth" href="javascript:openGithubAuthDialog();">GitHub Authentication</a>
+            </div>
+          </td>
+          <td>
+            <div id="logout-btn" class="logout"> 
+              <a href="javascript:removeGithubAuth();">Log Out</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <div id="content">
       <a class="github-fork-ribbon" href="https://github.com/seladb/StarTrack-js" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
       <div class="startrack-frame repo-details">
@@ -64,18 +80,18 @@
       </a>
       <div id="plot-container" class="startrack-frame plot"></div>
       <div id="stats-container" class="stats-table"></div>
-	  <div id="url-container" class="startrack-frame url-container" >
-	    <table>
-		  <tr>
-		    <td>
-			  <a>URL:</a>
-			</td>
-		    <td>
-			  <input id="url-box" class="url-box" readonly="readonly" type="text" onclick="this.select();">
-			</td>
-		  </tr>
-		</table>
-	  </div>
+      <div id="url-container" class="startrack-frame url-container" >
+        <table>
+          <tr>
+              <td>
+                <a>URL:</a>
+              </td>
+            <td>
+              <input id="url-box" class="url-box" readonly="readonly" type="text" onclick="this.select();">
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
     <div id="github_auth_dialog" title="GitHub Authentication" style="display:none">
         <p>GitHub API <a href="https://developer.github.com/v3/#rate-limiting" target="_blank">rate limiter</a> makes it impossible to collect stargazer data on repos with more than 3000 stars without GitHub authentication.</p>
@@ -96,7 +112,7 @@
         <input type="radio" name="auth_group" value="token">Or provide GitHub access token:</input>
         <div id="token_input" class="boxed">
             <div><label>Access token</label></div>
-            <div><input type="text" id="github_token" size="50" class="text ui-widget-content ui-corner-all"></div>
+            <div><input type="password" id="github_token" size="50" class="text ui-widget-content ui-corner-all"></div>
         </div>
     </div>
   </body>

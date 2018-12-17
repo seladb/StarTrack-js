@@ -32,10 +32,6 @@ a {
 	padding: 8px;
 }
 
-.startrack-button {
-	
-}
-
 .repo-details {
 	width: 950px;
 }
@@ -96,12 +92,6 @@ a {
 
 .repo-details #gobtn {
 	background-color: #0483a0;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#31b2c3), to(#0483a0));
-	background-image: -webkit-linear-gradient(top, #31b2c3, #0483a0);
-	background-image: -moz-linear-gradient(top, #31b2c3, #0483a0);
-	background-image: -ms-linear-gradient(top, #31b2c3, #0483a0);
-	background-image: -o-linear-gradient(top, #31b2c3, #0483a0);
-	background-image: linear-gradient(top, #31b2c3, #0483a0);
 	border: 1px solid #00748f;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -120,26 +110,44 @@ a {
 	width: 100px;
 }
 
-.repo-details #gobtn:hover,
-.repo-details #gobtn:focus {
+.repo-details #gobtn:hover {
 	background-color: #31b2c3;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#0483a0), to(#31b2c3));
-	background-image: -webkit-linear-gradient(top, #0483a0, #31b2c3);
-	background-image: -moz-linear-gradient(top, #0483a0, #31b2c3);
-	background-image: -ms-linear-gradient(top, #0483a0, #31b2c3);
-	background-image: -o-linear-gradient(top, #0483a0, #31b2c3);
-	background-image: linear-gradient(top, #0483a0, #31b2c3);
 }
 
-.repo-details #gobtn:active {
-	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
-	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
-	outline: 0;
+.st-header {
+	position: relative;
+	background-color: #0483a0;
+	background-origin: padding-box;
+	top: 5px;
 }
 
-.repo-details #gobtn::-moz-focus-inner {
-	border: 0;
+.login-btn {
+	position: float left;
+	background-origin: padding-box;
+	border-radius: 100px;
+	padding: 12px;
+	cursor: pointer;
+}
+
+.login-btn:hover {
+	background-color: #31b2c3;
+}
+
+.login-btn a {
+	text-decoration: none;
+	color: #fafafa;
+}
+
+.logout {
+	float: left !important;;
+	cursor: pointer;
+	padding: 12px;
+	display: none;
+}
+
+.logout a {
+	text-decoration: none;
+	color: #fafafa;
 }
 
 .loader {
@@ -198,12 +206,6 @@ a {
   padding:20px;
   background:#0483a0;
   background-color: #0483a0;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#31b2c3), to(#0483a0));
-  background-image: -webkit-linear-gradient(top, #31b2c3, #0483a0);
-  background-image: -moz-linear-gradient(top, #31b2c3, #0483a0);
-  background-image: -ms-linear-gradient(top, #31b2c3, #0483a0);
-  background-image: -o-linear-gradient(top, #31b2c3, #0483a0);
-  background-image: linear-gradient(top, #31b2c3, #0483a0);
 
   &:first-child {
    @include border-top-left-radius(5px);

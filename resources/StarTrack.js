@@ -294,12 +294,15 @@ function openGithubAuthDialog(succes_auth_callback) {
 		width: 500,
 		buttons: {
 			Ok: function() {
-				if ($('#github_username').val() != '' && $('#github_password').val() != '') {
+				var auth_option = $('input[name=auth_group]:checked').attr('value');
+				if (auth_option == 'userandpass' && $('#github_username').val() != '' && $('#github_password').val() != '') {
 					userandpass = window.btoa($('#github_username').val().trim() + ':' + $('#github_password').val().trim());
 					checkGithubAuth(
 						userandpass, 
 						null, 
 						function() {
+							$('#github-auth').text('GitHub User: ' + $('#github_username').val().trim());
+							$('#logout-btn').show();
 							succes_auth_callback();
 						},
 						function() {
@@ -312,12 +315,14 @@ function openGithubAuthDialog(succes_auth_callback) {
 								});
 						});
 				}
-				else if ($('#github_token').val() != '') {
+				else if (auth_option == 'token' && $('#github_token').val() != '') {
 					access_token = $('#github_token').val().trim();
 					checkGithubAuth(
 						null, 
 						access_token,
 						function() {
+							$('#github-auth').text('GitHub Access Token: ' + $('#github_token').val().trim().substring(0, 6));
+							$('#logout-btn').show();
 							succes_auth_callback();
 						},
 						function() {
@@ -338,6 +343,13 @@ function openGithubAuthDialog(succes_auth_callback) {
 			}
 		}
 	});
+}
+
+function removeGithubAuth() {
+	userandpass = '';
+	access_token = '';
+	$('#logout-btn').hide();
+	$('#github-auth').text('GitHub Authentication');
 }
 
 function loadStargazers(user, repo, on_complete_callback, cur) {
