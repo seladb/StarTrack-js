@@ -1,5 +1,6 @@
 var MAX_SUPPORTED_PAGES_NO_AUTH = 30;
 
+
 $(document).ready(function() {
 	$('#plot-container').hide();
 	$('#url-container').hide();
@@ -44,6 +45,8 @@ $(document).ready(function() {
 	});
 	
 	parseUrlParams();
+
+	initAuthDetails();
 });
 
 function showPlot(data, user, repo) {
@@ -236,8 +239,6 @@ function findLastPage(linkHeader) {
 var stargazersData = [];
 var done = false;
 var loadError = false;
-var access_token = '';
-var userandpass = '';
 var lastPage = 0;
 
 function checkGithubAuth(userpass, token, callback_on_success, callback_on_fail) {
@@ -290,23 +291,25 @@ function showMessageBox(message, title, callback) {
 function openGithubAuthDialog(succes_auth_callback) {
     dialog = $('#github_auth_dialog').dialog({
 		modal: true,
-		height: 570,
+		height: 580,
 		width: 500,
 		buttons: {
 			Ok: function() {
 				var auth_option = $('input[name=auth_group]:checked').attr('value');
 				if (auth_option == 'userandpass' && $('#github_username').val() != '' && $('#github_password').val() != '') {
-					userandpass = window.btoa($('#github_username').val().trim() + ':' + $('#github_password').val().trim());
+					gitHubAuth.setUserAndPass($('#github_username').val().trim(), $('#github_password').val().trim());
 					checkGithubAuth(
-						userandpass, 
+						gitHubAuth.getUserAndPass(), 
 						null, 
 						function() {
-							$('#github-auth').text('GitHub User: ' + $('#github_username').val().trim());
-							$('#logout-btn').show();
-							succes_auth_callback();
+							gitHubAuth.useLocalStorage($('#save_in_local_storage_chkbox').is(':checked'));
+							updateGithubAuthUI();
+							if (succes_auth_callback != undefined) {
+								succes_auth_callback();
+							}
 						},
 						function() {
-							userandpass = '';
+							gitHubAuth.cleanUserAndPass();
 							showMessageBox(
 								'GitHub authentication failed, please try again',
 								'Error',
@@ -316,17 +319,19 @@ function openGithubAuthDialog(succes_auth_callback) {
 						});
 				}
 				else if (auth_option == 'token' && $('#github_token').val() != '') {
-					access_token = $('#github_token').val().trim();
+					gitHubAuth.setAccessToken($('#github_token').val().trim());
 					checkGithubAuth(
 						null, 
-						access_token,
+						gitHubAuth.getAccessToken(),
 						function() {
-							$('#github-auth').text('GitHub Access Token: ' + $('#github_token').val().trim().substring(0, 6));
-							$('#logout-btn').show();
-							succes_auth_callback();
+							gitHubAuth.useLocalStorage($('#save_in_local_storage_chkbox').is(':checked'));
+							updateGithubAuthUI();
+							if (succes_auth_callback != undefined) {
+								succes_auth_callback();
+							}
 						},
 						function() {
-							access_token = '';
+							gitHubAuth.cleanAccessToken();
 							showMessageBox(
 								'GitHub authentication failed, please try again',
 								'Error',
@@ -345,11 +350,134 @@ function openGithubAuthDialog(succes_auth_callback) {
 	});
 }
 
+function GitHubAuth() {
+
+	var static_vars = {
+		STORAGE_USERANDPASS_KEY : 'starttrack-js-userandpass',
+		STORAGE_TOKEN_KEY : 'starttrack-js-token',
+	};
+
+	var vars = {
+		save_in_local_storage : false,
+	};
+
+	var getStorage = function() {
+		if (vars.save_in_local_storage) {
+			return localStorage;
+		}
+		else {
+			return sessionStorage;
+		}
+	}
+
+	this.construct = function() {
+		var userandpass = localStorage.getItem(static_vars.STORAGE_USERANDPASS_KEY);
+		var token = localStorage.getItem(static_vars.STORAGE_TOKEN_KEY);
+		if (userandpass != undefined || token != undefined) {
+			vars.save_in_local_storage = true;
+		}
+	};
+
+	this.getUserAndPass = function() {
+		return getStorage().getItem(static_vars.STORAGE_USERANDPASS_KEY);
+	};
+
+	this.getUser = function() {
+		var userandpass = this.getUserAndPass();
+		if (userandpass == undefined) {
+			return;
+		}
+
+		return window.atob(userandpass).split(':')[0];
+	}
+
+	this.setUserAndPass = function(user, passwd) {
+		if (user == undefined || passwd == undefined) {
+			return;
+		}
+		var userandpass = window.btoa(user.trim() + ':' + passwd.trim());
+		getStorage().setItem(static_vars.STORAGE_USERANDPASS_KEY, userandpass);
+		this.cleanAccessToken();
+	}
+
+	this.setUserAndPassOneWord = function(userandpass) {
+		if (userandpass == undefined) {
+			return;
+		}
+
+		getStorage().setItem(static_vars.STORAGE_USERANDPASS_KEY, userandpass);
+		this.cleanAccessToken();
+	}
+
+	this.cleanUserAndPass = function() {
+		getStorage().removeItem(static_vars.STORAGE_USERANDPASS_KEY);
+	}
+
+	this.getAccessToken = function() {
+		if (getStorage().getItem(static_vars.STORAGE_TOKEN_KEY) != undefined) {
+			return window.atob(getStorage().getItem(static_vars.STORAGE_TOKEN_KEY));
+		} else {
+			return undefined;
+		}
+	};
+
+	this.setAccessToken = function(token) {
+		if (token == undefined) {
+			return;
+		}
+		var token_btoa = window.btoa(token);
+		getStorage().setItem(static_vars.STORAGE_TOKEN_KEY, token_btoa);
+		this.cleanUserAndPass();
+	}
+
+	this.cleanAccessToken = function() {
+		getStorage().removeItem(static_vars.STORAGE_TOKEN_KEY);
+	}
+
+	this.cleanStorage = function() {
+		this.cleanUserAndPass();
+		this.cleanAccessToken();
+	}
+
+	this.useLocalStorage = function(val) {
+		if (vars.save_in_local_storage != val) {
+			var userandpass = this.getUserAndPass();
+			var token = this.getAccessToken();
+			this.cleanStorage();
+			vars.save_in_local_storage = val;
+			this.setUserAndPassOneWord(userandpass);
+			this.setAccessToken(token);
+		}
+
+		vars.save_in_local_storage = val;
+	}
+
+	this.construct();
+}
+
+var gitHubAuth = undefined;
+
+function initAuthDetails() {
+	gitHubAuth = new GitHubAuth();
+	updateGithubAuthUI();
+}
+
+function updateGithubAuthUI() {
+	if (gitHubAuth.getAccessToken() != undefined) {
+		$('#github-auth').text('GitHub Access Token: ' + gitHubAuth.getAccessToken().trim().substring(0, 6));
+		$('#logout-btn').show();
+	} else if (gitHubAuth.getUserAndPass() != undefined) {
+		$('#github-auth').text('GitHub User: ' + gitHubAuth.getUser().trim());
+		$('#logout-btn').show();
+	} else {
+		$('#github-auth').text('GitHub Authentication');
+		$('#logout-btn').hide();
+	}
+}
+
 function removeGithubAuth() {
-	userandpass = '';
-	access_token = '';
-	$('#logout-btn').hide();
-	$('#github-auth').text('GitHub Authentication');
+	gitHubAuth.cleanStorage();
+	updateGithubAuthUI();
 }
 
 function loadStargazers(user, repo, on_complete_callback, cur) {
@@ -368,12 +496,12 @@ function loadStargazers(user, repo, on_complete_callback, cur) {
 		$.ajax({
 			beforeSend: function(request) {
 							request.setRequestHeader('Accept', 'application/vnd.github.v3.star+json');
-							if (access_token != '') {
-								var auth_string = 'token ' + access_token;
+							if (gitHubAuth.getAccessToken() != undefined) {
+								var auth_string = 'token ' + gitHubAuth.getAccessToken();
 								request.setRequestHeader('Authorization', auth_string);
 							}
-							else if (userandpass != '') {
-								var auth_string = 'Basic ' + userandpass;
+							else if (gitHubAuth.getUserAndPass() != undefined) {
+								var auth_string = 'Basic ' + gitHubAuth.getUserAndPass();
 								request.setRequestHeader('Authorization', auth_string);
 							}
 						},
@@ -387,7 +515,7 @@ function loadStargazers(user, repo, on_complete_callback, cur) {
 
 						if (cur == 1) {
 							lastPage = findLastPage(request.getResponseHeader('Link'));
-							if (lastPage > MAX_SUPPORTED_PAGES_NO_AUTH && access_token == '' && userandpass == '') {
+							if (lastPage > MAX_SUPPORTED_PAGES_NO_AUTH && gitHubAuth.getAccessToken() == undefined && gitHubAuth.getUserAndPass() == undefined) {
 								done = true;
 								loadError = true;
 								stopLoading();
