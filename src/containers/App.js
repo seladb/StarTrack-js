@@ -1,12 +1,16 @@
 import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 import TopNav from './TopNav'
+import RepoDetails from './RepoDetails'
 
 function App() {
   return (
-    <div className="App">
+    <React.Fragment>
+      <CssBaseline />
       <TopNav />
-    </div>
+      <RepoDetails />
+    </React.Fragment>
   );
 }
 
