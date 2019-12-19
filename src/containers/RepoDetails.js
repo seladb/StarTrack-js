@@ -1,10 +1,15 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography, TextField, Container, Button } from '@material-ui/core'
+import { Paper, TextField, Container, Button } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  container: {
+    marginTop: 20,
+    width: 650
+  },
+
+  paper: {
     padding: theme.spacing(1, 1),
   },
 
@@ -17,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 
   button: {
     margin: theme.spacing(1),
+    height: 55,
   },
 }));
 
@@ -24,8 +30,8 @@ function RepoDetails() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md">
-      <Paper className={classes.root}>
+    <Container className={classes.container}>
+      <Paper className={classes.paper}>
         <TextField id="github-user" label="GitHub User" variant="outlined" className={classes.text}/>
         <TextField id="github-repo" label="GitHub Repo" variant="outlined" className={classes.text}/>
         <Button
@@ -34,6 +40,7 @@ function RepoDetails() {
           className={classes.button}
           endIcon={<SendIcon />}
           size="large"
+          onClick={() => { console.log('onClick'); }}
         >
         Go
         </Button>
