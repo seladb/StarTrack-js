@@ -22,7 +22,7 @@ class RepoDetails extends React.Component {
               placeholder="Repo name"
               aria-label="Repo name"
             />
-            <Button type="button" onClick="">Go</Button>
+            <Button type="button">Go</Button>
           </InputGroup>
         </Row>
       </Container>
