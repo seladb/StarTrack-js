@@ -6,6 +6,7 @@ class TopNav extends React.Component {
   
   state = {
     showGitHubAuthForm: false,
+    isLoggedIn: false,
   }
 
   openGitHubAuthForm = () => {
@@ -14,10 +15,28 @@ class TopNav extends React.Component {
     })
   }
 
+  handleLogOut = () => {
+    window.sessionStorage.setItem('access_token', '');
+    this.setState({
+      isLoggedIn: false
+    })  
+  }
+
   hideGitHubAuthForm = () => {
     this.setState({
       showGitHubAuthForm: false
     })
+  }
+
+  handleLoginSuccess = () => {
+    this.setState({
+      showGitHubAuthForm: false,
+      isLoggedIn: true,
+    })
+  }
+
+  isLoggedIn() {
+    return this.state.isLoggedIn
   }
 
   render() {
@@ -34,8 +53,10 @@ class TopNav extends React.Component {
           StarTrack
         </Navbar.Brand>
         <Nav className="mr-auto"/>
-        <Button onClick={this.openGitHubAuthForm}>GitHub Authentication</Button>
-        <GitHubAuth show={this.state.showGitHubAuthForm} handleClose={this.hideGitHubAuthForm}/>
+        { this.state.isLoggedIn === false ? <Button onClick={this.openGitHubAuthForm}>GitHub Authentication</Button> : null }
+        { this.state.isLoggedIn === true ? <Navbar.Text>{`Signed in as: '${window.sessionStorage.getItem('access_token').substring(0, 6)}'` }</Navbar.Text> : null }
+        { this.state.isLoggedIn === true ? <Button onClick={this.handleLogOut}>Log Out</Button> : null }
+        <GitHubAuth show={this.state.showGitHubAuthForm} handleClose={this.hideGitHubAuthForm} handleLoginSuccess={this.handleLoginSuccess} />
       </Navbar>
     )
   }

@@ -26,7 +26,8 @@ class GitHubAuth extends React.Component {
       console.log(this.inputToken.current.value);
       axios.get(`https://api.github.com`, { headers: { 'Authorization': 'token ' + this.inputToken.current.value} })
         .then(response => {
-          console.log(response)
+          window.sessionStorage.setItem('access_token', this.inputToken.current.value);
+          this.props.handleLoginSuccess();
         })
         .catch(error => {
           console.log(error.response)
