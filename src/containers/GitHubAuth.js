@@ -1,11 +1,17 @@
 import React from 'react'
 import { Modal, Button, Form } from 'react-bootstrap/'
+import axios from 'axios'
 
 class GitHubAuth extends React.Component {
 
   state = {
     formValidated: false
   }
+
+  constructor(props) {
+    super(props);
+    this.inputToken = React.createRef(); 
+ }
 
   handleLogin = event => {
     event.preventDefault();
@@ -17,7 +23,14 @@ class GitHubAuth extends React.Component {
       this.setState({
         formValidated: true
       });
-      console.log("do login");
+      console.log(this.inputToken.current.value);
+      axios.get(`https://api.github.com`, { headers: { 'Authorization': 'token ' + this.inputToken.current.value} })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error.response)
+      });
     }
   }
 
@@ -36,12 +49,12 @@ class GitHubAuth extends React.Component {
             <p>Please note these credentials aren't stored in any server. This application is based on pure javascript 
               so the credentials are only used to send authenticated requests to GitHub API.
             </p>
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group controlId="githubAuthenticationForm">
               <Form.Label>GitHub access token (generate one <a href="https://github.com/settings/tokens">here</a>)</Form.Label>
-              <Form.Control type="text" placeholder="fc516773214acf13d10f856c6b80037999da4fd3" required/>
+              <Form.Control ref={this.inputToken} type="text" placeholder="fc516773214acf13d10f856c6b80037999da4fd3" required/>
               <Form.Control.Feedback type="invalid">
                 Please choose a username.
-              </Form.Control.Feedback>              
+              </Form.Control.Feedback>
               <Form.Text className="text-muted">
                 These credentials aren't stored in any server.
               </Form.Text>

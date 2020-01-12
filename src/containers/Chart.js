@@ -1,28 +1,13 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import { Container, Paper } from '@material-ui/core'
+import { Container } from 'react-bootstrap/'
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    width: 900,
-    marginTop: 20,
-  },
+class Chart extends React.Component {
 
-  paper: {
-    padding: theme.spacing(1, 1),
-    height: 900,
-  },
-}));
-
-function Chart() {
-  const classes = useStyles();
-
-  return (
-    <Container className={classes.container}>
-      <Paper className={classes.paper}>
-      </Paper>
-    </Container>
-  )
+  render() {
+    return (
+      <Container className="mt-5 mb-5"></Container>
+    )
+  }
 }
 
 export default Chart
