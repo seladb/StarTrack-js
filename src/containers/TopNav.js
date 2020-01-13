@@ -35,10 +35,6 @@ class TopNav extends React.Component {
     })
   }
 
-  isLoggedIn() {
-    return this.state.isLoggedIn
-  }
-
   render() {
     return (
       <Navbar bg="primary" variant="dark">

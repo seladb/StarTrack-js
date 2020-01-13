@@ -1,18 +1,30 @@
 import React from 'react'
 import RepoDetails from './RepoDetails'
-import Chart from './Chart'
+import ChartContainer from './ChartContainer'
 
 class MainContainer extends React.Component {
 
+  state = {
+    repos: []
+  }
+
   getRepoStars(username, repo) {
-    console.log("username: " + username + " repo: " + repo)
+    this.setState(prevState => ({
+      repos: [...prevState.repos, 
+        {
+          username: username,
+          repo: repo
+        }]
+    }))
+
+    console.log(this.state.repos)
   }
 
   render() {
     return (
     <div>
-      <RepoDetails onRepoDetails={this.getRepoStars}/>
-      <Chart />
+      <RepoDetails onRepoDetails={this.getRepoStars.bind(this)}/>
+      <ChartContainer />
     </div>
     )
   }
