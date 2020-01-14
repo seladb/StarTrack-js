@@ -10,13 +10,84 @@ class ChartContainer extends React.Component {
         id: 'apexchart-example'
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        type: 'datetime'
       }
     },
-    series: [{
-      name: 'series-1',
-      data: [30, 40, 45, 50, 49, 60, 70, 91]
-    }]
+    series: [
+      {
+        name: 'seladb/pcapplusplus',
+        data: [
+          { 
+            x: new Date('2018-02-12').getTime(),
+            y: 30
+          },
+          {
+            x: new Date('2018-03-15').getTime(),
+            y: 40
+          },
+          {
+            x: new Date('2018-07-02').getTime(),
+            y: 45
+          },
+          {
+            x: new Date('2018-09-29').getTime(),
+            y: 50
+          },
+          {
+            x: new Date('2018-11-12').getTime(),
+            y: 49
+          },
+          {
+            x: new Date('2018-11-15').getTime(),
+            y: 60
+          },
+          {
+            x: new Date('2018-12-31').getTime(),
+            y: 70
+          },
+          {
+            x: new Date('2019-01-10').getTime(),
+            y: 91
+          }
+        ]
+      },
+      {
+        name: 'seladb/startrack-js',
+        data: [
+          { 
+            x: new Date('2016-02-12').getTime(),
+            y: 30
+          },
+          {
+            x: new Date('2016-03-15').getTime(),
+            y: 40
+          },
+          {
+            x: new Date('2016-07-02').getTime(),
+            y: 45
+          },
+          {
+            x: new Date('2016-09-29').getTime(),
+            y: 50
+          },
+          {
+            x: new Date('2016-11-12').getTime(),
+            y: 49
+          },
+          {
+            x: new Date('2016-11-15').getTime(),
+            y: 60
+          },
+          {
+            x: new Date('2016-12-31').getTime(),
+            y: 70
+          },
+          {
+            x: new Date('2017-01-10').getTime(),
+            y: 91
+          }
+        ]}
+    ]
   }
 
   render() {
