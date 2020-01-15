@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, InputGroup, FormControl, Dropdown, DropdownButton, Button } from 'react-bootstrap/'
+import { Container, Row, InputGroup, FormControl, Dropdown, DropdownButton, Button, Spinner } from 'react-bootstrap/'
 
 class RepoDetails extends React.Component {
 
@@ -69,7 +69,24 @@ class RepoDetails extends React.Component {
               <Dropdown.Item eventKey="replace" href="#">Replace Current Plot</Dropdown.Item>
               <Dropdown.Item eventKey="add" href="#">Add Another Plot</Dropdown.Item>
             </DropdownButton>
-            <Button type="button" onClick={this.onGoClick.bind(this)}>Go</Button>
+            { !this.props.loadInProgress ?
+            <Button 
+              type="button" 
+              onClick={this.onGoClick.bind(this)}>Go
+            </Button>
+            :
+            <Button 
+              type="button" 
+              disabled>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+              /> Loading...
+             </Button>
+            }
           </InputGroup>
         </Row>
       </Container>

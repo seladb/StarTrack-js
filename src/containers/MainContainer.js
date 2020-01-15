@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Modal } from 'react-bootstrap/'
+import { Button, Modal, ProgressBar } from 'react-bootstrap/'
 import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
 import gitHubUtils from './GitHubUtils'
@@ -12,18 +12,26 @@ class MainContainer extends React.Component {
       show: false,
       title: "",
       message: ""
+    },
+    loading: {
+      isLoading: false,
+      loadProgress: 0
     }
   }
 
   getRepoStargazers(username, repo) {
-    gitHubUtils.loadStargazers(username, repo)
+    gitHubUtils.loadStargazers(username, repo, this.onLoadInProgress.bind(this))
     .then((stargazerData) => {
       this.setState(prevState => ({
         repos: [...prevState.repos, {
           username: username,
           repo: repo,
           stargazerData: stargazerData
-        }]
+        }],
+        loading: {
+          isLoading: false,
+          loadProgress: 0
+        }
       }))
     })
     .catch((error) => {
@@ -51,10 +59,23 @@ class MainContainer extends React.Component {
     })
   }
 
+  onLoadInProgress(progress) {
+    this.setState({
+      loading: {
+        isLoading: true,
+        loadProgress: progress
+      }
+    })
+  }
+
   render() {
     return (
     <div>
-      <RepoDetails onRepoDetails={this.getRepoStargazers.bind(this)}/>
+      { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : null }
+      <RepoDetails 
+        onRepoDetails={this.getRepoStargazers.bind(this)}
+        loadInProgress={this.state.loading.isLoading}
+      />
       { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
       <Modal show={this.state.alert.show} onHide={this.closeAlert}>
         <Modal.Header closeButton>

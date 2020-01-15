@@ -17,7 +17,11 @@ class GitHubUtils {
     }
   }
 
-  async loadStargazers(user, repo) {
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async loadStargazers(user, repo, handleProgress) {
     try {
       let starData = [];
       let starCount = 1;
@@ -29,6 +33,7 @@ class GitHubUtils {
         if (pageNum === 1) {
           numOfPages = this._getLastStargazerPage(page.headers['link']);
         }
+        handleProgress((pageNum/numOfPages)*100);
         pageNum++;
 
         page.data.forEach( (singleStarData) => {
