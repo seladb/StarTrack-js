@@ -10,7 +10,7 @@ class GitHubUtils {
     let reqHeaders = {
       headers: {
         'Accept': 'application/vnd.github.v3.star+json',
-        ...accessToken != "" && {'Authorization': 'token ' + accessToken}
+        ...accessToken !== "" && {'Authorization': 'token ' + accessToken}
       }
     };
 
@@ -22,7 +22,7 @@ class GitHubUtils {
       while (pageNum <= numOfPages) {
         let url = stargazersURL.replace('{page}', pageNum).replace('{user}', user).replace('{repo}', repo);
         let page = await axios.get(url, reqHeaders);
-        if (pageNum == 1) {
+        if (pageNum === 1) {
           numOfPages = this._getLastStargazerPage(page.headers['link']);
         }
         pageNum++;
@@ -38,7 +38,7 @@ class GitHubUtils {
       return starData;
     }
     catch(error) {
-      if (error.response.status == 404) {
+      if (error.response.status === 404) {
         throw Error("Repo " + user + "/" + repo + " Not found")
       } else {
         throw Error("Couldn't fetch stargazers data, error code " + error.response.status + " returned")
@@ -51,7 +51,7 @@ class GitHubUtils {
   }
 
   _getLastStargazerPage(linkHeader) {
-    if (linkHeader == null || linkHeader.length == 0) {
+    if (linkHeader === null || linkHeader.length === 0) {
       return 0;
     }
   
@@ -61,7 +61,7 @@ class GitHubUtils {
     // Parse each part into a named link
     for (let i in parts) {
       var section = parts[i].split(';');
-      if (section.length != 2) {
+      if (section.length !== 2) {
         continue;
       }
   
@@ -69,7 +69,7 @@ class GitHubUtils {
       var name = section[1].replace(/rel="(.*)"/, '$1').trim();
   
       // if name is 'last' then extract page and return it
-      if (name == 'last') {
+      if (name === 'last') {
         return url.replace(/(.*)&page=(.*)/, '$2').trim();
       }
     }

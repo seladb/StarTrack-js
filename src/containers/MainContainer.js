@@ -15,21 +15,19 @@ class MainContainer extends React.Component {
     }
   }
 
-  getRepoStars(username, repo) {
-    this.setState(prevState => ({
-      repos: [...prevState.repos, 
-        {
+  getRepoStargazers(username, repo) {
+    gitHubUtils.loadStargazers(username, repo)
+    .then((stargazerData) => {
+      this.setState(prevState => ({
+        repos: [...prevState.repos, {
           username: username,
-          repo: repo
+          repo: repo,
+          stargazerData: stargazerData
         }]
-    }), () => {
-      gitHubUtils.loadStargazers(username, repo)
-      .then( (starData) => {
-        console.log(starData)
-      })
-      .catch((error) => {
-        this.showAlert("Error loading stargazers", error.message)
-      })
+      }))
+    })
+    .catch((error) => {
+      this.showAlert("Error loading stargazers", error.message)
     })
   }
 
@@ -56,8 +54,8 @@ class MainContainer extends React.Component {
   render() {
     return (
     <div>
-      <RepoDetails onRepoDetails={this.getRepoStars.bind(this)}/>
-      <ChartContainer />
+      <RepoDetails onRepoDetails={this.getRepoStargazers.bind(this)}/>
+      { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
       <Modal show={this.state.alert.show} onHide={this.closeAlert}>
         <Modal.Header closeButton>
           <Modal.Title>{this.state.alert.title}</Modal.Title>

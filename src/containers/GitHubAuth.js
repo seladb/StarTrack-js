@@ -48,7 +48,7 @@ class GitHubAuth extends React.Component {
             <Modal.Title>GitHub Authentication</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>GitHub API <a target="_blank" href="https://developer.github.com/v3/#rate-limiting">rate limiter</a> makes it 
+            <p>GitHub API <a target="_blank" rel="noopener noreferrer" href="https://developer.github.com/v3/#rate-limiting">rate limiter</a> makes it 
               impossible to collect stargazer data on repos with more than 3000 stars without GitHub authentication.
             </p>
             <p>If you'd like to view stargazer data for this repo, please provide your GitHub auth details.</p>
@@ -56,7 +56,7 @@ class GitHubAuth extends React.Component {
               so the credentials are only used to send authenticated requests to GitHub API.
             </p>
             <Form.Group controlId="githubAuthenticationForm">
-              <Form.Label>GitHub access token (generate one <a target="_blank" href="https://github.com/settings/tokens">here</a>)</Form.Label>
+              <Form.Label>GitHub access token (generate one <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens">here</a>)</Form.Label>
               <Form.Control ref={this.inputToken} type="text" placeholder="fc516773214acf13d10f856c6b80037999da4fd3" isInvalid={!this.state.tokenValid} required/>
               <Form.Control.Feedback type="invalid">
                 Access token is invalid.
