@@ -1,19 +1,23 @@
 import axios from 'axios'
 
 const stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}"
+const validateAccessTokenURL = "https://api.github.com/user"
+
+const storageKey = "access_token"
 
 class GitHubUtils {
 
+  async validateAndStoreAccessToken(accessToken) {
+    try {
+      await axios.get(validateAccessTokenURL, this._prepareRequestHeaders(accessToken));
+      window.sessionStorage.setItem(storageKey, accessToken);
+    }
+    catch (error) {
+      throw error;
+    }
+  }
+
   async loadStargazers(user, repo) {
-    let accessToken = this.getAccessToken();
-
-    let reqHeaders = {
-      headers: {
-        'Accept': 'application/vnd.github.v3.star+json',
-        ...accessToken !== "" && {'Authorization': 'token ' + accessToken}
-      }
-    };
-
     try {
       let starData = [];
       let starCount = 1;
@@ -21,7 +25,7 @@ class GitHubUtils {
       let pageNum = 1;
       while (pageNum <= numOfPages) {
         let url = stargazersURL.replace('{page}', pageNum).replace('{user}', user).replace('{repo}', repo);
-        let page = await axios.get(url, reqHeaders);
+        let page = await axios.get(url, this._prepareRequestHeaders(this.getAccessToken()));
         if (pageNum === 1) {
           numOfPages = this._getLastStargazerPage(page.headers['link']);
         }
@@ -47,7 +51,25 @@ class GitHubUtils {
   }
 
   getAccessToken() {
-    return window.sessionStorage.getItem('access_token');
+    return window.sessionStorage.getItem(storageKey);
+  }
+
+  getAccessTokenShortForm() {
+    let token = this.getAccessToken();
+    if (token !== undefined)
+      return this.getAccessToken().substring(0, 6);
+    
+    return ""
+  }
+
+  _prepareRequestHeaders(accessToken) {
+    return {
+      headers: {
+        'Accept': 'application/vnd.github.v3.star+json',
+        ...accessToken !== undefined && accessToken !== "" && {'Authorization': 'token ' + accessToken},
+      }
+    };
+
   }
 
   _getLastStargazerPage(linkHeader) {

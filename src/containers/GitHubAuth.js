@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Button, Form } from 'react-bootstrap/'
-import axios from 'axios'
+import gitHubUtils from './GitHubUtils'
 
 class GitHubAuth extends React.Component {
 
@@ -16,20 +16,19 @@ class GitHubAuth extends React.Component {
   handleLoginClick = event => {
     event.preventDefault();
 
-    axios.get(`https://api.github.com`, { headers: { 'Authorization': 'token ' + this.inputToken.current.value} })
-      .then( () => {
-        window.sessionStorage.setItem('access_token', this.inputToken.current.value);
-        this.setState({
-          tokenValid: true
-        }, () => {
-          this.props.handleLoginSuccess();
-        })
+    gitHubUtils.validateAndStoreAccessToken(this.inputToken.current.value)
+    .then( () => {
+      this.setState({
+        tokenValid: true
+      }, () => {
+        this.props.handleLoginSuccess();
       })
-      .catch(error => {
-        this.setState({
-          tokenValid: false
-        })
-      })
+    })
+    .catch(error => {
+      this.setState({
+        tokenValid: false
+      })      
+    })
   }
 
   handleCloseClick() {
