@@ -27,6 +27,7 @@ class GitHubUtils {
       let starCount = 1;
       let numOfPages = 1;
       let pageNum = 1;
+      handleProgress(0);
       while (pageNum <= numOfPages) {
         let url = stargazersURL.replace('{page}', pageNum).replace('{user}', user).replace('{repo}', repo);
         let page = await axios.get(url, this._prepareRequestHeaders(this.getAccessToken()));
@@ -78,8 +79,8 @@ class GitHubUtils {
   }
 
   _getLastStargazerPage(linkHeader) {
-    if (linkHeader === null || linkHeader.length === 0) {
-      return 0;
+    if (linkHeader === undefined || linkHeader.length === 0) {
+      return 1;
     }
   
     // Split parts by comma

@@ -9,33 +9,29 @@ class RepoDetails extends React.Component {
     this.userName = React.createRef();
   }
 
-  state = {
-    addOrReplacePlot: "replace",
-  }
+  // state = {
+  //   addOrReplacePlot: "replace",
+  // }
 
-  onAddOrReplaceDropdownSelect(eventKey) {
-    this.setState({
-      addOrReplacePlot: eventKey
-    })
-  }
+  // onAddOrReplaceDropdownSelect(eventKey) {
+  //   this.setState({
+  //     addOrReplacePlot: eventKey
+  //   })
+  // }
 
-  getDropdownTitle() {
-    switch(this.state.addOrReplacePlot) {
-      case "replace":
-        return "Replace Current Plot";
-      case "add":
-        return "Add Another Plot"
-      default:
-        return "Replace Current Plot";
-    }
-  }
+  // getDropdownTitle() {
+  //   switch(this.state.addOrReplacePlot) {
+  //     case "replace":
+  //       return "Replace Current Plot";
+  //     case "add":
+  //       return "Add Another Plot"
+  //     default:
+  //       return "Replace Current Plot";
+  //   }
+  // }
 
   onGoClick() {
     this.props.onRepoDetails(this.userName.current.value, this.repoName.current.value)
-  }
-
-  bla(event) {
-    console.log(event)
   }
 
   render() {
@@ -59,7 +55,7 @@ class RepoDetails extends React.Component {
               placeholder="Repo name"
               aria-label="Repo name"
             />
-            <DropdownButton
+            {/* <DropdownButton
               as={InputGroup.Append}
               variant="outline-secondary"
               id="add-or-replace-repo"
@@ -68,7 +64,7 @@ class RepoDetails extends React.Component {
             >
               <Dropdown.Item eventKey="replace" href="#">Replace Current Plot</Dropdown.Item>
               <Dropdown.Item eventKey="add" href="#">Add Another Plot</Dropdown.Item>
-            </DropdownButton>
+            </DropdownButton> */}
             { !this.props.loadInProgress ?
             <Button 
               type="button" 

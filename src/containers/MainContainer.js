@@ -1,7 +1,8 @@
 import React from 'react'
-import { Button, Modal, ProgressBar } from 'react-bootstrap/'
+import { Button, Modal, ProgressBar, Container, Row } from 'react-bootstrap/'
 import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
+import ClosableBadge from './ClosableBadge'
 import gitHubUtils from './GitHubUtils'
 
 class MainContainer extends React.Component {
@@ -20,6 +21,11 @@ class MainContainer extends React.Component {
   }
 
   getRepoStargazers(username, repo) {
+    if (this.state.repos.find(repoIter => repoIter.username === username && repoIter.repo === repo) !== undefined) {
+      this.showAlert("Repo exists", "Repo already exists");
+      return;
+    }
+
     gitHubUtils.loadStargazers(username, repo, this.onLoadInProgress.bind(this))
     .then((stargazerData) => {
       this.setState(prevState => ({
@@ -68,14 +74,35 @@ class MainContainer extends React.Component {
     })
   }
 
+  handleRemoveRepo(repoDetails) {
+    this.setState({
+      repos: this.state.repos.filter( repo => {
+        return repo.username !== repoDetails.username || repo.repo !== repoDetails.repo
+      })
+    })
+  }
+
   render() {
-    return (
+     return (
     <div>
       { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : null }
       <RepoDetails 
         onRepoDetails={this.getRepoStargazers.bind(this)}
         loadInProgress={this.state.loading.isLoading}
       />
+      <Container>
+        <Row>
+          { this.state.repos.map( repoData => 
+            <div style={{marginRight: '0.8em'}}>
+              <ClosableBadge 
+                text={repoData.username + "/" + repoData.repo} 
+                badgeCookieData={{username: repoData.username, repo: repoData.repo}}
+                onBadgeClose={this.handleRemoveRepo.bind(this)}
+              />
+            </div>
+          )}
+        </Row>
+      </Container>
       { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
       <Modal show={this.state.alert.show} onHide={this.closeAlert}>
         <Modal.Header closeButton>
