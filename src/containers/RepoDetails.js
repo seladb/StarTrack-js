@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, InputGroup, FormControl, Dropdown, DropdownButton, Button, Spinner } from 'react-bootstrap/'
+import { Container, Row, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap/'
 
 class RepoDetails extends React.Component {
 

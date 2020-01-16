@@ -41,7 +41,7 @@ class GitHubAuth extends React.Component {
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.props.handleCloseClick}>
+      <Modal show={this.props.show} onHide={this.handleCloseClick.bind(this)}>
         <Form onSubmit={this.handleLoginClick}>
           <Modal.Header closeButton>
             <Modal.Title>GitHub Authentication</Modal.Title>
@@ -66,7 +66,7 @@ class GitHubAuth extends React.Component {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.props.handleClose}>
+            <Button variant="secondary" onClick={this.handleCloseClick.bind(this)}>
               Close
             </Button>
             <Button variant="primary" type="submit">
