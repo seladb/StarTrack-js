@@ -2,8 +2,10 @@ import React from 'react'
 import { Button, Modal, ProgressBar, Container, Row } from 'react-bootstrap/'
 import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
+import StatsTable from './StatsTable'
 import ClosableBadge from './ClosableBadge'
 import gitHubUtils from './GitHubUtils'
+import stargazerStats from './StargazerStats'
 
 const colors = [ '#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#F86624', '#00B1F2', '#5A2A27' ]
 const maxReposAllowed = 8
@@ -42,7 +44,8 @@ class MainContainer extends React.Component {
           username: username,
           repo: repo,
           color: colors[this.state.curColorIndex],
-          stargazerData: stargazerData
+          stargazerData: stargazerData,
+          stats: stargazerStats.calcStats(stargazerData)
         }],
         loading: {
           isLoading: false,
@@ -122,6 +125,7 @@ class MainContainer extends React.Component {
         </Row>
       </Container>
       { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
+      { this.state.repos.length > 0 ? <Container><StatsTable repos={this.state.repos}/></Container> : null }
       <Modal show={this.state.alert.show} onHide={this.closeAlert}>
         <Modal.Header closeButton>
           <Modal.Title>{this.state.alert.title}</Modal.Title>
