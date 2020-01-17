@@ -12,9 +12,9 @@ class ClosableBadge extends React.Component {
   render() {
     return (
       <h5>
-        <Badge pill variant="primary">
+        <Badge pill variant="primary" style={{backgroundColor: this.props.color}}>
           {this.props.text}
-          <Button size="sm" onClick={this.handleBadgeClose.bind(this)}>
+          <Button size="sm" onClick={this.handleBadgeClose.bind(this)} style={{backgroundColor: this.props.color, borderColor: this.props.color}}>
             <FontAwesomeIcon icon={faTimesCircle} />
            </Button>
         </Badge>

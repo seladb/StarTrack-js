@@ -5,6 +5,9 @@ import ChartContainer from './ChartContainer'
 import ClosableBadge from './ClosableBadge'
 import gitHubUtils from './GitHubUtils'
 
+const colors = [ '#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#F86624', '#00B1F2', '#5A2A27' ]
+const maxReposAllowed = 8
+
 class MainContainer extends React.Component {
 
   state = {
@@ -17,12 +20,18 @@ class MainContainer extends React.Component {
     loading: {
       isLoading: false,
       loadProgress: 0
-    }
+    },
+    curColorIndex: 0
   }
 
   getRepoStargazers(username, repo) {
     if (this.state.repos.find(repoIter => repoIter.username === username && repoIter.repo === repo) !== undefined) {
       this.showAlert("Repo exists", "Repo already exists");
+      return;
+    }
+
+    if (this.state.repos.length + 1 > maxReposAllowed) {
+      this.showAlert("Reached max number of repos allowed", "Maximum repos that can be shown at the same time is " + maxReposAllowed);
       return;
     }
 
@@ -32,16 +41,24 @@ class MainContainer extends React.Component {
         repos: [...prevState.repos, {
           username: username,
           repo: repo,
+          color: colors[this.state.curColorIndex],
           stargazerData: stargazerData
         }],
         loading: {
           isLoading: false,
           loadProgress: 0
-        }
+        },
+        curColorIndex: this.state.curColorIndex === colors.length - 1 ? 0 : this.state.curColorIndex + 1
       }))
     })
     .catch((error) => {
-      this.showAlert("Error loading stargazers", error.message)
+      this.showAlert("Error loading stargazers", error.message);
+      this.setState({
+        loading: {
+          isLoading: false,
+          loadProgress: 0
+        }
+      })
     })
   }
 
@@ -98,6 +115,7 @@ class MainContainer extends React.Component {
                 text={repoData.username + "/" + repoData.repo} 
                 badgeCookieData={{username: repoData.username, repo: repoData.repo}}
                 onBadgeClose={this.handleRemoveRepo.bind(this)}
+                color={repoData.color}
               />
             </div>
           )}
