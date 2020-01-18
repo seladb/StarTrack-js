@@ -34,6 +34,12 @@ class RepoDetails extends React.Component {
     this.props.onRepoDetails(this.userName.current.value, this.repoName.current.value)
   }
 
+  handleKeyPress(target) {
+    if(target.charCode === 13 && !this.props.loadInProgress){
+      this.onGoClick();
+    } 
+  }
+
   render() {
     return (
       <Container className="mt-5 mb-5">
@@ -46,6 +52,7 @@ class RepoDetails extends React.Component {
               ref={this.userName}
               placeholder="Username"
               aria-label="Username"
+              onKeyPress={this.handleKeyPress.bind(this)}
             />
             <InputGroup.Prepend>
               <InputGroup.Text>/</InputGroup.Text>
@@ -54,6 +61,7 @@ class RepoDetails extends React.Component {
               ref={this.repoName}
               placeholder="Repo name"
               aria-label="Repo name"
+              onKeyPress={this.handleKeyPress.bind(this)}
             />
             {/* <DropdownButton
               as={InputGroup.Append}

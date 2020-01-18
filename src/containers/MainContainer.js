@@ -27,6 +27,11 @@ class MainContainer extends React.Component {
   }
 
   getRepoStargazers(username, repo) {
+    if (!username || username === "" || !repo || repo === "") {
+      this.showAlert("Missing details", "Please provide both Username and Repo name");
+      return;
+    }
+
     if (this.state.repos.find(repoIter => repoIter.username === username && repoIter.repo === repo) !== undefined) {
       this.showAlert("Repo exists", "Repo already exists");
       return;

@@ -51,7 +51,8 @@ class GitHubUtils {
       if (error.response.status === 404) {
         throw Error("Repo " + user + "/" + repo + " Not found")
       } else {
-        throw Error("Couldn't fetch stargazers data, error code " + error.response.status + " returned")
+        throw Error("Couldn't fetch stargazers data, error code " + error.response.status + " returned" + 
+          (error.response.data.message && error.response.data.message !== "" ? ": " + error.response.data.message : ""))
       }
     }
   }
