@@ -46,7 +46,7 @@ class RepoDetails extends React.Component {
         <Row>
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text>Repo Details:</InputGroup.Text>
+              <InputGroup.Text>Repo Details</InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
               ref={this.userName}

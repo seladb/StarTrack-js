@@ -3,6 +3,7 @@ import { Button, Modal, ProgressBar, Container, Row } from 'react-bootstrap/'
 import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
 import StatsTable from './StatsTable'
+import UrlDisplay from './UrlDisplay'
 import ClosableBadge from './ClosableBadge'
 import gitHubUtils from './GitHubUtils'
 import stargazerStats from './StargazerStats'
@@ -131,6 +132,7 @@ class MainContainer extends React.Component {
       </Container>
       { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
       { this.state.repos.length > 0 ? <Container><StatsTable repos={this.state.repos}/></Container> : null }
+      { this.state.repos.length > 0 ? <Container><UrlDisplay repos={this.state.repos}/></Container> : null }
       <Modal show={this.state.alert.show} onHide={this.closeAlert}>
         <Modal.Header closeButton>
           <Modal.Title>{this.state.alert.title}</Modal.Title>
