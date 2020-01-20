@@ -17,7 +17,7 @@ class TopNav extends React.Component {
   }
 
   handleLogOut = () => {
-    window.sessionStorage.setItem('access_token', '');
+    gitHubUtils.removeAccessToken();
     this.setState({
       isLoggedIn: false
     })  

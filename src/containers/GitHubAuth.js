@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Button, Form } from 'react-bootstrap/'
-import gitHubUtils from './GitHubUtils'
+import gitHubUtils, { StorageTypes } from './GitHubUtils'
 
 class GitHubAuth extends React.Component {
 
@@ -10,13 +10,14 @@ class GitHubAuth extends React.Component {
 
   constructor(props) {
     super(props);
-    this.inputToken = React.createRef(); 
+    this.inputToken = React.createRef();
+    this.storageTypeCheckbox = React.createRef();
   }
 
   handleLoginClick = event => {
     event.preventDefault();
 
-    gitHubUtils.validateAndStoreAccessToken(this.inputToken.current.value)
+    gitHubUtils.validateAndStoreAccessToken(this.inputToken.current.value, this.getStorageTypeDecision())
     .then( () => {
       this.setState({
         tokenValid: true
@@ -29,6 +30,14 @@ class GitHubAuth extends React.Component {
         tokenValid: false
       })      
     })
+  }
+
+  getStorageTypeDecision() {
+    if (this.storageTypeCheckbox.checked) {
+      return StorageTypes.LocalStorage
+    }
+
+    return StorageTypes.SessionStorage
   }
 
   handleCloseClick() {
@@ -63,6 +72,8 @@ class GitHubAuth extends React.Component {
               <Form.Text className="text-muted">
                 These credentials aren't stored in any server.
               </Form.Text>
+              <Form.Check ref={ref => this.storageTypeCheckbox = ref} inline type="checkbox" id="storageType" label="Save access token in local storage" />
+              <Form.Label><a target="_blank" rel="noopener noreferrer" href="https://stackoverflow.com/questions/5523140/html5-local-storage-vs-session-storage">Learn more</a></Form.Label>
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

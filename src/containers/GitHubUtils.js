@@ -5,16 +5,28 @@ const validateAccessTokenURL = "https://api.github.com/user"
 
 const storageKey = "access_token"
 
+export const StorageTypes = {
+  LocalStorage: 'local',
+  SessionStorage: 'session'
+}
+
 class GitHubUtils {
 
-  async validateAndStoreAccessToken(accessToken) {
+  static _storage = sessionStorage;
+
+  async validateAndStoreAccessToken(accessToken, storageType) {
     try {
       await axios.get(validateAccessTokenURL, this._prepareRequestHeaders(accessToken));
-      window.sessionStorage.setItem(storageKey, accessToken);
+      this._setStorageType(storageType).setItem(storageKey, accessToken);
     }
     catch (error) {
+      console.log(error)
       throw error;
     }
+  }
+
+  removeAccessToken() {
+    this._getStorageType().removeItem(storageKey)
   }
 
   sleep(ms) {
@@ -58,7 +70,7 @@ class GitHubUtils {
   }
 
   getAccessToken() {
-    return window.sessionStorage.getItem(storageKey);
+    return this._getStorageType().getItem(storageKey);
   }
 
   getAccessTokenShortForm() {
@@ -67,6 +79,27 @@ class GitHubUtils {
       return this.getAccessToken().substring(0, 6);
     
     return ""
+  }
+
+  _getStorageType() {
+    return GitHubUtils._storage
+  }
+
+  _setStorageType(storageType) {
+    this.removeAccessToken();
+
+    switch (storageType) {
+      case StorageTypes.LocalStorage:
+        GitHubUtils._storage = localStorage;
+        break;
+      case StorageTypes.SessionStorage:
+        GitHubUtils._storage = sessionStorage
+        break;
+      default:
+        GitHubUtils._storage = sessionStorage
+    }
+
+    return GitHubUtils._storage
   }
 
   _prepareRequestHeaders(accessToken) {
