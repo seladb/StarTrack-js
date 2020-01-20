@@ -5,16 +5,12 @@ import ChartContainer from './ChartContainer'
 import StatsTable from './StatsTable'
 import UrlDisplay from './UrlDisplay'
 import ClosableBadge from './ClosableBadge'
-import gitHubUtils from './GitHubUtils'
-import stargazerStats from './StargazerStats'
-
-const colors = [ '#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#F86624', '#00B1F2', '#5A2A27' ]
-const maxReposAllowed = 8
+import stargazerLoader, { maxReposAllowed } from './StargazerLoader'
 
 class MainContainer extends React.Component {
 
   state = {
-    repos: [],
+    repos: (this.props.preloadedRepos ? this.props.preloadedRepos : []),
     alert: {
       show: false,
       title: "",
@@ -23,11 +19,10 @@ class MainContainer extends React.Component {
     loading: {
       isLoading: false,
       loadProgress: 0
-    },
-    curColorIndex: 0
+    }
   }
 
-  getRepoStargazers(username, repo) {
+  async getRepoStargazers(username, repo) {
     if (!username || username === "" || !repo || repo === "") {
       this.showAlert("Missing details", "Please provide both Username and Repo name");
       return;
@@ -43,24 +38,17 @@ class MainContainer extends React.Component {
       return;
     }
 
-    gitHubUtils.loadStargazers(username, repo, this.onLoadInProgress.bind(this))
-    .then((stargazerData) => {
+    try {
+      let stargazerData = await stargazerLoader.loadStargazers(username, repo, this.onLoadInProgress.bind(this));
       this.setState(prevState => ({
-        repos: [...prevState.repos, {
-          username: username,
-          repo: repo,
-          color: colors[this.state.curColorIndex],
-          stargazerData: stargazerData,
-          stats: stargazerStats.calcStats(stargazerData)
-        }],
+        repos: [...prevState.repos, stargazerData],
         loading: {
           isLoading: false,
           loadProgress: 0
-        },
-        curColorIndex: this.state.curColorIndex === colors.length - 1 ? 0 : this.state.curColorIndex + 1
+        }
       }))
-    })
-    .catch((error) => {
+    }
+    catch(error) {
       this.showAlert("Error loading stargazers", error.message);
       this.setState({
         loading: {
@@ -68,7 +56,7 @@ class MainContainer extends React.Component {
           loadProgress: 0
         }
       })
-    })
+    }
   }
 
   showAlert(title, message) {
@@ -109,42 +97,42 @@ class MainContainer extends React.Component {
   }
 
   render() {
-     return (
-    <div>
-      { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : null }
-      <RepoDetails 
-        onRepoDetails={this.getRepoStargazers.bind(this)}
-        loadInProgress={this.state.loading.isLoading}
-      />
-      <Container>
-        <Row>
-          { this.state.repos.map( repoData => 
-            <div style={{marginRight: '0.8em'}}>
-              <ClosableBadge 
-                text={repoData.username + "/" + repoData.repo} 
-                badgeCookieData={{username: repoData.username, repo: repoData.repo}}
-                onBadgeClose={this.handleRemoveRepo.bind(this)}
-                color={repoData.color}
-              />
-            </div>
-          )}
-        </Row>
-      </Container>
-      { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
-      { this.state.repos.length > 0 ? <Container><StatsTable repos={this.state.repos}/></Container> : null }
-      { this.state.repos.length > 0 ? <Container><UrlDisplay repos={this.state.repos}/></Container> : null }
-      <Modal show={this.state.alert.show} onHide={this.closeAlert}>
-        <Modal.Header closeButton>
-          <Modal.Title>{this.state.alert.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{this.state.alert.message}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={this.closeAlert.bind(this)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    return (
+      <div>
+        { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : null }
+        <RepoDetails 
+          onRepoDetails={this.getRepoStargazers.bind(this)}
+          loadInProgress={this.state.loading.isLoading}
+        />
+        <Container>
+          <Row>
+            { this.state.repos.map( repoData => 
+              <div style={{marginRight: '0.8em'}}>
+                <ClosableBadge 
+                  text={repoData.username + "/" + repoData.repo} 
+                  badgeCookieData={{username: repoData.username, repo: repoData.repo}}
+                  onBadgeClose={this.handleRemoveRepo.bind(this)}
+                  color={repoData.color}
+                />
+              </div>
+            )}
+          </Row>
+        </Container>
+        { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
+        { this.state.repos.length > 0 ? <Container><StatsTable repos={this.state.repos}/></Container> : null }
+        { this.state.repos.length > 0 ? <Container><UrlDisplay repos={this.state.repos}/></Container> : null }
+        <Modal show={this.state.alert.show} onHide={this.closeAlert}>
+          <Modal.Header closeButton>
+            <Modal.Title>{this.state.alert.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{this.state.alert.message}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={this.closeAlert.bind(this)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     )
   }
 }

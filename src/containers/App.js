@@ -1,14 +1,15 @@
 import React from 'react';
 import './App.css';
-import TopNav from './TopNav'
-import MainContainer from './MainContainer'
+import MainPageContainer from './MainPageContainer'
+import RepoPreloader from './RepoPreloader'
+import { Route, BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
-    <div>
-      <TopNav />
-      <MainContainer />
-    </div>
+    <BrowserRouter>
+      <Route exact path="/" component={MainPageContainer} />
+      <Route path="/preload" component={RepoPreloader} />
+    </BrowserRouter>
   );
 }
 

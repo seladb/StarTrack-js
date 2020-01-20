@@ -73,7 +73,7 @@ class GitHubUtils {
     return {
       headers: {
         'Accept': 'application/vnd.github.v3.star+json',
-        ...accessToken !== undefined && accessToken !== "" && {'Authorization': 'token ' + accessToken},
+        ...accessToken !== undefined && accessToken !== null && accessToken !== "" && {'Authorization': 'token ' + accessToken},
       }
     };
 

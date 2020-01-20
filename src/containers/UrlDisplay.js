@@ -3,8 +3,8 @@ import { InputGroup, FormControl, Button, OverlayTrigger, Tooltip } from 'react-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
-const repoUrlParam = "u={user}&r={repo}"
-const baseUrl = window.location.href.split("?")[0] + "?";
+const repoUrlParam = "r={user},{repo}"
+const baseUrl = window.location.origin + "/preload?";
 
 class UrlDisplay extends React.Component {
 
