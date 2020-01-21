@@ -1,0 +1,7 @@
+.MainContainer-progressBarPlaceholder {
+  opacity: 0 !important;
+}
+
+.MainContainer-closableBadgeContainer {
+  margin-right: 0.8em !important;
+}

@@ -29,7 +29,7 @@ class UrlDisplay extends React.Component {
   render() {
     let url = this.buildURL();
     return (
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-3 mt-5">
         <InputGroup.Prepend>
           <InputGroup.Text id="url">URL</InputGroup.Text>
         </InputGroup.Prepend>

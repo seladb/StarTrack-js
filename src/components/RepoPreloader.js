@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, ProgressBar, Button } from 'react-bootstrap/'
+import './RepoPreloader.css'
 import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
 import MainPage from './MainPage'
 
@@ -93,12 +94,12 @@ class RepoPreloader extends React.Component {
     return (
       <div>
         { this.state.finishedLoading === false || this.state.errors.length > 0 ? 
-          <Container style={{position: 'relative', top: '100px', textAlign: 'center', width: "400px"}}>
+          <Container className="RepoPreloader-topContainer">
             <h3 >Loading Repos Data...</h3>
             { Object.keys(repoDetails).length > 0 ? <h5>{repoDetails.username + "/" + repoDetails.repo}</h5> : null }
             { Object.keys(repoDetails).length > 0 ? <ProgressBar now={this.state.loadProgress} variant="success" animated /> : null }
             { this.state.errors.length > 0 ?
-            <Container style={{marginTop: '10px', textAlign: 'left', color: '#ea1125'}}>
+            <Container className="RepoPreloader-errorContainer">
               {this.state.errors.map(error => <h6><b>Error loading {error.repoDetails.username}/{error.repoDetails.repo}:</b> {error.message}</h6>)}
               <Button onClick={this.handleButtonClick.bind(this)}>Continue</Button>
             </Container>

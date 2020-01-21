@@ -1,4 +1,5 @@
 import React from 'react'
+import './RepoDetails.css'
 import { Container, Row, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap/'
 
 class RepoDetails extends React.Component {
@@ -21,7 +22,7 @@ class RepoDetails extends React.Component {
 
   render() {
     return (
-      <Container className="mt-5 mb-5">
+      <Container className="RepoDetails-container">
         <Row>
           <InputGroup>
             <InputGroup.Prepend>
@@ -43,12 +44,14 @@ class RepoDetails extends React.Component {
               onKeyPress={this.handleKeyPress.bind(this)}
             />
             { !this.props.loadInProgress ?
-            <Button 
+            <Button
+              className="RepoDetails-button"
               type="button" 
-              onClick={this.onGoClick.bind(this)}>Go
+              onClick={this.onGoClick.bind(this)}>Go!
             </Button>
             :
             <Button 
+              className="RepoDetails-button"
               type="button" 
               disabled>
                 <Spinner

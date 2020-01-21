@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Modal, ProgressBar, Container, Row } from 'react-bootstrap/'
+import './MainContainer.css'
 import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
 import StatsTable from './StatsTable'
@@ -99,7 +100,7 @@ class MainContainer extends React.Component {
   render() {
     return (
       <div>
-        { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : null }
+        { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : <div className="progress MainContainer-progressBarPlaceholder"/> }
         <RepoDetails 
           onRepoDetails={this.getRepoStargazers.bind(this)}
           loadInProgress={this.state.loading.isLoading}
@@ -107,7 +108,7 @@ class MainContainer extends React.Component {
         <Container>
           <Row>
             { this.state.repos.map( repoData => 
-              <div style={{marginRight: '0.8em'}}>
+              <div className="MainContainer-closableBadgeContainer">
                 <ClosableBadge 
                   text={repoData.username + "/" + repoData.repo} 
                   badgeCookieData={{username: repoData.username, repo: repoData.repo}}

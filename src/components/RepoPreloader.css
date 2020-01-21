@@ -1,0 +1,12 @@
+.RepoPreloader-topContainer {
+  position: relative !important;
+  top: 100px !important;
+  text-align: center !important;
+  width: 400px !important;
+}
+
+.RepoPreloader-errorContainer {
+  margin-top: 10px !important;
+  text-align: left !important;
+  color: #ea1125 !important;
+}

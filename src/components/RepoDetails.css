@@ -1,0 +1,9 @@
+.RepoDetails-container {
+  max-width: 800px !important;
+  margin-bottom: 3rem !important;
+  margin-top: 3rem !important;
+}
+
+.RepoDetails-button {
+  width: 130px !important;
+}
