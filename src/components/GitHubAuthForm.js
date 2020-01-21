@@ -1,8 +1,8 @@
 import React from 'react'
 import { Modal, Button, Form } from 'react-bootstrap/'
-import gitHubUtils, { StorageTypes } from './GitHubUtils'
+import gitHubUtils, { StorageTypes } from '../utils/GitHubUtils'
 
-class GitHubAuth extends React.Component {
+class GitHubAuthForm extends React.Component {
 
   state = {
     tokenValid: true
@@ -90,4 +90,4 @@ class GitHubAuth extends React.Component {
   }
 }
 
-export default GitHubAuth
+export default GitHubAuthForm

@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import MainPageContainer from './MainPageContainer'
+import MainPage from './MainPage'
 import RepoPreloader from './RepoPreloader'
 import { Route, BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
     <BrowserRouter>
-      <Route exact path="/" component={MainPageContainer} />
+      <Route exact path="/" component={MainPage} />
       <Route path="/preload" component={RepoPreloader} />
     </BrowserRouter>
   );

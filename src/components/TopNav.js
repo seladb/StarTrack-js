@@ -1,7 +1,7 @@
 import React from 'react'
 import { Nav, Navbar, Button } from 'react-bootstrap/'
-import GitHubAuth from './GitHubAuth'
-import gitHubUtils from './GitHubUtils'
+import GitHubAuthForm from './GitHubAuthForm'
+import gitHubUtils from '../utils/GitHubUtils'
 
 class TopNav extends React.Component {
   
@@ -53,7 +53,7 @@ class TopNav extends React.Component {
         { this.state.isLoggedIn === false ? <Button onClick={this.openGitHubAuthForm}>GitHub Authentication</Button> : null }
         { this.state.isLoggedIn === true ? <Navbar.Text>{`Signed in as: '${gitHubUtils.getAccessTokenShortForm()}'` }</Navbar.Text> : null }
         { this.state.isLoggedIn === true ? <Button onClick={this.handleLogOut}>Log Out</Button> : null }
-        <GitHubAuth show={this.state.showGitHubAuthForm} handleClose={this.hideGitHubAuthForm} handleLoginSuccess={this.handleLoginSuccess} />
+        <GitHubAuthForm show={this.state.showGitHubAuthForm} handleClose={this.hideGitHubAuthForm} handleLoginSuccess={this.handleLoginSuccess} />
       </Navbar>
     )
   }

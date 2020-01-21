@@ -2,7 +2,7 @@ import React from 'react'
 import TopNav from './TopNav'
 import MainContainer from './MainContainer'
 
-class MainPageContainer extends React.Component {
+class MainPage extends React.Component {
   render() {
     return (
       <div>
@@ -13,4 +13,4 @@ class MainPageContainer extends React.Component {
   }
 }
 
-export default MainPageContainer
+export default MainPage

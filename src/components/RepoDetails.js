@@ -9,27 +9,6 @@ class RepoDetails extends React.Component {
     this.userName = React.createRef();
   }
 
-  // state = {
-  //   addOrReplacePlot: "replace",
-  // }
-
-  // onAddOrReplaceDropdownSelect(eventKey) {
-  //   this.setState({
-  //     addOrReplacePlot: eventKey
-  //   })
-  // }
-
-  // getDropdownTitle() {
-  //   switch(this.state.addOrReplacePlot) {
-  //     case "replace":
-  //       return "Replace Current Plot";
-  //     case "add":
-  //       return "Add Another Plot"
-  //     default:
-  //       return "Replace Current Plot";
-  //   }
-  // }
-
   onGoClick() {
     this.props.onRepoDetails(this.userName.current.value, this.repoName.current.value)
   }
@@ -63,16 +42,6 @@ class RepoDetails extends React.Component {
               aria-label="Repo name"
               onKeyPress={this.handleKeyPress.bind(this)}
             />
-            {/* <DropdownButton
-              as={InputGroup.Append}
-              variant="outline-secondary"
-              id="add-or-replace-repo"
-              title={this.getDropdownTitle()}
-              onSelect={this.onAddOrReplaceDropdownSelect.bind(this)}
-            >
-              <Dropdown.Item eventKey="replace" href="#">Replace Current Plot</Dropdown.Item>
-              <Dropdown.Item eventKey="add" href="#">Add Another Plot</Dropdown.Item>
-            </DropdownButton> */}
             { !this.props.loadInProgress ?
             <Button 
               type="button" 

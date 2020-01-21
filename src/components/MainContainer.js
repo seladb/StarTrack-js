@@ -4,8 +4,8 @@ import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
 import StatsTable from './StatsTable'
 import UrlDisplay from './UrlDisplay'
-import ClosableBadge from './ClosableBadge'
-import stargazerLoader, { maxReposAllowed } from './StargazerLoader'
+import ClosableBadge from '../shared/ClosableBadge'
+import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
 
 class MainContainer extends React.Component {
 

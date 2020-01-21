@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, ProgressBar, Button } from 'react-bootstrap/'
-import stargazerLoader, { maxReposAllowed } from './StargazerLoader'
-import MainPageContainer from './MainPageContainer'
+import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
+import MainPage from './MainPage'
 
 class RepoPreloader extends React.Component {
 
@@ -105,7 +105,7 @@ class RepoPreloader extends React.Component {
             : null }
           </Container> 
         :
-          <MainPageContainer preloadedRepos={this.state.reposLoaded}/>
+          <MainPage preloadedRepos={this.state.reposLoaded}/>
         }
       </div>
     )
