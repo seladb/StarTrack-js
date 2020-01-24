@@ -44,7 +44,8 @@ class RepoPreloader extends React.Component {
       let repoDetails = this.getCurrentlyLoadingRepoDetails();
       if (Object.keys(repoDetails).length === 0) {
         this.setState({
-          finishedLoading: true
+          finishedLoading: true,
+          loadProgress: 100
         });
         return
       }
@@ -89,19 +90,35 @@ class RepoPreloader extends React.Component {
     })
   }
 
-  render() {
+  getProgressBarVariant() {
+    if (this.state.finishedLoading && this.state.errors.length > 0) {
+      return "warning"
+    }
+    
+    return "success"
+  }
+
+  getSecondaryHeaderMessage() {
+    if (this.state.finishedLoading && this.state.errors.length > 0) {
+      return "Error loading repos"
+    }
+
     let repoDetails = this.getCurrentlyLoadingRepoDetails();
+    return repoDetails.username + "/" + repoDetails.repo;
+  }
+
+  render() {
     return (
       <div>
         { this.state.finishedLoading === false || this.state.errors.length > 0 ? 
           <Container className="RepoPreloader-topContainer">
             <h3 >Loading Repos Data...</h3>
-            { Object.keys(repoDetails).length > 0 ? <h5>{repoDetails.username + "/" + repoDetails.repo}</h5> : null }
-            { Object.keys(repoDetails).length > 0 ? <ProgressBar now={this.state.loadProgress} variant="success" animated /> : null }
+            <h5>{this.getSecondaryHeaderMessage()}</h5>
+            <ProgressBar now={this.state.loadProgress} variant={this.getProgressBarVariant()} animated />
             { this.state.errors.length > 0 ?
             <Container className="RepoPreloader-errorContainer">
               {this.state.errors.map(error => <h6><b>Error loading {error.repoDetails.username}/{error.repoDetails.repo}:</b> {error.message}</h6>)}
-              <Button onClick={this.handleButtonClick.bind(this)}>Continue</Button>
+              {this.state.finishedLoading ? <Button onClick={this.handleButtonClick.bind(this)}>Continue</Button> : null }
             </Container>
             : null }
           </Container> 
