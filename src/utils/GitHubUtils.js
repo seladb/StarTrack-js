@@ -3,7 +3,7 @@ import axios from 'axios'
 const stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}"
 const validateAccessTokenURL = "https://api.github.com/user"
 
-const storageKey = "access_token"
+const storageKey = "statrack_js_access_token"
 
 export const StorageTypes = {
   LocalStorage: 'local',
@@ -12,7 +12,19 @@ export const StorageTypes = {
 
 class GitHubUtils {
 
-  static _storage = sessionStorage;
+  static _getStorageTypeDefault() {
+    if (sessionStorage.getItem(storageKey) !== null && sessionStorage.getItem(storageKey) !== undefined && sessionStorage.getItem(storageKey) !== "") {
+      return sessionStorage
+    }
+    else if (localStorage.getItem(storageKey) !== null && localStorage.getItem(storageKey) !== undefined && localStorage.getItem(storageKey) !== "") {
+      return localStorage
+    }
+    else {
+      return sessionStorage
+    }
+  }
+
+  static _storage = GitHubUtils._getStorageTypeDefault();
 
   async validateAndStoreAccessToken(accessToken, storageType) {
     try {
@@ -71,14 +83,6 @@ class GitHubUtils {
 
   getAccessToken() {
     return this._getStorageType().getItem(storageKey);
-  }
-
-  getAccessTokenShortForm() {
-    let token = this.getAccessToken();
-    if (token !== undefined)
-      return this.getAccessToken().substring(0, 6);
-    
-    return ""
   }
 
   _getStorageType() {

@@ -25,7 +25,7 @@ class GitHubAuthForm extends React.Component {
         this.props.handleLoginSuccess();
       })
     })
-    .catch(error => {
+    .catch(() => {
       this.setState({
         tokenValid: false
       })      
