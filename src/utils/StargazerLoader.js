@@ -6,7 +6,7 @@ const colors = [ '#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#F86624
 export const maxReposAllowed = 8;
 
 class StargazerLoader {
-  static colorIndex = 0
+  static colorIndex = -1
 
   async loadStargazers(username, repo, handleProgress) {
     let stargazerData = await gitHubUtils.loadStargazers(username, repo, handleProgress);
