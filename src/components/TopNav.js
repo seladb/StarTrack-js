@@ -7,7 +7,7 @@ class TopNav extends React.Component {
   render() {
     return (
       <Navbar bg="primary" variant="dark">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             alt=""
             src="/star-icon.png"

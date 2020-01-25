@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import MainPage from './MainPage'
 import RepoPreloader from './RepoPreloader'
 import { Route, BrowserRouter } from 'react-router-dom'
