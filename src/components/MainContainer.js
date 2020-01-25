@@ -19,7 +19,8 @@ class MainContainer extends React.Component {
     },
     loading: {
       isLoading: false,
-      loadProgress: 0
+      loadProgress: 0,
+      stopLoading: false
     }
   }
 
@@ -40,12 +41,17 @@ class MainContainer extends React.Component {
     }
 
     try {
-      let stargazerData = await stargazerLoader.loadStargazers(username, repo, this.onLoadInProgress.bind(this));
+      let stargazerData = await stargazerLoader.loadStargazers(
+        username, 
+        repo, 
+        this.onLoadInProgress.bind(this),
+        () => this.state.loading.stopLoading);
       this.setState(prevState => ({
-        repos: [...prevState.repos, stargazerData],
+        repos: (stargazerData !== null ? [...prevState.repos, stargazerData] : prevState.repos),
         loading: {
           isLoading: false,
-          loadProgress: 0
+          loadProgress: 0,
+          stopLoading: false
         }
       }))
     }
@@ -84,7 +90,16 @@ class MainContainer extends React.Component {
     this.setState({
       loading: {
         isLoading: true,
-        loadProgress: progress
+        loadProgress: progress,
+        stopLoading: this.state.loading.stopLoading
+      }
+    })
+  }
+
+  handleStopLoading() {
+    this.setState({
+      loading: {
+        stopLoading: true,
       }
     })
   }
@@ -104,6 +119,7 @@ class MainContainer extends React.Component {
         <RepoDetails 
           onRepoDetails={this.getRepoStargazers.bind(this)}
           loadInProgress={this.state.loading.isLoading}
+          onStopClick={this.handleStopLoading.bind(this)}
         />
         <Container>
           <Row>

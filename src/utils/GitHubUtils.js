@@ -45,7 +45,7 @@ class GitHubUtils {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async loadStargazers(user, repo, handleProgress) {
+  async loadStargazers(user, repo, handleProgress, shouldStop) {
     try {
       let starData = [];
       let starCount = 1;
@@ -53,6 +53,9 @@ class GitHubUtils {
       let pageNum = 1;
       handleProgress(0);
       while (pageNum <= numOfPages) {
+        if (shouldStop()) {
+          return null;
+        }
         let url = stargazersURL.replace('{page}', pageNum).replace('{user}', user).replace('{repo}', repo);
         let page = await axios.get(url, this._prepareRequestHeaders(this.getAccessToken()));
         if (pageNum === 1) {

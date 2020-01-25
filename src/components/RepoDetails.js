@@ -1,6 +1,8 @@
 import React from 'react'
 import './RepoDetails.css'
 import { Container, Row, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap/'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStopCircle } from '@fortawesome/free-solid-svg-icons';
 
 class RepoDetails extends React.Component {
 
@@ -45,23 +47,28 @@ class RepoDetails extends React.Component {
             />
             { !this.props.loadInProgress ?
             <Button
-              className="RepoDetails-button"
+              className="RepoDetails-goButton"
               type="button" 
               onClick={this.onGoClick.bind(this)}>Go!
             </Button>
             :
-            <Button 
-              className="RepoDetails-button"
-              type="button" 
-              disabled>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-              /> Loading...
-             </Button>
+            <div>
+              <Button 
+                className="RepoDetails-loadingButton"
+                type="button" 
+                disabled>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                /> Loading...
+              </Button>
+              <Button className="RepoDetails-stopButton" onClick={this.props.onStopClick}>
+                <FontAwesomeIcon icon={faStopCircle} />
+              </Button>
+             </div>
             }
           </InputGroup>
         </Row>

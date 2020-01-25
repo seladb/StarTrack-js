@@ -8,8 +8,11 @@ export const maxReposAllowed = 8;
 class StargazerLoader {
   static colorIndex = -1
 
-  async loadStargazers(username, repo, handleProgress) {
-    let stargazerData = await gitHubUtils.loadStargazers(username, repo, handleProgress);
+  async loadStargazers(username, repo, handleProgress, shouldStop) {
+    let stargazerData = await gitHubUtils.loadStargazers(username, repo, handleProgress, shouldStop);
+    if (stargazerData === null) {
+      return null;
+    }
     StargazerLoader.colorIndex = (StargazerLoader.colorIndex + 1 === colors.length ? 0 : StargazerLoader.colorIndex + 1);
     return {
       username: username,
