@@ -6,13 +6,13 @@ const validateAccessTokenURL = "https://api.github.com/user"
 const storageKey = "statrack_js_access_token"
 
 export const StorageTypes = {
-  LocalStorage: 'local',
-  SessionStorage: 'session'
+  LocalStorage: 'local storage',
+  SessionStorage: 'session storage'
 }
 
 class GitHubUtils {
 
-  static _getStorageTypeDefault() {
+  static _getStorageDefault() {
     if (sessionStorage.getItem(storageKey) !== null && sessionStorage.getItem(storageKey) !== undefined && sessionStorage.getItem(storageKey) !== "") {
       return sessionStorage
     }
@@ -24,7 +24,7 @@ class GitHubUtils {
     }
   }
 
-  static _storage = GitHubUtils._getStorageTypeDefault();
+  static _storage = GitHubUtils._getStorageDefault();
 
   async validateAndStoreAccessToken(accessToken, storageType) {
     try {
@@ -38,7 +38,7 @@ class GitHubUtils {
   }
 
   removeAccessToken() {
-    this._getStorageType().removeItem(storageKey)
+    this._getStorage().removeItem(storageKey)
   }
 
   sleep(ms) {
@@ -82,10 +82,21 @@ class GitHubUtils {
   }
 
   getAccessToken() {
-    return this._getStorageType().getItem(storageKey);
+    return this._getStorage().getItem(storageKey);
   }
 
-  _getStorageType() {
+  getStorageType() {
+    switch (this._getStorage()) {
+      case sessionStorage:
+        return StorageTypes.SessionStorage;
+      case localStorage:
+        return StorageTypes.LocalStorage;
+      default:
+        return null;
+    }
+  }
+
+  _getStorage() {
     return GitHubUtils._storage
   }
 

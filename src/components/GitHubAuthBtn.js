@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Navbar } from 'react-bootstrap/'
+import { Button, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap/'
 
 class GitHubAuthBtn extends React.Component {
 
@@ -20,7 +20,13 @@ class GitHubAuthBtn extends React.Component {
     else {
       return (
         <div>
-          <Navbar.Text>{`Signed in as: '${this.getAccessTokenShortForm()}'`}</Navbar.Text>
+          <OverlayTrigger
+            placement="bottom"
+            delay={{ show: 250 }}
+            overlay={<Tooltip>Access token stored in {this.props.storageType}</Tooltip>}
+          >
+            <Navbar.Text>{`Signed in as: '${this.getAccessTokenShortForm()}'`}</Navbar.Text>
+          </OverlayTrigger>
           <Button onClick={this.props.onLogoutClick}>Log Out</Button>
         </div>
       )
