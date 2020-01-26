@@ -5,6 +5,8 @@ const validateAccessTokenURL = "https://api.github.com/user"
 
 const storageKey = "statrack_js_access_token"
 
+const maxSupportedPagesWithoutAccessToken = 30
+
 export const StorageTypes = {
   LocalStorage: 'local storage',
   SessionStorage: 'session storage'
@@ -60,6 +62,10 @@ class GitHubUtils {
         let page = await axios.get(url, this._prepareRequestHeaders(this.getAccessToken()));
         if (pageNum === 1) {
           numOfPages = this._getLastStargazerPage(page.headers['link']);
+          let accessToken = this.getAccessToken();
+          if (numOfPages > maxSupportedPagesWithoutAccessToken && (accessToken === null || accessToken === undefined || accessToken === "")) {
+            throw Error("Cannot load a repo with more than " + 100 * maxSupportedPagesWithoutAccessToken + " stars without GitHub access token. Please click \"GitHub Authentication\" and provide one")
+          }
         }
         handleProgress((pageNum/numOfPages)*100);
         pageNum++;
@@ -75,6 +81,9 @@ class GitHubUtils {
       return starData;
     }
     catch(error) {
+      if (error.response === undefined) {
+        throw error
+      }
       if (error.response.status === 404) {
         throw Error("Repo " + user + "/" + repo + " Not found")
       } else {
