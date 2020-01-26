@@ -14,7 +14,7 @@ class GitHubAuthBtn extends React.Component {
   render() {
     if (this.props.accessToken === null || this.props.accessToken === undefined || this.props.accessToken === "") {
       return (
-        <Button onClick={this.props.onLoginClick}>GitHub Authentication</Button>
+        <Button variant="outline-light" onClick={this.props.onLoginClick}>GitHub Authentication</Button>
       )
     }
     else {
@@ -25,9 +25,9 @@ class GitHubAuthBtn extends React.Component {
             delay={{ show: 250 }}
             overlay={<Tooltip>Access token stored in {this.props.storageType}</Tooltip>}
           >
-            <Navbar.Text>{`Signed in as: '${this.getAccessTokenShortForm()}'`}</Navbar.Text>
+            <Navbar.Text className="mr-2 ml-2">{`Signed in as: '${this.getAccessTokenShortForm()}'`}</Navbar.Text>
           </OverlayTrigger>
-          <Button onClick={this.props.onLogoutClick}>Log Out</Button>
+          <Button variant="outline-light" onClick={this.props.onLogoutClick}>Log Out</Button>
         </div>
       )
     }

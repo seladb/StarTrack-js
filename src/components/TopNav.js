@@ -1,6 +1,10 @@
 import React from 'react'
 import { Nav, Navbar } from 'react-bootstrap/'
 import GitHubAuthContainer from './GitHubAuthContainer'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+
+const starTrackGitHubRepo = "https://github.com/seladb/startrack-js"
 
 class TopNav extends React.Component {
   
@@ -18,6 +22,12 @@ class TopNav extends React.Component {
           StarTrack
         </Navbar.Brand>
         <Nav className="mr-auto"/>
+        <Nav>
+          <Nav.Link href={starTrackGitHubRepo} target="_blank" rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faGithub} className="mr-1"/>
+             Project On GitHub
+          </Nav.Link>
+        </Nav>
         <GitHubAuthContainer />
       </Navbar>
     )
