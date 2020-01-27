@@ -49,7 +49,7 @@ class RepoPreloader extends React.Component {
         });
         return
       }
-      let stargazerData = await stargazerLoader.loadStargazers(repoDetails.username, repoDetails.repo, this.handleLoadProgress.bind(this));
+      let stargazerData = await stargazerLoader.loadStargazers(repoDetails.username, repoDetails.repo, this.handleLoadProgress.bind(this), () => false);
       this.setState(prevState => ({
         currentlyLoadingIndex: this.state.currentlyLoadingIndex + 1,
         reposLoaded: [...prevState.reposLoaded, stargazerData]
