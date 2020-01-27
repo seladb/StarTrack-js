@@ -6,6 +6,7 @@ import ChartContainer from './ChartContainer'
 import StatsTable from './StatsTable'
 import UrlDisplay from './UrlDisplay'
 import ClosableBadge from '../shared/ClosableBadge'
+import Footer from './Footer'
 import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
 
 class MainContainer extends React.Component {
@@ -138,6 +139,7 @@ class MainContainer extends React.Component {
         { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
         { this.state.repos.length > 0 ? <Container><StatsTable repos={this.state.repos}/></Container> : null }
         { this.state.repos.length > 0 ? <Container><UrlDisplay repos={this.state.repos}/></Container> : null }
+        <Footer pageEmpty={this.state.repos.length === 0}/>
         <Modal show={this.state.alert.show} onHide={this.closeAlert}>
           <Modal.Header closeButton>
             <Modal.Title>{this.state.alert.title}</Modal.Title>
