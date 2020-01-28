@@ -11,10 +11,10 @@ class TopNav extends React.Component {
   render() {
     return (
       <Navbar bg="primary" variant="dark">
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="#/">
           <img
             alt=""
-            src="/star-icon.png"
+            src={window.location.pathname + "star-icon.png"}
             width="30"
             height="30"
             className="d-inline-block align-top"

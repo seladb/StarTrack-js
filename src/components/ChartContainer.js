@@ -15,10 +15,18 @@ class ChartContainer extends React.Component {
 
     let chartOptions = {
       chart: {
-        id: 'stargazers'
+        id: "stargazers",
+        zoom: {
+          autoScaleYaxis: true, 
+        },
       },
       xaxis: {
-        type: 'datetime'
+        type: "datetime"
+      },
+      tooltip: {
+        x: {
+          format: "dd MMM yyyy",
+        },
       },
       colors: repos.map( (repoData) => {
           return repoData.color

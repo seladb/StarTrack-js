@@ -70,12 +70,12 @@ class GitHubUtils {
         handleProgress((pageNum/numOfPages)*100);
         pageNum++;
 
-        page.data.forEach( (singleStarData) => {
+        for (let i = 0; i < page.data.length; i++) {
           starData.push({
-            x: singleStarData.starred_at,
+            x: page.data[i].starred_at,
             y: starCount++
           })
-        });
+        }
       }
 
       return starData;

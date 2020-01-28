@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 const repoUrlParam = "r={user},{repo}"
-const baseUrl = window.location.origin + "/preload?";
+const baseUrl = window.location.origin + window.location.pathname + "#/preload?";
 
 class UrlDisplay extends React.Component {
 
