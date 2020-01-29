@@ -4,11 +4,47 @@ GitHub Star History and Stats - based on JavaScript only, no server side!
 
 Try it now: https://startrack-js.herokuapp.com/
 
-<img src="public/screenshot.png" width="900" />
+<img src="public/StarTrackDemo.gif" width="900" />
+
+## Main features
+
+- View a GitHub repo star history
+- Show stargazer stats such as average number of stars per day, max stars in one day, etc.
+- Supports showing multiple repos at the same time (very useful for comparison)
+- Provide GitHub authentication (via access token) to overcome GitHub API rate limiter which limits the number of API calls without authentication. The authentication details are stored locally and not sent to any server
+  - By default they're stored in the browser's session storage
+  - The user can choose to store them in the browser's local storage for longer persistence
+- Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
+
+## What's new in version 2.0?
+
+- A complete rewrite using React and modern frontend technologies
+- Significant UI improvements (basically everything looks much better now :-) )
+- The chart component has been replaced and it's easier now to navigate, zoom in/out and so on
+- Added an option to remove repos (in version 1.0 you could only add but not remove)
+- Added an option to stop loading stargazer data
+- Each repo get a dedicated color throughout the page (chart series, stats, close button)
+- Dedicated preloading screen
+  - Shows a progress bar for each repo separately
+  - Shows errors for repos which were not successfully loaded
+- GitHub authentication improvements
+  - When logged in, a tooltip was added to show where the access token is stored (browser's session storage or local storage)
+  - User + password authentication was removed as it's [no longer supported by GitHub](https://developer.github.com/changes/2019-11-05-deprecated-passwords-and-authorizations-api/#authenticating-using-passwords)
 
 ## Technical details
 
-This project is built using [React](https://reactjs.org/).
+This project is built using [React](https://reactjs.org/) and deployed on [GitHub Pages](https://pages.github.com/). It doesn't have a backend so all of the data is stored locally on the browser and nothing is passed to any server (other than GitHub API to fetch the stargazer data).
+
+It uses the following npm packages:
+
+- [React Bootstrap](https://react-bootstrap.github.io/) for the UI elements
+- [ApexCharts](https://apexcharts.com/docs/react-charts/) for displaying charts
+- [Axios](https://github.com/axios/axios) for fetching data from GitHub API
+- [React Router](https://reacttraining.com/react-router/) for having a separate view for preloading stargazer data
+- [Font Awesome](https://fontawesome.com/how-to-use/on-the-web/using-with/react) for cool icons
+- [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
+
+GitHub pages deployment status: [![Build Status](https://travis-ci.org/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.org/seladb/StarTrack-js)
 
 In order to run it locally follow these steps:
 
