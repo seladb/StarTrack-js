@@ -3,6 +3,7 @@ import { Nav, Navbar } from 'react-bootstrap/'
 import GitHubAuthContainer from './GitHubAuthContainer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import packageJson from '../../package.json'
 
 const starTrackGitHubRepo = "https://github.com/seladb/startrack-js"
 
@@ -19,7 +20,7 @@ class TopNav extends React.Component {
             height="30"
             className="d-inline-block align-top"
           />{' '}
-          StarTrack
+          StarTrack v{packageJson.version}
         </Navbar.Brand>
         <Nav className="mr-auto"/>
         <Nav>
