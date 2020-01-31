@@ -2,7 +2,7 @@
 
 GitHub Star History and Stats - based on JavaScript only, no server side!
 
-Try it now: https://startrack-js.herokuapp.com/
+Try it now: https://seladb.github.io/StarTrack-js/
 
 <img src="public/StarTrackDemo.gif" width="900" />
 
