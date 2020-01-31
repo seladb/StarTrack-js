@@ -20,20 +20,20 @@ Try it now: https://startrack-js.herokuapp.com/
 
 - A complete rewrite using React and modern frontend technologies
 - Significant UI improvements (basically everything looks much better now :-) )
-- The chart component has been replaced and it's easier now to navigate, zoom in/out and so on
+- The chart component has been replaced and it's now easier to navigate, zoom in/out, etc.
 - Added an option to remove repos (in version 1.0 you could only add but not remove)
-- Added an option to stop loading stargazer data
-- Each repo get a dedicated color throughout the page (chart series, stats, close button)
+- Added an option to stop loading data
+- Each repo has a dedicated color throughout the page (chart series, stats, close button)
 - Dedicated preloading screen
   - Shows a progress bar for each repo separately
-  - Shows errors for repos which were not successfully loaded
+  - Shows errors for repos which were not loaded successfully
 - GitHub authentication improvements
-  - When logged in, a tooltip was added to show where the access token is stored (browser's session storage or local storage)
+  - When logged in, a new tooltip shows where the access token is stored (browser's session storage or local storage)
   - User + password authentication was removed as it's [no longer supported by GitHub](https://developer.github.com/changes/2019-11-05-deprecated-passwords-and-authorizations-api/#authenticating-using-passwords)
 
 ## Technical details
 
-This project is built using [React](https://reactjs.org/) and deployed on [GitHub Pages](https://pages.github.com/). It doesn't have a backend so all of the data is stored locally on the browser and nothing is passed to any server (other than GitHub API to fetch the stargazer data).
+This project is built on [React](https://reactjs.org/) and deployed on [GitHub Pages](https://pages.github.com/). It doesn't have a backend so all of the data is stored locally on the browser and nothing is passed to any server (other than GitHub API to fetch the stargazer data).
 
 It uses the following npm packages:
 
@@ -46,7 +46,7 @@ It uses the following npm packages:
 
 GitHub pages deployment status: [![Build Status](https://travis-ci.org/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.org/seladb/StarTrack-js)
 
-In order to run it locally follow these steps:
+To run it locally follow these steps:
 
 - Clone this repo: `git clone https://github.com/seladb/StarTrack-js.git`
 - Enter the repo directory: `cd StarTrack-js`

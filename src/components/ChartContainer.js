@@ -17,7 +17,7 @@ class ChartContainer extends React.Component {
       chart: {
         id: "stargazers",
         zoom: {
-          autoScaleYaxis: true, 
+          autoScaleYaxis: (this.props.repos.length > 1 ? false : true), 
         },
       },
       xaxis: {
