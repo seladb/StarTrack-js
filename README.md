@@ -44,7 +44,7 @@ It uses the following npm packages:
 - [Font Awesome](https://fontawesome.com/how-to-use/on-the-web/using-with/react) for cool icons
 - [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
 
-GitHub pages deployment status: [![Build Status](https://travis-ci.org/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.org/seladb/StarTrack-js)
+GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 
 To run it locally follow these steps:
 
