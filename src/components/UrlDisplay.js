@@ -21,7 +21,7 @@ class UrlDisplay extends React.Component {
         .join("&")
   }
 
-  copyToClipboard(event) {
+  copyToClipboard() {
     this.urlInput.current.select();
     document.execCommand("copy");
   }

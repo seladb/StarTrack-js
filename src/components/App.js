@@ -3,7 +3,7 @@ import MainPage from './MainPage'
 import RepoPreloader from './RepoPreloader'
 import { Route, HashRouter } from 'react-router-dom'
 
-function App() {
+const App = () => {
   return (
     <HashRouter>
       <Route exact path="/" component={MainPage} />
