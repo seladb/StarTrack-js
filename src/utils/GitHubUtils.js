@@ -62,8 +62,7 @@ class GitHubUtils {
         let page = await axios.get(url, this._prepareRequestHeaders(this.getAccessToken()));
         if (pageNum === 1) {
           numOfPages = this._getLastStargazerPage(page.headers['link']);
-          let accessToken = this.getAccessToken();
-          if (numOfPages > maxSupportedPagesWithoutAccessToken && (accessToken === null || accessToken === undefined || accessToken === "")) {
+          if (numOfPages > maxSupportedPagesWithoutAccessToken && !this.isLoggedIn()) {
             throw Error("Cannot load a repo with more than " + 100 * maxSupportedPagesWithoutAccessToken + " stars without GitHub access token. Please click \"GitHub Authentication\" and provide one")
           }
         }
@@ -86,6 +85,8 @@ class GitHubUtils {
       }
       if (error.response.status === 404) {
         throw Error("Repo " + user + "/" + repo + " Not found")
+      } else if (error.response.status === 403) {
+        throw Error("API rate limit exceeded!" + (this.isLoggedIn() ? "" : " Please click \"GitHub Authentication\" and provide GitHub access token to increase rate limit"));
       } else {
         throw Error("Couldn't fetch stargazers data, error code " + error.response.status + " returned" + 
           (error.response.data.message && error.response.data.message !== "" ? ": " + error.response.data.message : ""))
@@ -95,6 +96,11 @@ class GitHubUtils {
 
   getAccessToken() {
     return this._getStorage().getItem(storageKey);
+  }
+
+  isLoggedIn() {
+    let accessToken = this.getAccessToken();
+    return (accessToken !== null && accessToken !== undefined && accessToken !== "");
   }
 
   getStorageType() {
