@@ -1,5 +1,3 @@
-const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
-
 class StargazerStats {
 
   calcStats(stargazerData) {
@@ -42,12 +40,8 @@ class StargazerStats {
       'Average days per star': (numOfDays / stargazerData.length).toFixed(3),
       'Days with stars': numOfDays - daysWithoutStars,
       'Max stars in one day': maxStarsPerDay,
-      'Day with most stars': this._formatDate(dayWithMostStars)
+      'Day with most stars': dayWithMostStars.toISOString().slice(0, 10)
     }
-  }
-
-  _formatDate(date) {
-    return date.getDate() + "-" + months[date.getMonth()] + "-" + date.getFullYear()
   }
 }
 
