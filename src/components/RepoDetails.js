@@ -1,81 +1,75 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './RepoDetails.css'
 import { Container, Row, InputGroup, FormControl, Button, Spinner } from 'react-bootstrap/'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStopCircle } from '@fortawesome/free-solid-svg-icons';
 
-class RepoDetails extends React.Component {
+const RepoDetails = (props) => {
 
-  constructor() {
-    super();
-    this.repoName = React.createRef();
-    this.userName = React.createRef();
+  const repoName = useRef();
+  const userName = useRef();
+
+  const onGoClick = () => {
+    props.onRepoDetails(userName.current.value, repoName.current.value)
   }
 
-  onGoClick() {
-    this.props.onRepoDetails(this.userName.current.value, this.repoName.current.value)
-  }
-
-  handleKeyPress(target) {
-    if(target.charCode === 13 && !this.props.loadInProgress){
-      this.onGoClick();
+  const handleKeyPress = (target) => {
+    if(target.charCode === 13 && !props.loadInProgress){
+      onGoClick();
     } 
   }
 
-  render() {
-    return (
-      <Container className="RepoDetails-container">
-        <Row>
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text>Repo Details</InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              ref={this.userName}
-              placeholder="Username"
-              aria-label="Username"
-              onKeyPress={this.handleKeyPress.bind(this)}
-            />
-            <InputGroup.Prepend>
-              <InputGroup.Text>/</InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              ref={this.repoName}
-              placeholder="Repo name"
-              aria-label="Repo name"
-              onKeyPress={this.handleKeyPress.bind(this)}
-            />
-            { !this.props.loadInProgress ?
-            <Button
-              className="RepoDetails-goButton"
+  return (
+    <Container className="RepoDetails-container">
+      <Row>
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text>Repo Details</InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            ref={userName}
+            placeholder="Username"
+            aria-label="Username"
+            onKeyPress={handleKeyPress}
+          />
+          <InputGroup.Prepend>
+            <InputGroup.Text>/</InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            ref={repoName}
+            placeholder="Repo name"
+            aria-label="Repo name"
+            onKeyPress={handleKeyPress}
+          />
+          { !props.loadInProgress ?
+          <Button
+            className="RepoDetails-goButton"
+            type="button" 
+            onClick={onGoClick}>Go!
+          </Button>
+          :
+          <div>
+            <Button 
+              className="RepoDetails-loadingButton"
               type="button" 
-              onClick={this.onGoClick.bind(this)}>Go!
+              disabled>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+              /> Loading...
             </Button>
-            :
-            <div>
-              <Button 
-                className="RepoDetails-loadingButton"
-                type="button" 
-                disabled>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                /> Loading...
-              </Button>
-              <Button className="RepoDetails-stopButton" onClick={this.props.onStopClick}>
-                <FontAwesomeIcon icon={faStopCircle} />
-              </Button>
-             </div>
-            }
-          </InputGroup>
-        </Row>
-      </Container>
-    )
-  }
-  
+            <Button className="RepoDetails-stopButton" onClick={props.onStopClick}>
+              <FontAwesomeIcon icon={faStopCircle} />
+            </Button>
+            </div>
+          }
+        </InputGroup>
+      </Row>
+    </Container>
+  )
 }
 
 export default RepoDetails

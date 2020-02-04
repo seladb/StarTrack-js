@@ -1,56 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GitHubAuthBtn from './GitHubAuthBtn'
 import GitHubAuthForm from './GitHubAuthForm'
 import gitHubUtils from '../utils/GitHubUtils'
 
-class GitHubAuthContainer extends React.Component {
+const GitHubAuthContainer = () => {
 
-  state = {
-    showGitHubAuthForm: false,
-    accessToken: gitHubUtils.getAccessToken(),
-    storageType: gitHubUtils.getStorageType()
+  const [showGitHubAuthForm, setShowGitHubAuthForm] = useState(false);
+  const [accessToken, setAccessToken] = useState(gitHubUtils.getAccessToken());
+  const [storageType, setStorageType] = useState(gitHubUtils.getStorageType());
+
+  const openGitHubAuthForm = () => {
+    setShowGitHubAuthForm(true);
   }
 
-  static storageTypeTo
-
-  openGitHubAuthForm = () => {
-    this.setState({
-      showGitHubAuthForm: true
-    })
+  const hideGitHubAuthForm = () => {
+    setShowGitHubAuthForm(false);
+    setAccessToken(gitHubUtils.getAccessToken());
+    setStorageType(gitHubUtils.getStorageType());
   }
 
-  hideGitHubAuthForm = () => {
-    this.setState({
-      showGitHubAuthForm: false,
-      accessToken: gitHubUtils.getAccessToken(),
-      storageType: gitHubUtils.getStorageType()
-    })
+  const handleLoginSuccess = () => {
+    setShowGitHubAuthForm(false);
+    setAccessToken(gitHubUtils.getAccessToken());
+    setStorageType(gitHubUtils.getStorageType());
   }
 
-  handleLoginSuccess = () => {
-    this.setState({
-      showGitHubAuthForm: false,
-      accessToken: gitHubUtils.getAccessToken(),
-      storageType: gitHubUtils.getStorageType()
-    })
-  }
-
-  handleLogOut = () => {
+  const handleLogOut = () => {
     gitHubUtils.removeAccessToken();
-    this.setState({
-      accessToken: gitHubUtils.getAccessToken(),
-      storageType: gitHubUtils.getStorageType()
-    })
+    setAccessToken(gitHubUtils.getAccessToken());
+    setStorageType(gitHubUtils.getStorageType());
   }  
 
-  render() {
-    return (
-      <div>
-        <GitHubAuthBtn onLoginClick={this.openGitHubAuthForm} onLogoutClick={this.handleLogOut} accessToken={this.state.accessToken} storageType={this.state.storageType}/>
-        <GitHubAuthForm show={this.state.showGitHubAuthForm} handleClose={this.hideGitHubAuthForm} handleLoginSuccess={this.handleLoginSuccess}/>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <GitHubAuthBtn onLoginClick={openGitHubAuthForm} onLogoutClick={handleLogOut} accessToken={accessToken} storageType={storageType}/>
+      <GitHubAuthForm show={showGitHubAuthForm} handleClose={hideGitHubAuthForm} handleLoginSuccess={handleLoginSuccess}/>
+    </div>
+  )
 }
 
 export default GitHubAuthContainer
