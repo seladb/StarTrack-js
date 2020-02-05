@@ -34,7 +34,6 @@ class GitHubUtils {
       this._setStorageType(storageType).setItem(storageKey, accessToken);
     }
     catch (error) {
-      console.log(error)
       throw error;
     }
   }

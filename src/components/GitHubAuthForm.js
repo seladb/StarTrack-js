@@ -1,93 +1,94 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap/'
 import gitHubUtils, { StorageTypes } from '../utils/GitHubUtils'
 
-class GitHubAuthForm extends React.Component {
+const TokenValidationStatus = {
+  Init: "init",
+  Valid: "valid",
+  Invalid: "invalid",
+  DidNotCheck: "did-not-check"
+}
 
-  state = {
-    tokenValid: true
-  }
+const GitHubAuthForm = (props) => {
 
-  constructor(props) {
-    super(props);
-    this.inputToken = React.createRef();
-    this.storageTypeCheckbox = React.createRef();
-  }
+  const [tokenValidationStatus, setTokenValidationStatus] = useState(TokenValidationStatus.Init);
 
-  handleLoginClick = event => {
-    event.preventDefault();
+  const inputToken = useRef();
+  const storageTypeCheckbox = useRef();
+  const handleCallback = useRef();
 
-    gitHubUtils.validateAndStoreAccessToken(this.inputToken.current.value, this.getStorageTypeDecision())
-    .then( () => {
-      this.setState({
-        tokenValid: true
-      }, () => {
-        this.props.handleLoginSuccess();
-      })
-    })
-    .catch(() => {
-      this.setState({
-        tokenValid: false
-      })      
-    })
-  }
-
-  getStorageTypeDecision() {
-    if (this.storageTypeCheckbox.checked) {
+  const getStorageTypeDecision = () => {
+    if (storageTypeCheckbox.current.checked) {
       return StorageTypes.LocalStorage
     }
 
     return StorageTypes.SessionStorage
   }
 
-  handleCloseClick() {
-    this.setState({
-      tokenValid: true
-    }, () => {
-      this.props.handleClose();
+  const handleLoginClick = (event) => {
+    event.preventDefault();
+
+    gitHubUtils.validateAndStoreAccessToken(inputToken.current.value, getStorageTypeDecision())
+    .then( () => {
+      handleCallback.current = props.handleLoginSuccess;
+      setTokenValidationStatus(TokenValidationStatus.Valid);
+    })
+    .catch(() => {
+      handleCallback.current = null;
+      setTokenValidationStatus(TokenValidationStatus.Invalid);
     })
   }
 
-  render() {
-    return (
-      <Modal show={this.props.show} onHide={this.handleCloseClick.bind(this)}>
-        <Form onSubmit={this.handleLoginClick}>
-          <Modal.Header closeButton>
-            <Modal.Title>GitHub Authentication</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>GitHub API <a target="_blank" rel="noopener noreferrer" href="https://developer.github.com/v3/#rate-limiting">rate limiter</a> makes it 
-              impossible to collect stargazer data on repos with more than 3000 stars without GitHub authentication.
-            </p>
-            <p>If you'd like to view stargazer data for this repo, please provide your GitHub auth details.</p>
-            <p>Please note these credentials aren't stored in any server. This application is based on pure javascript 
-              so the credentials are only used to send authenticated requests to GitHub API.
-            </p>
-            <Form.Group controlId="githubAuthenticationForm">
-              <Form.Label>GitHub access token (generate one <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens">here</a>)</Form.Label>
-              <Form.Control ref={this.inputToken} type="text" placeholder="fc516773214acf13d10f856c6b80037999da4fd3" isInvalid={!this.state.tokenValid} required/>
-              <Form.Control.Feedback type="invalid">
-                Access token is invalid.
-              </Form.Control.Feedback>
-              <Form.Text className="text-muted">
-                These credentials aren't stored in any server.
-              </Form.Text>
-              <Form.Check ref={ref => this.storageTypeCheckbox = ref} inline type="checkbox" id="storageType" label="Save access token in local storage" />
-              <Form.Label><a target="_blank" rel="noopener noreferrer" href="https://stackoverflow.com/questions/5523140/html5-local-storage-vs-session-storage">Learn more</a></Form.Label>
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleCloseClick.bind(this)}>
-              Close
-            </Button>
-            <Button variant="primary" type="submit">
-              Login
-            </Button>
-          </Modal.Footer>
-          </Form>
-      </Modal>    
-    )
+  const handleCloseClick = () => {
+    handleCallback.current = props.handleClose;
+    setTokenValidationStatus(TokenValidationStatus.DidNotCheck);
   }
+
+  useEffect(() => {
+    if (handleCallback.current !== null && handleCallback.current !== undefined) {
+      handleCallback.current();
+      setTokenValidationStatus(TokenValidationStatus.Init);
+    }
+  }, [tokenValidationStatus])
+
+  return (
+    <Modal show={props.show} onHide={handleCloseClick}>
+      <Form onSubmit={handleLoginClick}>
+        <Modal.Header closeButton>
+          <Modal.Title>GitHub Authentication</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>GitHub API <a target="_blank" rel="noopener noreferrer" href="https://developer.github.com/v3/#rate-limiting">rate limiter</a> makes it 
+            impossible to collect stargazer data on repos with more than 3000 stars without GitHub authentication.
+          </p>
+          <p>If you'd like to view stargazer data for this repo, please provide your GitHub auth details.</p>
+          <p>Please note these credentials aren't stored in any server. This application is based on pure javascript 
+            so the credentials are only used to send authenticated requests to GitHub API.
+          </p>
+          <Form.Group controlId="githubAuthenticationForm">
+            <Form.Label>GitHub access token (generate one <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens">here</a>)</Form.Label>
+            <Form.Control ref={inputToken} type="text" placeholder="fc516773214acf13d10f856c6b80037999da4fd3" isInvalid={tokenValidationStatus === TokenValidationStatus.Invalid} required/>
+            <Form.Control.Feedback type="invalid">
+              Access token is invalid.
+            </Form.Control.Feedback>
+            <Form.Text className="text-muted">
+              These credentials aren't stored in any server.
+            </Form.Text>
+            <Form.Check ref={storageTypeCheckbox} inline type="checkbox" id="storageType" label="Save access token in local storage" />
+            <Form.Label><a target="_blank" rel="noopener noreferrer" href="https://stackoverflow.com/questions/5523140/html5-local-storage-vs-session-storage">Learn more</a></Form.Label>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseClick}>
+            Close
+          </Button>
+          <Button variant="primary" type="submit">
+            Login
+          </Button>
+        </Modal.Footer>
+        </Form>
+    </Modal>    
+  )
 }
 
 export default GitHubAuthForm
