@@ -2,6 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { Badge, Button } from 'react-bootstrap/'
+import './ClosableBadge.css'
 
 const ClosableBadge = (props) => {
 
@@ -12,7 +13,7 @@ const ClosableBadge = (props) => {
   return (
     <h5>
       <Badge pill variant="primary" style={{backgroundColor: props.color}}>
-        {props.text}
+        {props.href !== undefined && props.href !== null ? <a className="ClosableBadge-Link" target="_blank" rel="noopener noreferrer" href={props.href}>{props.text}</a> : props.text}
         <Button size="sm" onClick={handleBadgeClose} style={{backgroundColor: props.color, borderColor: props.color}}>
           <FontAwesomeIcon icon={faTimesCircle} />
           </Button>

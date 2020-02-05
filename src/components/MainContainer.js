@@ -8,6 +8,7 @@ import UrlDisplay from './UrlDisplay'
 import ClosableBadge from '../shared/ClosableBadge'
 import Footer from './Footer'
 import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
+import gitHubUtils from '../utils/GitHubUtils'
 
 const MainContainer = (props) => {
 
@@ -121,6 +122,7 @@ const MainContainer = (props) => {
                 badgeCookieData={{username: repoData.username, repo: repoData.repo}}
                 onBadgeClose={handleRemoveRepo}
                 color={repoData.color}
+                href={gitHubUtils.getRepoUrl(repoData.username, repoData.repo)}
               />
             </div>
           )}

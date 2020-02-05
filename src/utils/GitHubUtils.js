@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const stargazersURL = "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}"
 const validateAccessTokenURL = "https://api.github.com/user"
+const repoUrlTemplate = "https://github.com/{user}/{repo}"
 
 const storageKey = "statrack_js_access_token"
 
@@ -100,6 +101,10 @@ class GitHubUtils {
   isLoggedIn() {
     let accessToken = this.getAccessToken();
     return (accessToken !== null && accessToken !== undefined && accessToken !== "");
+  }
+
+  getRepoUrl(user, repo) {
+    return repoUrlTemplate.replace('{user}', user).replace('{repo}', repo);
   }
 
   getStorageType() {
