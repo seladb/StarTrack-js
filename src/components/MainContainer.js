@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { Button, Modal, ProgressBar, Container, Row } from 'react-bootstrap/'
 import './MainContainer.css'
 import RepoDetails from './RepoDetails'
@@ -9,151 +9,140 @@ import ClosableBadge from '../shared/ClosableBadge'
 import Footer from './Footer'
 import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
 
-class MainContainer extends React.Component {
+const MainContainer = (props) => {
 
-  state = {
-    repos: (this.props.preloadedRepos ? this.props.preloadedRepos : []),
-    alert: {
+  const [repos, setRepos] = useState(props.preloadedRepos ? props.preloadedRepos : []);
+  
+  const [alert, setAlert] = useState({
+    show: false, 
+    title: "", 
+    message: ""
+  });
+  
+  const [loadingStatus, setLoadingStatus] = useState({
+    isLoading: false,
+    loadProgress: 0,
+  });
+
+  const onLoadInProgress = (progress) => {
+    setLoadingStatus({
+      isLoading: true,
+      loadProgress: progress,
+    })
+  }
+
+  const requestStopLoading = useRef();
+
+  const showAlert = (title, message) => {
+    setAlert({
+      show: true,
+      title: title,
+      message: message
+    })
+  }
+
+  const closeAlert =() => {
+    setAlert({
       show: false,
       title: "",
       message: ""
-    },
-    loading: {
-      isLoading: false,
-      loadProgress: 0,
-      stopLoading: false
-    }
+    });
   }
 
-  async getRepoStargazers(username, repo) {
+  const getRepoStargazers = async (username, repo) => {
     if (!username || username === "" || !repo || repo === "") {
-      this.showAlert("Missing details", "Please provide both Username and Repo name");
+      showAlert("Missing details", "Please provide both Username and Repo name");
       return;
     }
 
-    if (this.state.repos.find(repoIter => repoIter.username === username && repoIter.repo === repo) !== undefined) {
-      this.showAlert("Repo exists", "Repo already exists");
+    if (repos.find(repoIter => repoIter.username === username && repoIter.repo === repo) !== undefined) {
+      showAlert("Repo exists", "Repo already exists");
       return;
     }
 
-    if (this.state.repos.length + 1 > maxReposAllowed) {
-      this.showAlert("Reached max number of repos allowed", "Maximum repos that can be shown at the same time is " + maxReposAllowed);
+    if (repos.length + 1 > maxReposAllowed) {
+      showAlert("Reached max number of repos allowed", "Maximum repos that can be shown at the same time is " + maxReposAllowed);
       return;
     }
+
+    requestStopLoading.current = false;
 
     try {
       let stargazerData = await stargazerLoader.loadStargazers(
         username, 
         repo, 
-        this.onLoadInProgress.bind(this),
-        () => this.state.loading.stopLoading);
-      this.setState(prevState => ({
-        repos: (stargazerData !== null ? [...prevState.repos, stargazerData] : prevState.repos),
-        loading: {
-          isLoading: false,
-          loadProgress: 0,
-          stopLoading: false
-        }
-      }))
+        onLoadInProgress,
+        () => requestStopLoading.current);
+      
+      if (stargazerData !== null) {
+        setRepos([...repos, stargazerData]);
+      }
+
+      setLoadingStatus({
+        isLoading: false,
+        loadProgress: 0,
+      })
     }
     catch(error) {
-      this.showAlert("Error loading stargazers", error.message);
-      this.setState({
-        loading: {
-          isLoading: false,
-          loadProgress: 0
-        }
-      })
+      showAlert("Error loading stargazers", error.message);
+      setLoadingStatus({
+        isLoading: false,
+        loadProgress: 0
+      });
     }
+
+    requestStopLoading.current = false;
   }
 
-  showAlert(title, message) {
-    this.setState({
-      alert: {
-        show: true,
-        title: title,
-        message: message
-      }
-    })
+  const handleStopLoading = () => {
+    requestStopLoading.current = true
   }
 
-  closeAlert() {
-    this.setState({
-      alert: {
-        show: false,
-        title: "",
-        message: ""
-      }
-    })
+  const handleRemoveRepo = (repoDetails) => {
+    setRepos(repos.filter(repo => {
+      return repo.username !== repoDetails.username || repo.repo !== repoDetails.repo;
+    }));
   }
 
-  onLoadInProgress(progress) {
-    this.setState({
-      loading: {
-        isLoading: true,
-        loadProgress: progress,
-        stopLoading: this.state.loading.stopLoading
-      }
-    })
-  }
-
-  handleStopLoading() {
-    this.setState({
-      loading: {
-        stopLoading: true,
-      }
-    })
-  }
-
-  handleRemoveRepo(repoDetails) {
-    this.setState({
-      repos: this.state.repos.filter( repo => {
-        return repo.username !== repoDetails.username || repo.repo !== repoDetails.repo
-      })
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        { this.state.loading.isLoading ? <ProgressBar now={this.state.loading.loadProgress} variant="success" animated /> : <div className="progress MainContainer-progressBarPlaceholder"/> }
-        <RepoDetails 
-          onRepoDetails={this.getRepoStargazers.bind(this)}
-          loadInProgress={this.state.loading.isLoading}
-          onStopClick={this.handleStopLoading.bind(this)}
-        />
-        <Container>
-          <Row>
-            { this.state.repos.map( repoData => 
-              <div className="MainContainer-closableBadgeContainer">
-                <ClosableBadge 
-                  text={repoData.username + "/" + repoData.repo} 
-                  badgeCookieData={{username: repoData.username, repo: repoData.repo}}
-                  onBadgeClose={this.handleRemoveRepo.bind(this)}
-                  color={repoData.color}
-                />
-              </div>
-            )}
-          </Row>
-        </Container>
-        { this.state.repos.length > 0 ? <ChartContainer repos={this.state.repos}/> : null }
-        { this.state.repos.length > 0 ? <Container><StatsTable repos={this.state.repos}/></Container> : null }
-        { this.state.repos.length > 0 ? <Container><UrlDisplay repos={this.state.repos}/></Container> : null }
-        <Footer pageEmpty={this.state.repos.length === 0}/>
-        <Modal show={this.state.alert.show} onHide={this.closeAlert}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.alert.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{this.state.alert.message}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={this.closeAlert.bind(this)}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-    )
-  }
+  return (
+    <div>
+      { loadingStatus.isLoading ? <ProgressBar now={loadingStatus.loadProgress} variant="success" animated /> : <div className="progress MainContainer-progressBarPlaceholder"/> }
+      <RepoDetails 
+        onRepoDetails={getRepoStargazers}
+        loadInProgress={loadingStatus.isLoading}
+        onStopClick={handleStopLoading}
+      />
+      <Container>
+        <Row>
+          { repos.map( repoData => 
+            <div className="MainContainer-closableBadgeContainer">
+              <ClosableBadge 
+                text={repoData.username + "/" + repoData.repo} 
+                badgeCookieData={{username: repoData.username, repo: repoData.repo}}
+                onBadgeClose={handleRemoveRepo}
+                color={repoData.color}
+              />
+            </div>
+          )}
+        </Row>
+      </Container>
+      { repos.length > 0 ? <ChartContainer repos={repos}/> : null }
+      { repos.length > 0 ? <Container><StatsTable repos={repos}/></Container> : null }
+      { repos.length > 0 ? <Container><UrlDisplay repos={repos}/></Container> : null }
+      <Footer pageEmpty={repos.length === 0}/>
+      <Modal show={alert.show} onHide={closeAlert}>
+        <Modal.Header closeButton>
+          <Modal.Title>{alert.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{alert.message}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={closeAlert}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  )
 }
 
 export default MainContainer
