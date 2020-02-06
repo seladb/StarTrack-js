@@ -13,7 +13,7 @@ class RepoDetails extends React.Component {
   }
 
   onGoClick() {
-    this.props.onRepoDetails(this.userName.current.value, this.repoName.current.value)
+    this.props.onRepoDetails(this.userName.current.value.trim(), this.repoName.current.value.trim())
   }
 
   handleKeyPress(target) {
