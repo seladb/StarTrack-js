@@ -10,7 +10,7 @@ const RepoDetails = (props) => {
   const userName = useRef();
 
   const onGoClick = () => {
-    props.onRepoDetails(userName.current.value, repoName.current.value)
+    props.onRepoDetails(userName.current.value.trim(), repoName.current.value.trim())
   }
 
   const handleKeyPress = (target) => {
