@@ -1,23 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Container, ProgressBar, Button } from 'react-bootstrap/'
 import './RepoPreloader.css'
 import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
 import MainPage from './MainPage'
 
-class RepoPreloader extends React.Component {
+const RepoPreloader = (props) => {
 
-  reposToPreload = this.parseUrlParams()
-
-  state = {   
-    currentlyLoadingIndex: 0,
-    loadProgress: 0,
-    finishedLoading: false,
-    reposLoaded: [],
-    errors: []
-  }
-
-  parseUrlParams() {
-    let searchParams = new URLSearchParams(this.props.location.search);
+  const parseUrlParams = () => {
+    let searchParams = new URLSearchParams(props.location.search);
     let result = [];
     searchParams.forEach( (value, key) => {
       if (key === "r") {
@@ -35,99 +25,103 @@ class RepoPreloader extends React.Component {
     return result;
   }
 
-  componentDidMount() {
-    this.loadStargazers();
+  const reposToPreload = useRef();
+  const currentlyLoadingIndex = useRef();
+
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [finishedLoading, setFinishedLoading] = useState(false);
+  const [reposLoaded, setReposLoaded] = useState([]);
+  const [errors, setErrors] = useState([]);
+
+  const handleButtonClick = () => {
+    setErrors([]);
   }
 
-  async loadStargazers() {
-    try {
-      let repoDetails = this.getCurrentlyLoadingRepoDetails();
-      if (Object.keys(repoDetails).length === 0) {
-        this.setState({
-          finishedLoading: true,
-          loadProgress: 100
-        });
-        return
-      }
-      let stargazerData = await stargazerLoader.loadStargazers(repoDetails.username, repoDetails.repo, this.handleLoadProgress.bind(this), () => false);
-      this.setState(prevState => ({
-        currentlyLoadingIndex: this.state.currentlyLoadingIndex + 1,
-        reposLoaded: [...prevState.reposLoaded, stargazerData]
-      }), () => { 
-        this.loadStargazers()
-      })
-    }
-    catch(error) {
-      this.setState(prevState => ({
-        currentlyLoadingIndex: this.state.currentlyLoadingIndex + 1,
-        errors: [...prevState.errors, { repoDetails: this.getCurrentlyLoadingRepoDetails(), message: error.message }]
-      }), () => {
-        this.loadStargazers();
-      });
-    }
-  }
-
-  handleLoadProgress(progress) {
-    this.setState({
-      loadProgress: progress
-    })
-  }
-
-  getCurrentlyLoadingRepoDetails() {
-    if (this.state.currentlyLoadingIndex >= this.reposToPreload.length) {
-      return {}
-    }
-
-    return {
-      username: this.reposToPreload[this.state.currentlyLoadingIndex].username,
-      repo: this.reposToPreload[this.state.currentlyLoadingIndex].repo
-    }
-  }
-
-  handleButtonClick() {
-    this.setState({
-      errors: []
-    })
-  }
-
-  getProgressBarVariant() {
-    if (this.state.finishedLoading && this.state.errors.length > 0) {
+  const getProgressBarVariant = () => {
+    if (finishedLoading && errors.length > 0) {
       return "warning"
     }
     
     return "success"
   }
 
-  getSecondaryHeaderMessage() {
-    if (this.state.finishedLoading && this.state.errors.length > 0) {
+  const getSecondaryHeaderMessage = () => {
+    if (finishedLoading && errors.length > 0) {
       return "Error loading repos"
     }
 
-    let repoDetails = this.getCurrentlyLoadingRepoDetails();
-    return repoDetails.username + "/" + repoDetails.repo;
+    if (reposToPreload.current === undefined) {
+      return ""
+    }
+
+    return reposToPreload.current[currentlyLoadingIndex.current].username + "/" + reposToPreload.current[currentlyLoadingIndex.current].repo;
   }
 
-  render() {
-    return (
-      <div>
-        { this.state.finishedLoading === false || this.state.errors.length > 0 ? 
-          <Container className="RepoPreloader-topContainer">
-            <h3 >Loading Repos Data...</h3>
-            <h5>{this.getSecondaryHeaderMessage()}</h5>
-            <ProgressBar now={this.state.loadProgress} variant={this.getProgressBarVariant()} animated />
-            { this.state.errors.length > 0 ?
-            <Container className="RepoPreloader-errorContainer">
-              {this.state.errors.map(error => <h6><b>Error loading {error.repoDetails.username}/{error.repoDetails.repo}:</b> {error.message}</h6>)}
-              {this.state.finishedLoading ? <Button onClick={this.handleButtonClick.bind(this)}>Continue</Button> : null }
-            </Container>
-            : null }
-          </Container> 
-        :
-          <MainPage preloadedRepos={this.state.reposLoaded}/>
-        }
-      </div>
-    )
+  const loadStargazers = async () => {
+    let repoToPreload = reposToPreload.current[currentlyLoadingIndex.current];
+
+    try {
+      let stargazerData = await stargazerLoader.loadStargazers(
+        repoToPreload.username, 
+        repoToPreload.repo, 
+        (progress) => setLoadProgress(progress),
+        () => false);
+
+      setReposLoaded([...reposLoaded, stargazerData]);
+    }
+    catch(error) {
+      setErrors([...errors, { repoDetails: repoToPreload, message: error.message }]);
+    }
+
+    currentlyLoadingIndex.current = currentlyLoadingIndex.current + 1;
   }
+
+  useEffect(() => {
+    reposToPreload.current = parseUrlParams();
+    if (reposToPreload.current.length > 0) {
+      currentlyLoadingIndex.current = 0;
+      loadStargazers();
+    }
+    else {
+      setFinishedLoading(true);
+      setLoadProgress(100);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (reposLoaded.length > 0 || errors.length > 0) {
+      if (currentlyLoadingIndex.current < reposToPreload.current.length) {
+        loadStargazers();
+      }
+      else {
+        setFinishedLoading(true);
+        setLoadProgress(100);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reposLoaded, errors]);
+
+  return (
+    <div>
+      { finishedLoading === false || errors.length > 0 ? 
+        <Container className="RepoPreloader-topContainer">
+          <h3 >Loading Repos Data...</h3>
+          <h5>{getSecondaryHeaderMessage()}</h5>
+          <ProgressBar className="RepoPreloader-ProgressBar-Reseting" now={loadProgress} variant={getProgressBarVariant()} animated />
+          { errors.length > 0 ?
+          <Container className="RepoPreloader-errorContainer">
+            {errors.map(error => <h6><b>Error loading {error.repoDetails.username}/{error.repoDetails.repo}:</b> {error.message}</h6>)}
+            {finishedLoading ? <Button onClick={handleButtonClick}>Continue</Button> : null }
+          </Container>
+          : null }
+        </Container> 
+      :
+        <MainPage preloadedRepos={reposLoaded}/>
+      }
+    </div>
+  )
+
 }
 
 export default RepoPreloader
