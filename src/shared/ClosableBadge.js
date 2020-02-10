@@ -14,7 +14,7 @@ const ClosableBadge = (props) => {
     <h5>
       <Badge pill variant="primary" style={{backgroundColor: props.color}}>
         {props.href !== undefined && props.href !== null ? <a className="ClosableBadge-Link" target="_blank" rel="noopener noreferrer" href={props.href}>{props.text}</a> : props.text}
-        <Button size="sm" onClick={handleBadgeClose} style={{backgroundColor: props.color, borderColor: props.color}}>
+        <Button data-testid="close-button" size="sm" onClick={handleBadgeClose} style={{backgroundColor: props.color, borderColor: props.color}}>
           <FontAwesomeIcon icon={faTimesCircle} />
           </Button>
       </Badge>
