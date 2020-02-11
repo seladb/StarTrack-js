@@ -10,3 +10,7 @@
   text-align: left !important;
   color: #ea1125 !important;
 }
+
+.progress-bar[aria-valuenow="0"] {
+  transition: none;
+}
