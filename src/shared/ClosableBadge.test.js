@@ -16,7 +16,7 @@ test("ClosableBadge basic test", () => {
       href="https://github.com/seladb/StarTrack-js"
     />);
 
-  let aElement = getByText("seladb*startrack-js");
+  const aElement = getByText("seladb*startrack-js");
   expect(aElement).toBeDefined();
   expect(aElement.parentElement).toHaveStyle("background-color: red");
   expect(aElement.getAttribute("href")).toBe("https://github.com/seladb/StarTrack-js");
@@ -37,7 +37,7 @@ test("ClosableBadge without href", () => {
       color="red"
     />);
 
-  let spanElement = getByText("seladb*startrack-js");
+  const spanElement = getByText("seladb*startrack-js");
   expect(spanElement).toBeDefined();
   expect(spanElement).toHaveStyle("background-color: red");
   expect(spanElement.getAttribute("href")).toBeNull();

@@ -11,6 +11,10 @@ const UrlDisplay = (props) => {
   const urlInput = useRef();
 
   const buildURL = () => {
+    if (props.repos === undefined || props.repos === null || props.repos.length === 0) {
+      return "";
+    }
+
     return baseUrl + 
       props.repos.map(repoDetails => 
         repoUrlParam.replace("{user}", repoDetails.username).replace("{repo}", repoDetails.repo)
