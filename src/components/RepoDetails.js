@@ -22,6 +22,10 @@ const RepoDetails = (props) => {
 
   const handlePaste = (event) => {
     let clipData = gh(event.clipboardData.getData('Text'));
+    if (!clipData) {
+      return
+    }
+    
     if ((clipData.protocol === "https:" && clipData.hostname === "github.com" && clipData.name !== null && clipData.owner !== null) ||
           (clipData.protocol === null && clipData.hostname === null && clipData.name !== null && clipData.owner !== null )) {
       event.preventDefault();
