@@ -8,6 +8,7 @@ import UrlDisplay from './UrlDisplay'
 import ClosableBadge from '../shared/ClosableBadge'
 import Footer from './Footer'
 import stargazerLoader, { maxReposAllowed } from '../utils/StargazerLoader'
+import stargazerStats from './../utils/StargazerStats'
 import gitHubUtils from '../utils/GitHubUtils'
 
 const MainContainer = (props) => {
@@ -33,6 +34,8 @@ const MainContainer = (props) => {
   }
 
   const requestStopLoading = useRef();
+  const syncChartTimeRangeWithStats = useRef(false);
+  const currentChartTimeRange = useRef(null);
 
   const showAlert = (title, message) => {
     setAlert({
@@ -105,6 +108,28 @@ const MainContainer = (props) => {
     }));
   }
 
+  const handleChartTimeRangeChange = (newTimeRange) => {
+    currentChartTimeRange.current = newTimeRange;
+    if (syncChartTimeRangeWithStats.current) {
+      let reposWithUpdatedStats = repos.slice();
+      for (let index = 0; index < reposWithUpdatedStats.length; index++) {
+        reposWithUpdatedStats[index].stats = stargazerStats.calcStats(reposWithUpdatedStats[index].stargazerData, syncChartTimeRangeWithStats.current ? currentChartTimeRange.current : null);
+      }
+  
+      setRepos(reposWithUpdatedStats);
+    }
+  }
+
+  const handleRequestToSyncChartTimeRange = (flag) => {
+    syncChartTimeRangeWithStats.current = flag;
+    let reposWithUpdatedStats = repos.slice();
+    for (let index = 0; index < reposWithUpdatedStats.length; index++) {
+      reposWithUpdatedStats[index].stats = stargazerStats.calcStats(reposWithUpdatedStats[index].stargazerData, flag ? currentChartTimeRange.current : null);
+    }
+
+    setRepos(reposWithUpdatedStats);
+  }
+
   return (
     <div>
       { loadingStatus.isLoading ? <ProgressBar now={loadingStatus.loadProgress} variant="success" animated /> : <div className="progress MainContainer-progressBarPlaceholder"/> }
@@ -128,8 +153,8 @@ const MainContainer = (props) => {
           )}
         </Row>
       </Container>
-      { repos.length > 0 ? <ChartContainer repos={repos}/> : null }
-      { repos.length > 0 ? <Container><StatsTable repos={repos}/></Container> : null }
+      { repos.length > 0 ? <ChartContainer repos={repos} onTimeRangeChange={handleChartTimeRangeChange}/> : null }
+      { repos.length > 0 ? <Container><StatsTable repos={repos} requestToSyncChartTimeRange={handleRequestToSyncChartTimeRange}/></Container> : null }
       { repos.length > 0 ? <Container><UrlDisplay repos={repos}/></Container> : null }
       <Footer pageEmpty={repos.length === 0}/>
       <Modal show={alert.show} onHide={closeAlert}>

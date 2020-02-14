@@ -11,12 +11,21 @@ const ChartContainer = (props) => {
     }
   })
 
+  const onZoom = (chartContext, { xaxis, yaxis }) => {
+    if (props.onTimeRangeChange) {
+      props.onTimeRangeChange(xaxis);
+    }
+  }
+
   const chartOptions = {
     chart: {
       id: "stargazers",
       zoom: {
         autoScaleYaxis: (props.repos.length > 1 ? false : true), 
       },
+      events: {
+        zoomed: onZoom
+      }
     },
     xaxis: {
       type: "datetime"
@@ -32,7 +41,7 @@ const ChartContainer = (props) => {
   }
 
   return (
-    <Container className="mt-5 mb-5">
+    <Container className="mt-5">
       <ReactApexChart 
         options={chartOptions} 
         series={chartSeries} 

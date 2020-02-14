@@ -1,12 +1,21 @@
 import React from 'react'
-import { Table, Container } from 'react-bootstrap/'
+import { Table, Container, Form } from 'react-bootstrap/'
 import './StatsTable.css'
 
 const StatsTable = (props) => {
 
+  const onSyncCheckBoxChanged = (event) => {
+    if (props.requestToSyncChartTimeRange) {
+      props.requestToSyncChartTimeRange(event.target.checked);
+    }
+  }
+
   return (
     <Container className="StatsTable-topContainer">
       <h3>Repo stats:</h3>
+      <Form className="mb-3">
+        <Form.Check type="checkbox" label="Sync stats to chart zoom level" onChange={onSyncCheckBoxChanged}/>
+      </Form>
       <Table bordered responsive hover>
         <thead>
           <tr className="StatsTable-header">

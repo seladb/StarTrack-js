@@ -1,18 +1,36 @@
 class StargazerStats {
 
-  calcStats(stargazerData) {
-    let firstStarDate = new Date(stargazerData[0].x);
-    let lastStarDate = new Date(stargazerData[stargazerData.length-1].x);
-    let numOfDays = Math.floor((new Date(lastStarDate - firstStarDate))/1000/60/60/24);
+  calcStats(stargazerData, dateRange) {
+    let stargazerDates = stargazerData.map(cur => new Date(cur.x));
+    if (dateRange && dateRange.min !== undefined && dateRange.max !== undefined) {
+      let minDate = new Date(dateRange.min);
+      let maxDate = new Date(dateRange.max);
+      stargazerDates = stargazerDates.filter(cur => cur >= minDate && cur <= maxDate);
+    }
 
+    if (stargazerDates.length === 0) {
+      return {
+        'Number of stars': 0,
+        'Number of days': 0,
+        'Average stars per day': 0,
+        'Average days per star': 0,
+        'Days with stars': 0,
+        'Max stars in one day': 0,
+        'Day with most stars': 0
+      }
+    }
+
+    let firstStarDate = stargazerDates[0];
+    let lastStarDate = stargazerDates[stargazerDates.length-1];
+    let numOfDays = stargazerDates.length === 1 ? 1 : Math.floor((lastStarDate.getTime() - firstStarDate.getTime())/1000/60/60/24);
     let daysWithoutStars = 0;
     let maxStarsPerDay = 0;
-    let dayWithMostStars = stargazerData[0].x;
+    let dayWithMostStars = stargazerDates[0];
     let curSameDays = 1;
-    let startDate = Math.floor(new Date(0)/1000/60/60/24);
+    let startDate = Math.floor(stargazerDates[0]/1000/60/60/24 - 1);
     let prevDate = startDate;
-    stargazerData.forEach(xyData => {
-      let curDate = Math.floor(new Date(xyData.x)/1000/60/60/24);
+    stargazerDates.forEach(stargazerDate => {
+      let curDate = Math.floor(stargazerDate/1000/60/60/24);
   
       if (curDate === prevDate) {
         curSameDays += 1;
@@ -24,7 +42,7 @@ class StargazerStats {
   
         if (curSameDays > maxStarsPerDay) {
           maxStarsPerDay = curSameDays;
-          dayWithMostStars = new Date(xyData.x);
+          dayWithMostStars = new Date(prevDate*1000*60*60*24);
         }
   
         curSameDays = 1;
@@ -34,10 +52,10 @@ class StargazerStats {
     });
 
     return {
-      'Number of stars': stargazerData.length,
+      'Number of stars': stargazerDates.length,
       'Number of days': numOfDays,
-      'Average stars per day': (stargazerData.length / numOfDays).toFixed(3),
-      'Average days per star': (numOfDays / stargazerData.length).toFixed(3),
+      'Average stars per day': (stargazerDates.length / numOfDays).toFixed(3),
+      'Average days per star': (numOfDays / stargazerDates.length).toFixed(3),
       'Days with stars': numOfDays - daysWithoutStars,
       'Max stars in one day': maxStarsPerDay,
       'Day with most stars': dayWithMostStars.toISOString().slice(0, 10)
