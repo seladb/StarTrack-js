@@ -22,7 +22,7 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - You can now paste a GitHub link instead of typing the username and repo name, and they will be parsed automatically
 - Added a link to the GitHub repo in the badge displaying the repo details
 - Preloading screen: fix decreasing transition in progress bar when loading the next repo 
-- All React components were replaced from class to function components
+- All React components were replaced from class to function components and are using React Hooks
 
 ## What's new in version 2.0?
 
@@ -51,6 +51,8 @@ It uses the following npm packages:
 - [React Router](https://reacttraining.com/react-router/) for having a separate view for preloading stargazer data
 - [Font Awesome](https://fontawesome.com/how-to-use/on-the-web/using-with/react) for cool icons
 - [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
+- [React Google Analytics Module](https://github.com/react-ga/react-ga)
+- [parse-github-url](https://github.com/jonschlinkert/parse-github-url) to find GitHub URLs that are being pasted to the repo details text boxes
 
 GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 
