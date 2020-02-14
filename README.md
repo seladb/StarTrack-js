@@ -16,6 +16,14 @@ Try it now: https://seladb.github.io/StarTrack-js/
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 
+## What's new in version 2.1?
+
+- Added a checkbox to sync the stats with the current chart view displayed. This is useful for viewing stats on specific dates
+- You can now paste a GitHub link instead of typing the username and repo name, and they will be parsed automatically
+- Added a link to the GitHub repo in the badge displaying the repo details
+- Preloading screen: fix decreasing transition in progress bar when loading the next repo 
+- All React components were replaced from class to function components
+
 ## What's new in version 2.0?
 
 - A complete rewrite using React and modern frontend technologies
