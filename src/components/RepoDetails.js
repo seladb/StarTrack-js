@@ -1,8 +1,9 @@
 import React, { useRef } from 'react'
 import './RepoDetails.css'
-import { Container, Row, InputGroup, FormControl, Button, Spinner, OverlayTrigger, Tooltip } from 'react-bootstrap/'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import RepoDetailsDesktopLayout from './RepoDetailsDesktopLayout'
+import RepoDetailsMobileLayout from './RepoDetailsMobileLayout'
+import { useMediaQuery } from 'react-responsive'
+import { Container } from 'react-bootstrap/'
 import gh from 'parse-github-url'
 
 const RepoDetails = (props) => {
@@ -34,63 +35,15 @@ const RepoDetails = (props) => {
     }
   }
 
+  const smallScreen = useMediaQuery({ query: '(max-width: 520px)' });
+
   return (
     <Container className="RepoDetails-container">
-      <Row>
-        <InputGroup>
-          <InputGroup.Prepend>
-            <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 100 }}
-              overlay={<Tooltip>Tip: you can paste any GitHub URL or string in the format of "username/repo"</Tooltip>}
-            >
-              <InputGroup.Text>Repo Details</InputGroup.Text>
-            </OverlayTrigger>
-          </InputGroup.Prepend>
-          <FormControl
-            ref={userName}
-            placeholder="Username"
-            aria-label="Username"
-            onKeyPress={handleKeyPress}
-            onPaste={handlePaste}
-          />
-          <InputGroup.Prepend>
-            <InputGroup.Text>/</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            ref={repoName}
-            placeholder="Repo name"
-            aria-label="Repo name"
-            onKeyPress={handleKeyPress}
-            onPaste={handlePaste}
-          />
-          { !props.loadInProgress ?
-          <Button
-            className="RepoDetails-goButton"
-            type="button" 
-            onClick={onGoClick}>Go!
-          </Button>
-          :
-          <div>
-            <Button 
-              className="RepoDetails-loadingButton"
-              type="button" 
-              disabled>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-              /> Loading...
-            </Button>
-            <Button className="RepoDetails-stopButton" onClick={props.onStopClick}>
-              <FontAwesomeIcon icon={faStopCircle} />
-            </Button>
-            </div>
-          }
-        </InputGroup>
-      </Row>
+      {smallScreen ?
+      <RepoDetailsMobileLayout userName={userName} repoName={repoName} onGoClick={onGoClick} handleKeyPress={handleKeyPress} handlePaste={handlePaste} loadInProgress={props.loadInProgress} onStopClick={props.onStopClick}/>
+      :
+      <RepoDetailsDesktopLayout userName={userName} repoName={repoName} onGoClick={onGoClick} handleKeyPress={handleKeyPress} handlePaste={handlePaste} loadInProgress={props.loadInProgress} onStopClick={props.onStopClick}/>
+      }
     </Container>
   )
 }

@@ -4,11 +4,14 @@ import GitHubAuthContainer from './GitHubAuthContainer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import packageJson from '../../package.json'
+import { useMediaQuery } from 'react-responsive'
 
 const starTrackGitHubRepo = "https://github.com/seladb/startrack-js"
 
 const TopNav = () => {
-  
+
+  const smallScreen = useMediaQuery({ query: '(max-width: 650px)' });
+
   return (
     <Navbar bg="primary" variant="dark">
       <Navbar.Brand href="#/">
@@ -25,10 +28,10 @@ const TopNav = () => {
       <Nav>
         <Nav.Link href={starTrackGitHubRepo} target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faGithub} className="mr-1"/>
-            Project On GitHub
+          {!smallScreen ? "Project On GitHub" : ""}
         </Nav.Link>
       </Nav>
-      <GitHubAuthContainer />
+      <GitHubAuthContainer/>
     </Navbar>
   )
 }

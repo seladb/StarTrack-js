@@ -1,0 +1,25 @@
+.RepoDetailsMobileLayout-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.RepoDetailsMobileLayout-headline {
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+}
+
+.RepoDetailsMobileLayout-goButton {
+  margin-top: 10px;
+  width: 100% !important;
+}
+
+.RepoDetailsMobileLayout-loadingDiv {
+  margin-top: 10px;
+  width: 100% !important;
+}
+
+.RepoDetailsMobileLayout-loadingButton {
+  width: calc(100% - 40px) !important;
+}

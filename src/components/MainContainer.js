@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Button, Modal, ProgressBar, Container, Row } from 'react-bootstrap/'
+import { Button, Modal, ProgressBar, Container } from 'react-bootstrap/'
 import './MainContainer.css'
 import RepoDetails from './RepoDetails'
 import ChartContainer from './ChartContainer'
@@ -139,7 +139,7 @@ const MainContainer = (props) => {
         onStopClick={handleStopLoading}
       />
       <Container>
-        <Row>
+        <div className="MainContainer-closableBadgesWrapper">
           { repos.map( repoData => 
             <div className="MainContainer-closableBadgeContainer">
               <ClosableBadge 
@@ -151,7 +151,7 @@ const MainContainer = (props) => {
               />
             </div>
           )}
-        </Row>
+        </div>
       </Container>
       { repos.length > 0 ? <ChartContainer repos={repos} onTimeRangeChange={handleChartTimeRangeChange}/> : null }
       { repos.length > 0 ? <Container><StatsTable repos={repos} requestToSyncChartTimeRange={handleRequestToSyncChartTimeRange}/></Container> : null }

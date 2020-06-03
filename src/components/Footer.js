@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navbar, Nav } from 'react-bootstrap/'
 import GitHubButton from 'react-github-btn'
+import { useMediaQuery } from 'react-responsive'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
@@ -14,12 +15,14 @@ const seladbEmail = "mailto:pcapplusplus@gmail.com"
 const Footer = (props) => {
 
   let footerPosition = props.pageEmpty ? "fixed-bottom" : "";
+
+  const smallScreen = useMediaQuery({ query: '(max-width: 530px)' });
   
   return (
     <Navbar bg="light" sticky="bottom" className={footerPosition}>
-      <Navbar.Text className="mr-2">Created by</Navbar.Text>
+      {!smallScreen ? <Navbar.Text className="mr-2">Created by</Navbar.Text> : ""}
       <GitHubButton href={seladbGitHubUser} data-size="large" aria-label="@seladb">@seladb</GitHubButton>
-      <Navbar.Text className="ml-2 mr-2">Give us a star:</Navbar.Text>
+      {!smallScreen ? <Navbar.Text className="ml-2 mr-2">Give us a star:</Navbar.Text> : <Navbar.Text className="ml-2 mr-2"></Navbar.Text>}
       <GitHubButton 
         href={starTrackGitHubRepo} 
         data-icon="octicon-star" 

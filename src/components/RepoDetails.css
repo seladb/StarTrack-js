@@ -4,14 +4,6 @@
   margin-top: 3rem !important;
 }
 
-.RepoDetails-goButton {
-  width: 120px !important;
-}
-
-.RepoDetails-loadingButton {
-  width: 120px !important;
-}
-
 .RepoDetails-stopButton {
   width: 40px !important;
   background-color: #e21f25 !important;
