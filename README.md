@@ -16,6 +16,11 @@ Try it now: https://seladb.github.io/StarTrack-js/
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 
+## What's new in version 2.2?
+
+- Added support for smaller screen sizes (mobile devices)
+- Small improvements in overall layout
+
 ## What's new in version 2.1?
 
 - Added a checkbox to sync the stats with the current chart view displayed. This is useful for viewing stats on specific dates
@@ -53,6 +58,7 @@ It uses the following npm packages:
 - [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
 - [React Google Analytics Module](https://github.com/react-ga/react-ga)
 - [parse-github-url](https://github.com/jonschlinkert/parse-github-url) to find GitHub URLs that are being pasted to the repo details text boxes
+- [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
 
 GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 
