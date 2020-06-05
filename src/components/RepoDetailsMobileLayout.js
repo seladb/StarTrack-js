@@ -8,7 +8,7 @@ import { faStopCircle } from '@fortawesome/free-solid-svg-icons';
 const RepoDetailsMobileLayout = (props) => {
 
   return (
-    <Container className="RepoDetailsMobileLayout-container">
+    <Container>
       <Row>
         <Form.Label className="RepoDetailsMobileLayout-headline">Repo Details</Form.Label>
       </Row>
