@@ -33,11 +33,17 @@ const ChartContainer = (props) => {
       },
       toolbar: {
         tools: {
+          // disable zoom and pan tools in log mode, see
+          // https://github.com/seladb/StarTrack-js/issues/15#issuecomment-646945288
+          ...["zoom", "zoomin", "zoomout", "pan", "reset"].reduce((a, k) => {
+            a[k] = props.chartType === LINEAR;
+            return a
+          }, {}),
           customIcons: [
             {
               icon: icon(faChartLine).html,
-              index: -7,
-              class: "chart-fa-icon mr-1",
+              index: -2,
+              class: `chart-fa-icon mr-1 ml-3 ${props.chartType === LINEAR ? "text-primary" : ""}`,
               title: "Use linear scale",
               click () {
                 props.onChartTypeChange(LINEAR);
@@ -45,8 +51,8 @@ const ChartContainer = (props) => {
             },
             {
               icon: icon(faSuperscript).html,
-              index: -6,
-              class: "chart-fa-icon mr-1",
+              index: -1,
+              class: `chart-fa-icon mr-2 ${props.chartType === LOGSCALE ? "text-primary" : ""}`,
               title: "Use logarithmic scale",
               click () {
                 props.onChartTypeChange(LOGSCALE);
