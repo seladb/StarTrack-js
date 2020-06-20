@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Button, Modal, ProgressBar, Container } from 'react-bootstrap/'
 import './MainContainer.css'
 import RepoDetails from './RepoDetails'
-import ChartContainer from './ChartContainer'
+import ChartContainer, { LINEAR } from './ChartContainer'
 import StatsTable from './StatsTable'
 import UrlDisplay from './UrlDisplay'
 import ClosableBadge from '../shared/ClosableBadge'
@@ -25,6 +25,8 @@ const MainContainer = (props) => {
     isLoading: false,
     loadProgress: 0,
   });
+
+  const [chartType, setChartType] = useState(LINEAR);
 
   const onLoadInProgress = (progress) => {
     setLoadingStatus({
@@ -153,7 +155,7 @@ const MainContainer = (props) => {
           )}
         </div>
       </Container>
-      { repos.length > 0 ? <ChartContainer repos={repos} onTimeRangeChange={handleChartTimeRangeChange}/> : null }
+      { repos.length > 0 ? <ChartContainer repos={repos} onTimeRangeChange={handleChartTimeRangeChange} chartType={chartType} onChartTypeChange={setChartType}/> : null }
       { repos.length > 0 ? <Container><StatsTable repos={repos} requestToSyncChartTimeRange={handleRequestToSyncChartTimeRange}/></Container> : null }
       { repos.length > 0 ? <Container><UrlDisplay repos={repos}/></Container> : null }
       <Footer pageEmpty={repos.length === 0}/>

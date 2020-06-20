@@ -1,13 +1,18 @@
 import React from 'react'
 import { Container } from 'react-bootstrap/'
 import ReactApexChart from 'react-apexcharts'
+import { icon } from '@fortawesome/fontawesome-svg-core'
+import { faChartLine, faSuperscript } from '@fortawesome/free-solid-svg-icons'
+
+export const LINEAR = 'linear';
+export const LOGSCALE = 'logscale';
 
 const ChartContainer = (props) => {
 
-  const chartSeries = props.repos.map( (repoData) => {
+  const chartSeries = props.repos.map( ({ username, repo, stargazerData }) => {
     return {
-      name: repoData.username + "/" + repoData.repo,
-      data: repoData.stargazerData
+      name: username + "/" + repo,
+      data: stargazerData,
     }
   })
 
@@ -21,11 +26,38 @@ const ChartContainer = (props) => {
     chart: {
       id: "stargazers",
       zoom: {
-        autoScaleYaxis: (props.repos.length > 1 ? false : true), 
+        autoScaleYaxis: (props.repos.length > 1 ? false : true),
       },
       events: {
         zoomed: onZoom
-      }
+      },
+      toolbar: {
+        tools: {
+          customIcons: [
+            {
+              icon: icon(faChartLine).html,
+              index: -7,
+              class: "chart-fa-icon mr-1",
+              title: "Use linear scale",
+              click () {
+                props.onChartTypeChange(LINEAR);
+              }
+            },
+            {
+              icon: icon(faSuperscript).html,
+              index: -6,
+              class: "chart-fa-icon mr-1",
+              title: "Use logarithmic scale",
+              click () {
+                props.onChartTypeChange(LOGSCALE);
+              }
+            },
+          ],
+        },
+      },
+    },
+    yaxis: {
+      logarithmic: props.chartType === LOGSCALE,
     },
     xaxis: {
       type: "datetime"
@@ -36,16 +68,16 @@ const ChartContainer = (props) => {
       },
     },
     colors: props.repos.map( (repoData) => {
-        return repoData.color
-      })
+      return repoData.color
+    }),
   }
 
   return (
     <Container className="mt-5">
-      <ReactApexChart 
-        options={chartOptions} 
-        series={chartSeries} 
-        type="line" 
+      <ReactApexChart
+        options={chartOptions}
+        series={chartSeries}
+        type="line"
       />
     </Container>
   )
