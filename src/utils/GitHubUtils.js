@@ -8,12 +8,18 @@ const storageKey = "statrack_js_access_token"
 
 const maxSupportedPagesWithoutAccessToken = 30
 
+const batchSize = 5
+
 export const StorageTypes = {
   LocalStorage: 'local storage',
   SessionStorage: 'session storage'
 }
 
 class GitHubUtils {
+
+  static _range(size, startAt = 0) {
+    return [...Array(size).keys()].map(i => i + startAt);
+  }
 
   static _getStorageDefault() {
     if (sessionStorage.getItem(storageKey) !== null && sessionStorage.getItem(storageKey) !== undefined && sessionStorage.getItem(storageKey) !== "") {
@@ -47,12 +53,11 @@ class GitHubUtils {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async loadStarGazerPage(partialUrl, pageNum) {
+  async _loadStarGazerPage(partialUrl, pageNum) {
     return await axios.get(partialUrl.replace('{page}', pageNum), this._prepareRequestHeaders(this.getAccessToken()));
   }
 
-  addStarData(starData, starCount, page) {
-    console.log("addStarData")
+  _addStarData(starData, starCount, page) {
     for (let i = 0; i < page.data.length; i++) {
       starData.push({
         x: page.data[i].starred_at,
@@ -60,7 +65,6 @@ class GitHubUtils {
       })
     }
 
-    console.log("addStarData Done")
     return starCount;
   }
 
@@ -68,32 +72,36 @@ class GitHubUtils {
     try {
       let starData = [];
       let starCount = 1;
-      let pageNum = 1;
-      handleProgress(0);
       let partialUrl = stargazersURL.replace('{user}', user).replace('{repo}', repo);
 
-      let page = await this.loadStarGazerPage(partialUrl, 1);
+      handleProgress(0);
+
+      let page = await this._loadStarGazerPage(partialUrl, 1);
       let numOfPages = this._getLastStargazerPage(page.headers['link']);
       if (numOfPages > maxSupportedPagesWithoutAccessToken && !this.isLoggedIn()) {
         throw Error("Cannot load a repo with more than " + 100 * maxSupportedPagesWithoutAccessToken + " stars without GitHub access token. Please click \"GitHub Authentication\" and provide one")
       }
 
-      starCount = this.addStarData(starData, starCount, page);
+      starCount = this._addStarData(starData, starCount, page);
       
-      handleProgress((pageNum/numOfPages)*100);
+      handleProgress((1/numOfPages)*100);
+      let pageNum = 2;
       while (pageNum <= numOfPages) {
         if (shouldStop()) {
           return null;
         }
 
-        pageNum++;
+        let currentBatchSize = Math.min(pageNum + batchSize, numOfPages + 1) - pageNum;
+        let pages = await Promise.all(
+          GitHubUtils._range(currentBatchSize, pageNum).map(
+            num => this._loadStarGazerPage(partialUrl, num)
+            ));
+        for (var i = 0; i < currentBatchSize; i++) {
+          starCount = this._addStarData(starData, starCount, pages[i]);
+        }
 
-        let page = await this.loadStarGazerPage(partialUrl, pageNum);
-        handleProgress((pageNum/numOfPages)*100);
-        console.log("second add")
-        console.log(page)
-
-        starCount = this.addStarData(starData, starCount, page);
+        pageNum += currentBatchSize;
+        handleProgress(((pageNum-1)/numOfPages)*100);
       }
 
       return starData;
