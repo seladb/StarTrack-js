@@ -10,6 +10,10 @@ const StatsTable = (props) => {
     }
   }
 
+  const repoNameFromData = (repoData) => {
+    return repoData.username + " / " + repoData.repo;
+  }
+
   return (
     <Container className="StatsTable-topContainer">
       <h3>Repo stats:</h3>
@@ -21,16 +25,16 @@ const StatsTable = (props) => {
           <tr className="StatsTable-header">
             <th/>
             { Object.keys(props.repos[0].stats).map( statName => 
-              <th>{statName}</th> 
+              <th key={statName}>{statName}</th>
             )}
           </tr>
         </thead>
         <tbody>
           { props.repos.map( repoData => 
-            <tr className="StatsTable-row" style={{backgroundColor: repoData.color}}>
-              <th>{repoData.username + " / " + repoData.repo}</th>
-              { Object.values(repoData.stats).map( statData => 
-                <td>{statData}</td>
+            <tr className="StatsTable-row" style={{backgroundColor: repoData.color}} key={repoNameFromData(repoData)}>
+              <th>{repoNameFromData(repoData)}</th>
+              { Object.keys(repoData.stats).map(statName =>
+                <td key={statName}>{repoData.stats[statName]}</td>
               )}
             </tr>
           )}
