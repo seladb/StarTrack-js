@@ -30,7 +30,7 @@ const StatsTable = (props) => {
             <tr className="StatsTable-row" style={{backgroundColor: repoData.color}}>
               <th>{repoData.username + " / " + repoData.repo}</th>
               { Object.values(repoData.stats).map( statData => 
-                <th>{statData}</th>
+                <td>{statData}</td>
               )}
             </tr>
           )}
