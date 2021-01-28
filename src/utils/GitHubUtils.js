@@ -47,34 +47,53 @@ class GitHubUtils {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  async loadStarGazerPage(partialUrl, pageNum) {
+    return await axios.get(partialUrl.replace('{page}', pageNum), this._prepareRequestHeaders(this.getAccessToken()));
+  }
+
+  addStarData(starData, starCount, page) {
+    console.log("addStarData")
+    for (let i = 0; i < page.data.length; i++) {
+      starData.push({
+        x: page.data[i].starred_at,
+        y: starCount++
+      })
+    }
+
+    console.log("addStarData Done")
+    return starCount;
+  }
+
   async loadStargazers(user, repo, handleProgress, shouldStop) {
     try {
       let starData = [];
       let starCount = 1;
-      let numOfPages = 1;
       let pageNum = 1;
       handleProgress(0);
+      let partialUrl = stargazersURL.replace('{user}', user).replace('{repo}', repo);
+
+      let page = await this.loadStarGazerPage(partialUrl, 1);
+      let numOfPages = this._getLastStargazerPage(page.headers['link']);
+      if (numOfPages > maxSupportedPagesWithoutAccessToken && !this.isLoggedIn()) {
+        throw Error("Cannot load a repo with more than " + 100 * maxSupportedPagesWithoutAccessToken + " stars without GitHub access token. Please click \"GitHub Authentication\" and provide one")
+      }
+
+      starCount = this.addStarData(starData, starCount, page);
+      
+      handleProgress((pageNum/numOfPages)*100);
       while (pageNum <= numOfPages) {
         if (shouldStop()) {
           return null;
         }
-        let url = stargazersURL.replace('{page}', pageNum).replace('{user}', user).replace('{repo}', repo);
-        let page = await axios.get(url, this._prepareRequestHeaders(this.getAccessToken()));
-        if (pageNum === 1) {
-          numOfPages = this._getLastStargazerPage(page.headers['link']);
-          if (numOfPages > maxSupportedPagesWithoutAccessToken && !this.isLoggedIn()) {
-            throw Error("Cannot load a repo with more than " + 100 * maxSupportedPagesWithoutAccessToken + " stars without GitHub access token. Please click \"GitHub Authentication\" and provide one")
-          }
-        }
-        handleProgress((pageNum/numOfPages)*100);
+
         pageNum++;
 
-        for (let i = 0; i < page.data.length; i++) {
-          starData.push({
-            x: page.data[i].starred_at,
-            y: starCount++
-          })
-        }
+        let page = await this.loadStarGazerPage(partialUrl, pageNum);
+        handleProgress((pageNum/numOfPages)*100);
+        console.log("second add")
+        console.log(page)
+
+        starCount = this.addStarData(starData, starCount, page);
       }
 
       return starData;
