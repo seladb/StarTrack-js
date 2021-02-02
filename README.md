@@ -16,6 +16,11 @@ Try it now: https://seladb.github.io/StarTrack-js/
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 
+## What's new in version 2.3?
+
+- Parallel load of stargazer data which significantly improves the overall loading time (thanks @gsaraf !)
+- Display chart data in log scale (thanks @passcod !)
+
 ## What's new in version 2.2?
 
 - Added support for smaller screen sizes (mobile devices)
