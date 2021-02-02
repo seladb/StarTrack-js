@@ -143,7 +143,7 @@ const MainContainer = (props) => {
       <Container>
         <div className="MainContainer-closableBadgesWrapper">
           { repos.map( repoData => 
-            <div className="MainContainer-closableBadgeContainer">
+            <div className="MainContainer-closableBadgeContainer" key={repoData.username + "/" + repoData.repo}>
               <ClosableBadge 
                 text={repoData.username + "/" + repoData.repo} 
                 badgeCookieData={{username: repoData.username, repo: repoData.repo}}
