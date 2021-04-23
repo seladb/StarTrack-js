@@ -18,7 +18,12 @@ const RepoDetails = (props) => {
   const handleKeyPress = (target) => {
     if(target.charCode === 13 && !props.loadInProgress){
       onGoClick();
-    } 
+    }
+
+    if (target.charCode === 47) {
+      target.preventDefault();
+      repoName.current.focus();
+    }
   }
 
   const handlePaste = (event) => {
