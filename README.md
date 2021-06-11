@@ -64,6 +64,7 @@ It uses the following npm packages:
 - [React Google Analytics Module](https://github.com/react-ga/react-ga)
 - [parse-github-url](https://github.com/jonschlinkert/parse-github-url) to find GitHub URLs that are being pasted to the repo details text boxes
 - [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
+- [least-squares](https://github.com/jprichardson/least-squares) for calculating the forecast
 
 GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 
