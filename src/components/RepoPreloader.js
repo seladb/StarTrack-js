@@ -62,8 +62,9 @@ const RepoPreloader = (props) => {
 
     try {
       let stargazerData = await stargazerLoader.loadStargazers(
-        repoToPreload.username, 
-        repoToPreload.repo, 
+        repoToPreload.username,
+        repoToPreload.repo,
+        null,
         (progress) => setLoadProgress(progress),
         () => false);
 
