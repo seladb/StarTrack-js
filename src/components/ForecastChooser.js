@@ -142,6 +142,7 @@ const ForecastChooser = (props) => {
               <Form.Label>Number of forecast values to calculate:</Form.Label>
               <Form.Control ref={forecastValues} type="number" min="10" max="100" defaultValue="10" required/>
             </Form.Group>
+            <p>The forecast is based on <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Linear_least_squares">Linear Least Squares</a> which creates a regression line from the existing stargazer data and extends this line into the future</p>
             <Form.Group>
               <Alert variant="danger" show={showAlert}>{alertText}</Alert>
             </Form.Group>

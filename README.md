@@ -16,6 +16,11 @@ Try it now: https://seladb.github.io/StarTrack-js/
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 
+## What's new in version 2.4?
+
+- Added an option to display a forecast based on the existing stargazer data. The forecast is calculated using [Linear Least Squares](https://en.wikipedia.org/wiki/Linear_least_squares) regression
+- Change between username and repo name text boxes using the `/` key (thanks @zaldih !)
+
 ## What's new in version 2.3?
 
 - Parallel load of stargazer data which significantly improves the overall loading time (thanks @gsaraf !)

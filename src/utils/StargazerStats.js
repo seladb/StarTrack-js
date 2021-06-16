@@ -68,6 +68,9 @@ class StargazerStats {
     let minDate = new Date();
     minDate.setDate(minDate.getDate() - basedOnLastDays);
     let stargazerFilteredData = stargazerData.filter(cur => new Date(cur.x) >= minDate).map(cur => ({x: new Date(cur.x).getTime(), y: cur.y}));
+    if (stargazerFilteredData.length <= 1) {
+      return null;
+    }
     let ret = {}
     let leastSquaresFun = lsq(stargazerFilteredData.map(cur => cur.x), stargazerFilteredData.map(cur => cur.y), ret);
 

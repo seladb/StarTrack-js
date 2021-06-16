@@ -109,6 +109,11 @@ const MainContainer = (props) => {
   }
 
   const handleRemoveRepo = (repoDetails) => {
+    // if this is the last repo, cleanup forecast
+    if (repos.length === 1) {
+      setForecastProps(null);
+    }
+
     setRepos(repos.filter(repo => {
       return repo.username !== repoDetails.username || repo.repo !== repoDetails.repo;
     }));
