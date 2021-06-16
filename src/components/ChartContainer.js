@@ -9,11 +9,18 @@ export const LOGSCALE = 'logscale';
 
 const ChartContainer = (props) => {
 
-  const chartSeries = props.repos.map( ({ username, repo, stargazerData }) => {
-    return {
+  const chartSeries = props.repos.flatMap( ({ username, repo, stargazerData, forecast }) => {
+    let series = [{
       name: username + "/" + repo,
       data: stargazerData,
+    }]
+    if (forecast !== null) {
+      series.push({
+        name: username + "/" + repo + " (forecast)",
+        data: forecast
+      })
     }
+    return series;
   })
 
   const onZoom = (chartContext, { xaxis, yaxis }) => {
@@ -73,8 +80,14 @@ const ChartContainer = (props) => {
         format: "dd MMM yyyy",
       },
     },
-    colors: props.repos.map( (repoData) => {
-      return repoData.color
+    stroke: {
+      curve: 'straight',
+      dashArray: props.repos.flatMap( ({ forecast }) => {
+        return forecast !== null ? [0, 5] : [0];
+      }),
+    },
+    colors: props.repos.flatMap( ({color, forecast}) => {
+      return forecast !== null ? [color, color] : [color];
     }),
   }
 

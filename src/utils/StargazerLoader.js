@@ -8,7 +8,7 @@ export const maxReposAllowed = 8;
 class StargazerLoader {
   static colorIndex = -1
 
-  async loadStargazers(username, repo, handleProgress, shouldStop) {
+  async loadStargazers(username, repo, forecastProps, handleProgress, shouldStop) {
     let stargazerData = await gitHubUtils.loadStargazers(username, repo, handleProgress, shouldStop);
     if (stargazerData === null) {
       return null;
@@ -19,7 +19,8 @@ class StargazerLoader {
       repo: repo,
       color: colors[StargazerLoader.colorIndex],
       stargazerData: stargazerData,
-      stats: stargazerStats.calcStats(stargazerData)
+      stats: stargazerStats.calcStats(stargazerData),
+      forecast: forecastProps !== null ? stargazerStats.calcForecast(stargazerData, forecastProps.daysBackwards, forecastProps.daysForward, forecastProps.numValues) : null
     }
   }
 }

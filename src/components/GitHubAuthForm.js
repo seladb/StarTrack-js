@@ -87,7 +87,7 @@ const GitHubAuthForm = (props) => {
           </Button>
         </Modal.Footer>
         </Form>
-    </Modal>    
+    </Modal>
   )
 }
 

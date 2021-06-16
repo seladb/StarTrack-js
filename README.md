@@ -11,10 +11,16 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - View a GitHub repo star history
 - Show stargazer stats such as average number of stars per day, max stars in one day, etc.
 - Supports showing multiple repos at the same time (very useful for comparison)
+- Display a stargazer forecast based on the existing data
 - Provide GitHub authentication (via access token) to overcome GitHub API rate limiter which limits the number of API calls without authentication. The authentication details are stored locally and not sent to any server
   - By default they're stored in the browser's session storage
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
+
+## What's new in version 2.4?
+
+- Added an option to display a forecast based on the existing stargazer data. The forecast is calculated using [Linear Least Squares](https://en.wikipedia.org/wiki/Linear_least_squares) regression
+- Change between username and repo name text boxes using the `/` key (thanks @zaldih !)
 
 ## What's new in version 2.3?
 
@@ -64,6 +70,7 @@ It uses the following npm packages:
 - [React Google Analytics Module](https://github.com/react-ga/react-ga)
 - [parse-github-url](https://github.com/jonschlinkert/parse-github-url) to find GitHub URLs that are being pasted to the repo details text boxes
 - [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
+- [least-squares](https://github.com/jprichardson/least-squares) for calculating the forecast
 
 GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 

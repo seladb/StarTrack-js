@@ -16,7 +16,7 @@ const StatsTable = (props) => {
 
   return (
     <Container className="StatsTable-topContainer">
-      <h3>Repo stats:</h3>
+      <h3>Repo stats</h3>
       <Form className="mb-3">
         <Form.Check type="checkbox" label="Sync stats to chart zoom level" onChange={onSyncCheckBoxChanged}/>
       </Form>

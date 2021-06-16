@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Button, Modal, ProgressBar, Container } from 'react-bootstrap/'
 import './MainContainer.css'
 import RepoDetails from './RepoDetails'
+import ForecastChooser from './ForecastChooser'
 import ChartContainer, { LINEAR } from './ChartContainer'
 import StatsTable from './StatsTable'
 import UrlDisplay from './UrlDisplay'
@@ -28,6 +29,8 @@ const MainContainer = (props) => {
 
   const [chartType, setChartType] = useState(LINEAR);
 
+  const [forecastProps, setForecastProps] = useState(null);
+  
   const onLoadInProgress = (progress) => {
     setLoadingStatus({
       isLoading: true,
@@ -75,8 +78,9 @@ const MainContainer = (props) => {
 
     try {
       let stargazerData = await stargazerLoader.loadStargazers(
-        username, 
-        repo, 
+        username,
+        repo,
+        forecastProps,
         onLoadInProgress,
         () => requestStopLoading.current);
       
@@ -105,6 +109,11 @@ const MainContainer = (props) => {
   }
 
   const handleRemoveRepo = (repoDetails) => {
+    // if this is the last repo, cleanup forecast
+    if (repos.length === 1) {
+      setForecastProps(null);
+    }
+
     setRepos(repos.filter(repo => {
       return repo.username !== repoDetails.username || repo.repo !== repoDetails.repo;
     }));
@@ -132,6 +141,16 @@ const MainContainer = (props) => {
     setRepos(reposWithUpdatedStats);
   }
 
+  const handleForecastProps = (forecastProps) => {
+    let reposWithForecast = repos.slice();
+    for (let index = 0; index < reposWithForecast.length; index++) {
+      reposWithForecast[index].forecast = forecastProps === null? null : stargazerStats.calcForecast(reposWithForecast[index].stargazerData, forecastProps.daysBackwards, forecastProps.daysForward, forecastProps.numValues);
+    }
+
+    setRepos(reposWithForecast);
+    setForecastProps(forecastProps);
+  }
+
   return (
     <div>
       { loadingStatus.isLoading ? <ProgressBar now={loadingStatus.loadProgress} variant="success" animated /> : <div className="progress MainContainer-progressBarPlaceholder"/> }
@@ -156,6 +175,7 @@ const MainContainer = (props) => {
         </div>
       </Container>
       { repos.length > 0 ? <ChartContainer repos={repos} onTimeRangeChange={handleChartTimeRangeChange} chartType={chartType} onChartTypeChange={setChartType}/> : null }
+      { repos.length > 0 ? <ForecastChooser onForecastProps={handleForecastProps}/> : null }
       { repos.length > 0 ? <Container><StatsTable repos={repos} requestToSyncChartTimeRange={handleRequestToSyncChartTimeRange}/></Container> : null }
       { repos.length > 0 ? <Container><UrlDisplay repos={repos}/></Container> : null }
       <Footer pageEmpty={repos.length === 0}/>
