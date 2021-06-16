@@ -11,6 +11,7 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - View a GitHub repo star history
 - Show stargazer stats such as average number of stars per day, max stars in one day, etc.
 - Supports showing multiple repos at the same time (very useful for comparison)
+- Display a stargazer forecast based on the existing data
 - Provide GitHub authentication (via access token) to overcome GitHub API rate limiter which limits the number of API calls without authentication. The authentication details are stored locally and not sent to any server
   - By default they're stored in the browser's session storage
   - The user can choose to store them in the browser's local storage for longer persistence
