@@ -78,7 +78,8 @@ const ForecastChooser = (props) => {
     return true;
   }
 
-  const forecastPropsSelected = () => {
+  const forecastPropsSelected = (event) => {
+    event.preventDefault();
     let forecastProps = {
       daysBackwards: calculateDays(forecastBasedOnLastInput.current.value, forecastBasedOnLastSelect.current.value),
       daysForward: calculateDays(forecastForwardInput.current.value, forecastForwardSelect.current.value),
