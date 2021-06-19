@@ -37,7 +37,7 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Added a checkbox to sync the stats with the current chart view displayed. This is useful for viewing stats on specific dates
 - You can now paste a GitHub link instead of typing the username and repo name, and they will be parsed automatically
 - Added a link to the GitHub repo in the badge displaying the repo details
-- Preloading screen: fix decreasing transition in progress bar when loading the next repo 
+- Preloading screen: fix decreasing transition in progress bar when loading the next repo
 - All React components were replaced from class to function components and are using React Hooks
 
 ## What's new in version 2.0?
@@ -71,6 +71,12 @@ It uses the following npm packages:
 - [parse-github-url](https://github.com/jonschlinkert/parse-github-url) to find GitHub URLs that are being pasted to the repo details text boxes
 - [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
 - [least-squares](https://github.com/jprichardson/least-squares) for calculating the forecast
+
+Dev packages:
+
+- [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
+- [husky](https://github.com/typicode/husky), [lint-staged](https://github.com/okonet/lint-staged) and [pretty-quick](https://github.com/azz/pretty-quick) for pre-commit hooks
+- [gh-pages](https://github.com/tschaub/gh-pages) for GitHub Pages deployment
 
 GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 

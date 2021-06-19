@@ -1,10 +1,14 @@
 language: node_js
+git:
+  autocrlf: input
 node_js:
   - "stable"
 cache:
   directories:
     - node_modules
 script:
+  - npm run format-check
+  - npm run lint
   - npm test
   - npm run build
 deploy:

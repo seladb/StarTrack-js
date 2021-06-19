@@ -1,14 +1,16 @@
-import React from 'react'
-import TopNav from './TopNav'
-import MainContainer from './MainContainer'
+import React from "react";
+import PropTypes from "prop-types";
+import TopNav from "./TopNav";
+import MainContainer from "./MainContainer";
 
-const MainPage = (props) => {
+export default function MainPage({ preloadedRepos }) {
   return (
     <div>
       <TopNav />
-      <MainContainer preloadedRepos={props.preloadedRepos} />
+      <MainContainer preloadedRepos={preloadedRepos} />
     </div>
-  )
+  );
 }
-
-export default MainPage
+MainPage.propTypes = {
+  preloadedRepos: PropTypes.object,
+};
