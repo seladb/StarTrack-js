@@ -1,16 +1,25 @@
-import React from 'react'
-import './RepoDetailsMobileLayout.css'
-import './RepoDetails.css'
-import { Row, FormControl, Button, Spinner, Container, Form } from 'react-bootstrap/'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import PropTypes from "prop-types";
+import "./RepoDetailsMobileLayout.css";
+import "./RepoDetails.css";
+import {
+  Row,
+  FormControl,
+  Button,
+  Spinner,
+  Container,
+  Form,
+} from "react-bootstrap/";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStopCircle } from "@fortawesome/free-solid-svg-icons";
 
 const RepoDetailsMobileLayout = (props) => {
-
   return (
     <Container>
       <Row>
-        <Form.Label className="RepoDetailsMobileLayout-headline">Repo Details</Form.Label>
+        <Form.Label className="RepoDetailsMobileLayout-headline">
+          Repo Details
+        </Form.Label>
       </Row>
       <Row>
         <FormControl
@@ -31,37 +40,50 @@ const RepoDetailsMobileLayout = (props) => {
         />
       </Row>
       <Row>
-        {!props.loadInProgress ?
-        <Button
-          className="RepoDetailsMobileLayout-goButton"
-          type="button" 
-          onClick={props.onGoClick}>Go!
-        </Button>
-        :
-        <div className="RepoDetailsMobileLayout-loadingDiv">
-          <Button 
-            className="RepoDetailsMobileLayout-loadingButton"
-            type="button" 
-            disabled>
+        {!props.loadInProgress ? (
+          <Button
+            className="RepoDetailsMobileLayout-goButton"
+            type="button"
+            onClick={props.onGoClick}
+          >
+            Go!
+          </Button>
+        ) : (
+          <div className="RepoDetailsMobileLayout-loadingDiv">
+            <Button
+              className="RepoDetailsMobileLayout-loadingButton"
+              type="button"
+              disabled
+            >
               <Spinner
                 as="span"
                 animation="border"
                 size="sm"
                 role="status"
                 aria-hidden="true"
-            /> Loading...
-          </Button>
-          <Button className="RepoDetails-stopButton" onClick={props.onStopClick}>
-            <FontAwesomeIcon icon={faStopCircle} />
-          </Button>
-        </div>
-        }
+              />{" "}
+              Loading...
+            </Button>
+            <Button
+              className="RepoDetails-stopButton"
+              onClick={props.onStopClick}
+            >
+              <FontAwesomeIcon icon={faStopCircle} />
+            </Button>
+          </div>
+        )}
       </Row>
     </Container>
+  );
+};
+RepoDetailsMobileLayout.propTypes = {
+  userName: PropTypes.string,
+  repoName: PropTypes.string,
+  loadInProgress: PropTypes.bool,
+  handleKeyPress: PropTypes.func,
+  handlePaste: PropTypes.func,
+  onStopClick: PropTypes.func,
+  onGoClick: PropTypes.func,
+};
 
-    
-    
-  )
-}
-
-export default RepoDetailsMobileLayout
+export default RepoDetailsMobileLayout;

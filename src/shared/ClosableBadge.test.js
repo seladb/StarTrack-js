@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import ClosableBadge from './ClosableBadge';
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import ClosableBadge from "./ClosableBadge";
 
 test("ClosableBadge basic test", () => {
   const handleBadgeClosed = jest.fn((cookie) => {
@@ -8,18 +8,21 @@ test("ClosableBadge basic test", () => {
   });
 
   const { getByTestId, getByText } = render(
-    <ClosableBadge 
+    <ClosableBadge
       text="seladb*startrack-js"
       badgeCookieData="myCookie"
       onBadgeClose={handleBadgeClosed}
       color="red"
       href="https://github.com/seladb/StarTrack-js"
-    />);
+    />
+  );
 
   const aElement = getByText("seladb*startrack-js");
   expect(aElement).toBeDefined();
   expect(aElement.parentElement).toHaveStyle("background-color: red");
-  expect(aElement.getAttribute("href")).toBe("https://github.com/seladb/StarTrack-js");
+  expect(aElement.getAttribute("href")).toBe(
+    "https://github.com/seladb/StarTrack-js"
+  );
   fireEvent.click(getByTestId("close-button"));
   expect(handleBadgeClosed).toHaveBeenCalled();
 });
@@ -30,12 +33,13 @@ test("ClosableBadge without href", () => {
   });
 
   const { getByTestId, getByText } = render(
-    <ClosableBadge 
+    <ClosableBadge
       text="seladb*startrack-js"
       badgeCookieData="myCookie"
       onBadgeClose={handleBadgeClosed}
       color="red"
-    />);
+    />
+  );
 
   const spanElement = getByText("seladb*startrack-js");
   expect(spanElement).toBeDefined();

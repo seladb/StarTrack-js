@@ -37,7 +37,7 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Added a checkbox to sync the stats with the current chart view displayed. This is useful for viewing stats on specific dates
 - You can now paste a GitHub link instead of typing the username and repo name, and they will be parsed automatically
 - Added a link to the GitHub repo in the badge displaying the repo details
-- Preloading screen: fix decreasing transition in progress bar when loading the next repo 
+- Preloading screen: fix decreasing transition in progress bar when loading the next repo
 - All React components were replaced from class to function components and are using React Hooks
 
 ## What's new in version 2.0?

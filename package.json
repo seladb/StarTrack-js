@@ -24,7 +24,7 @@
     "react-github-btn": "^1.1.1",
     "react-responsive": "^8.0.3",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "4.0.3"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -32,10 +32,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "eject": "react-scripts eject",
+    "lint": "eslint ./",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "format-check": "prettier --check \"**/*.{js,jsx,json,md}\""
   },
   "browserslist": {
     "production": [
@@ -50,6 +50,27 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.2.0"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.24.0",
+    "gh-pages": "^2.2.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.1",
+    "pretty-quick": "^3.1.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && pretty-quick --staged"
+    }
   }
 }
