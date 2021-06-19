@@ -14,21 +14,17 @@ const repoUrlParam = "r={user},{repo}";
 const baseUrl =
   window.location.origin + window.location.pathname + "#/preload?";
 
-const UrlDisplay = (props) => {
+export default function UrlDisplay({ repos }) {
   const urlInput = useRef();
 
   const buildURL = () => {
-    if (
-      props.repos === undefined ||
-      props.repos === null ||
-      props.repos.length === 0
-    ) {
+    if (repos === undefined || repos === null || repos.length === 0) {
       return "";
     }
 
     return (
       baseUrl +
-      props.repos
+      repos
         .map((repoDetails) =>
           repoUrlParam
             .replace("{user}", repoDetails.username)
@@ -67,9 +63,7 @@ const UrlDisplay = (props) => {
       </InputGroup.Append>
     </InputGroup>
   );
-};
+}
 UrlDisplay.propTypes = {
   repos: PropTypes.array,
 };
-
-export default UrlDisplay;

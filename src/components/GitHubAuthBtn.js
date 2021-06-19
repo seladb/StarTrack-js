@@ -8,9 +8,14 @@ import {
   faKey,
 } from "@fortawesome/free-solid-svg-icons";
 
-const GitHubAuthBtn = (props) => {
+export default function GitHubAuthBtn({
+  accessToken,
+  storageType,
+  onLoginClick,
+  onLogoutClick,
+}) {
   const getAccessTokenShortForm = () => {
-    const token = props.accessToken;
+    const token = accessToken;
     if (token !== null && token !== undefined) return token.substring(0, 6);
 
     return "";
@@ -18,13 +23,9 @@ const GitHubAuthBtn = (props) => {
 
   const smallScreen = useMediaQuery({ query: "(max-width: 650px)" });
 
-  if (
-    props.accessToken === null ||
-    props.accessToken === undefined ||
-    props.accessToken === ""
-  ) {
+  if (accessToken === null || accessToken === undefined || accessToken === "") {
     return (
-      <Button variant="outline-light" onClick={props.onLoginClick}>
+      <Button variant="outline-light" onClick={onLoginClick}>
         {smallScreen ? (
           <FontAwesomeIcon icon={faSignInAlt} className="mr-1" />
         ) : (
@@ -42,7 +43,7 @@ const GitHubAuthBtn = (props) => {
             overlay={
               <Tooltip>
                 Access token &apos;{getAccessTokenShortForm()}&apos; stored in{" "}
-                {props.storageType}
+                {storageType}
               </Tooltip>
             }
           >
@@ -54,9 +55,7 @@ const GitHubAuthBtn = (props) => {
           <OverlayTrigger
             placement="bottom"
             delay={{ show: 250 }}
-            overlay={
-              <Tooltip>Access token stored in {props.storageType}</Tooltip>
-            }
+            overlay={<Tooltip>Access token stored in {storageType}</Tooltip>}
           >
             <Navbar.Text className="mr-2 ml-2">
               <FontAwesomeIcon icon={faKey} className="mr-1" />
@@ -64,7 +63,7 @@ const GitHubAuthBtn = (props) => {
             </Navbar.Text>
           </OverlayTrigger>
         )}
-        <Button variant="outline-light" onClick={props.onLogoutClick}>
+        <Button variant="outline-light" onClick={onLogoutClick}>
           {smallScreen ? (
             <FontAwesomeIcon icon={faSignOutAlt} className="mr-1" />
           ) : (
@@ -74,6 +73,4 @@ const GitHubAuthBtn = (props) => {
       </div>
     );
   }
-};
-
-export default GitHubAuthBtn;
+}

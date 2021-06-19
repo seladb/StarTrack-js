@@ -12,8 +12,8 @@ const seladbGitHubUser = "https://github.com/seladb";
 const seladbTwitter = "https://twitter.com/seladb";
 const seladbEmail = "mailto:pcapplusplus@gmail.com";
 
-const Footer = (props) => {
-  const footerPosition = props.pageEmpty ? "fixed-bottom" : "";
+export default function Footer({ pageEmpty }) {
+  const footerPosition = pageEmpty ? "fixed-bottom" : "";
 
   const smallScreen = useMediaQuery({ query: "(max-width: 530px)" });
 
@@ -67,9 +67,7 @@ const Footer = (props) => {
       </Nav>
     </Navbar>
   );
-};
+}
 Footer.propTypes = {
   pageEmpty: PropTypes.bool,
 };
-
-export default Footer;

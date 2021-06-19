@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Table, Container, Form } from "react-bootstrap/";
 import "./StatsTable.css";
 
-const StatsTable = (props) => {
+export default function StatsTable({ repos, requestToSyncChartTimeRange }) {
   const onSyncCheckBoxChanged = (event) => {
-    if (props.requestToSyncChartTimeRange) {
-      props.requestToSyncChartTimeRange(event.target.checked);
+    if (requestToSyncChartTimeRange) {
+      requestToSyncChartTimeRange(event.target.checked);
     }
   };
 
@@ -28,13 +28,13 @@ const StatsTable = (props) => {
         <thead>
           <tr className="StatsTable-header">
             <th />
-            {Object.keys(props.repos[0].stats).map((statName) => (
+            {Object.keys(repos[0].stats).map((statName) => (
               <th key={statName}>{statName}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {props.repos.map((repoData) => (
+          {repos.map((repoData) => (
             <tr
               className="StatsTable-row"
               style={{ backgroundColor: repoData.color }}
@@ -50,10 +50,8 @@ const StatsTable = (props) => {
       </Table>
     </Container>
   );
-};
+}
 StatsTable.propTypes = {
   repos: PropTypes.array,
   requestToSyncChartTimeRange: PropTypes.func,
 };
-
-export default StatsTable;

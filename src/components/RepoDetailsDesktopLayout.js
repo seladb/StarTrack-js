@@ -14,7 +14,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStopCircle } from "@fortawesome/free-solid-svg-icons";
 
-const RepoDetailsDesktopLayout = (props) => {
+export default function RepoDetailsDesktopLayout({
+  userName,
+  repoName,
+  loadInProgress,
+  handleKeyPress,
+  handlePaste,
+  onStopClick,
+  onGoClick,
+}) {
   return (
     <Row>
       <InputGroup>
@@ -33,27 +41,27 @@ const RepoDetailsDesktopLayout = (props) => {
           </OverlayTrigger>
         </InputGroup.Prepend>
         <FormControl
-          ref={props.userName}
+          ref={userName}
           placeholder="Username"
           aria-label="Username"
-          onKeyPress={props.handleKeyPress}
-          onPaste={props.handlePaste}
+          onKeyPress={handleKeyPress}
+          onPaste={handlePaste}
         />
         <InputGroup.Prepend>
           <InputGroup.Text>/</InputGroup.Text>
         </InputGroup.Prepend>
         <FormControl
-          ref={props.repoName}
+          ref={repoName}
           placeholder="Repo name"
           aria-label="Repo name"
-          onKeyPress={props.handleKeyPress}
-          onPaste={props.handlePaste}
+          onKeyPress={handleKeyPress}
+          onPaste={handlePaste}
         />
-        {!props.loadInProgress ? (
+        {!loadInProgress ? (
           <Button
             className="RepoDetailsDesktopLayout-goButton"
             type="button"
-            onClick={props.onGoClick}
+            onClick={onGoClick}
           >
             Go!
           </Button>
@@ -73,10 +81,7 @@ const RepoDetailsDesktopLayout = (props) => {
               />{" "}
               Loading...
             </Button>
-            <Button
-              className="RepoDetails-stopButton"
-              onClick={props.onStopClick}
-            >
+            <Button className="RepoDetails-stopButton" onClick={onStopClick}>
               <FontAwesomeIcon icon={faStopCircle} />
             </Button>
           </div>
@@ -84,7 +89,7 @@ const RepoDetailsDesktopLayout = (props) => {
       </InputGroup>
     </Row>
   );
-};
+}
 RepoDetailsDesktopLayout.propTypes = {
   userName: PropTypes.string,
   repoName: PropTypes.string,
@@ -94,5 +99,3 @@ RepoDetailsDesktopLayout.propTypes = {
   onStopClick: PropTypes.func,
   onGoClick: PropTypes.func,
 };
-
-export default RepoDetailsDesktopLayout;

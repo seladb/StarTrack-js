@@ -13,7 +13,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStopCircle } from "@fortawesome/free-solid-svg-icons";
 
-const RepoDetailsMobileLayout = (props) => {
+export default function RepoDetailsMobileLayout({
+  userName,
+  repoName,
+  loadInProgress,
+  handleKeyPress,
+  handlePaste,
+  onStopClick,
+  onGoClick,
+}) {
   return (
     <Container>
       <Row>
@@ -23,28 +31,28 @@ const RepoDetailsMobileLayout = (props) => {
       </Row>
       <Row>
         <FormControl
-          ref={props.userName}
+          ref={userName}
           placeholder="Username"
           aria-label="Username"
-          onKeyPress={props.handleKeyPress}
-          onPaste={props.handlePaste}
+          onKeyPress={handleKeyPress}
+          onPaste={handlePaste}
         />
       </Row>
       <Row>
         <FormControl
-          ref={props.repoName}
+          ref={repoName}
           placeholder="Repo name"
           aria-label="Repo name"
-          onKeyPress={props.handleKeyPress}
-          onPaste={props.handlePaste}
+          onKeyPress={handleKeyPress}
+          onPaste={handlePaste}
         />
       </Row>
       <Row>
-        {!props.loadInProgress ? (
+        {!loadInProgress ? (
           <Button
             className="RepoDetailsMobileLayout-goButton"
             type="button"
-            onClick={props.onGoClick}
+            onClick={onGoClick}
           >
             Go!
           </Button>
@@ -64,10 +72,7 @@ const RepoDetailsMobileLayout = (props) => {
               />{" "}
               Loading...
             </Button>
-            <Button
-              className="RepoDetails-stopButton"
-              onClick={props.onStopClick}
-            >
+            <Button className="RepoDetails-stopButton" onClick={onStopClick}>
               <FontAwesomeIcon icon={faStopCircle} />
             </Button>
           </div>
@@ -75,7 +80,7 @@ const RepoDetailsMobileLayout = (props) => {
       </Row>
     </Container>
   );
-};
+}
 RepoDetailsMobileLayout.propTypes = {
   userName: PropTypes.string,
   repoName: PropTypes.string,
@@ -85,5 +90,3 @@ RepoDetailsMobileLayout.propTypes = {
   onStopClick: PropTypes.func,
   onGoClick: PropTypes.func,
 };
-
-export default RepoDetailsMobileLayout;

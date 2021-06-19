@@ -10,7 +10,11 @@ const TokenValidationStatus = {
   DidNotCheck: "did-not-check",
 };
 
-const GitHubAuthForm = (props) => {
+export default function GitHubAuthForm({
+  show,
+  handleLoginSuccess,
+  handleClose,
+}) {
   const [tokenValidationStatus, setTokenValidationStatus] = useState(
     TokenValidationStatus.Init
   );
@@ -36,7 +40,7 @@ const GitHubAuthForm = (props) => {
         getStorageTypeDecision()
       )
       .then(() => {
-        handleCallback.current = props.handleLoginSuccess;
+        handleCallback.current = handleLoginSuccess;
         setTokenValidationStatus(TokenValidationStatus.Valid);
       })
       .catch(() => {
@@ -46,7 +50,7 @@ const GitHubAuthForm = (props) => {
   };
 
   const handleCloseClick = () => {
-    handleCallback.current = props.handleClose;
+    handleCallback.current = handleClose;
     setTokenValidationStatus(TokenValidationStatus.DidNotCheck);
   };
 
@@ -61,7 +65,7 @@ const GitHubAuthForm = (props) => {
   }, [tokenValidationStatus]);
 
   return (
-    <Modal show={props.show} onHide={handleCloseClick}>
+    <Modal show={show} onHide={handleCloseClick}>
       <Form onSubmit={handleLoginClick}>
         <Modal.Header closeButton>
           <Modal.Title>GitHub Authentication</Modal.Title>
@@ -144,11 +148,9 @@ const GitHubAuthForm = (props) => {
       </Form>
     </Modal>
   );
-};
+}
 GitHubAuthForm.propTypes = {
   show: PropTypes.bool,
   handleLoginSuccess: PropTypes.func,
   handleClose: PropTypes.func,
 };
-
-export default GitHubAuthForm;

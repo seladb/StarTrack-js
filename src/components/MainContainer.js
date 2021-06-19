@@ -13,10 +13,8 @@ import stargazerLoader, { maxReposAllowed } from "../utils/StargazerLoader";
 import stargazerStats from "./../utils/StargazerStats";
 import gitHubUtils from "../utils/GitHubUtils";
 
-const MainContainer = (props) => {
-  const [repos, setRepos] = useState(
-    props.preloadedRepos ? props.preloadedRepos : []
-  );
+export default function MainContainer({ preloadedRepos }) {
+  const [repos, setRepos] = useState(preloadedRepos || []);
 
   const [alert, setAlert] = useState({
     show: false,
@@ -259,9 +257,7 @@ const MainContainer = (props) => {
       </Modal>
     </div>
   );
-};
+}
 MainContainer.propTypes = {
   preloadedRepos: PropTypes.object,
 };
-
-export default MainContainer;

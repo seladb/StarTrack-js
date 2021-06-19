@@ -5,9 +5,9 @@ import "./RepoPreloader.css";
 import stargazerLoader, { maxReposAllowed } from "../utils/StargazerLoader";
 import MainPage from "./MainPage";
 
-const RepoPreloader = (props) => {
+export default function RepoPreloader({ location }) {
   const parseUrlParams = () => {
-    const searchParams = new URLSearchParams(props.location.search);
+    const searchParams = new URLSearchParams(location.search);
     const result = [];
     searchParams.forEach((value, key) => {
       if (key === "r") {
@@ -144,9 +144,7 @@ const RepoPreloader = (props) => {
       )}
     </div>
   );
-};
+}
 RepoPreloader.propTypes = {
   location: PropTypes.string,
 };
-
-export default RepoPreloader;

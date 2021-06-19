@@ -3,16 +3,14 @@ import PropTypes from "prop-types";
 import TopNav from "./TopNav";
 import MainContainer from "./MainContainer";
 
-const MainPage = (props) => {
+export default function MainPage({ preloadedRepos }) {
   return (
     <div>
       <TopNav />
-      <MainContainer preloadedRepos={props.preloadedRepos} />
+      <MainContainer preloadedRepos={preloadedRepos} />
     </div>
   );
-};
+}
 MainPage.propTypes = {
   preloadedRepos: PropTypes.object,
 };
-
-export default MainPage;

@@ -72,6 +72,12 @@ It uses the following npm packages:
 - [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
 - [least-squares](https://github.com/jprichardson/least-squares) for calculating the forecast
 
+Dev packages:
+
+- [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
+- [husky](https://github.com/typicode/husky), [lint-staged](https://github.com/okonet/lint-staged) and [pretty-quick](https://github.com/azz/pretty-quick) for pre-commit hooks
+- [gh-pages](https://github.com/tschaub/gh-pages) for GitHub Pages deployment
+
 GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
 
 To run it locally follow these steps:

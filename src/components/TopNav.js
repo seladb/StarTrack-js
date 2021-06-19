@@ -8,7 +8,7 @@ import { useMediaQuery } from "react-responsive";
 
 const starTrackGitHubRepo = "https://github.com/seladb/startrack-js";
 
-const TopNav = () => {
+export default function TopNav() {
   const smallScreen = useMediaQuery({ query: "(max-width: 650px)" });
 
   return (
@@ -37,6 +37,4 @@ const TopNav = () => {
       <GitHubAuthContainer />
     </Navbar>
   );
-};
-
-export default TopNav;
+}

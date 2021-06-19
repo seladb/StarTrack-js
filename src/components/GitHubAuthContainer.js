@@ -3,7 +3,7 @@ import GitHubAuthBtn from "./GitHubAuthBtn";
 import GitHubAuthForm from "./GitHubAuthForm";
 import gitHubUtils from "../utils/GitHubUtils";
 
-const GitHubAuthContainer = () => {
+export default function GitHubAuthContainer() {
   const [showGitHubAuthForm, setShowGitHubAuthForm] = useState(false);
   const [accessToken, setAccessToken] = useState(gitHubUtils.getAccessToken());
   const [storageType, setStorageType] = useState(gitHubUtils.getStorageType());
@@ -45,6 +45,4 @@ const GitHubAuthContainer = () => {
       />
     </div>
   );
-};
-
-export default GitHubAuthContainer;
+}

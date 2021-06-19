@@ -7,7 +7,7 @@ const minForecastBackwardsDays = 10;
 const minForecastForwardDays = 10;
 const maxForecastForwardDays = 365 * 10;
 
-const ForecastChooser = (props) => {
+export default function ForecastChooser({ onForecastProps }) {
   const [showModal, setShowModal] = useState(false);
   const [checkBoxLabel, setCheckBoxLabel] = useState(checkBoxDefaultLabel);
   const [showAlert, setShowAlert] = useState(false);
@@ -26,7 +26,7 @@ const ForecastChooser = (props) => {
       setShowAlert(false);
     } else {
       setCheckBoxLabel(checkBoxDefaultLabel);
-      props.onForecastProps(null);
+      onForecastProps(null);
     }
   };
 
@@ -34,7 +34,7 @@ const ForecastChooser = (props) => {
     setShowModal(false);
     setCheckBoxLabel(checkBoxDefaultLabel);
     forecastCheckBox.current.checked = false;
-    props.onForecastProps(null);
+    onForecastProps(null);
     setShowAlert(false);
   };
 
@@ -98,7 +98,7 @@ const ForecastChooser = (props) => {
     const checkBoxNewLabel = `Display ${forecastForwardInput.current.value} ${forecastForwardSelect.current.value} forecast based on the last ${forecastBasedOnLastInput.current.value} ${forecastBasedOnLastSelect.current.value}`;
     setCheckBoxLabel(checkBoxNewLabel);
     setShowModal(false);
-    props.onForecastProps(forecastProps);
+    onForecastProps(forecastProps);
   };
 
   return (
@@ -213,9 +213,7 @@ const ForecastChooser = (props) => {
       </Modal>
     </Container>
   );
-};
+}
 ForecastChooser.propTypes = {
   onForecastProps: PropTypes.func,
 };
-
-export default ForecastChooser;

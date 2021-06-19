@@ -8,8 +8,13 @@ import { faChartLine, faSuperscript } from "@fortawesome/free-solid-svg-icons";
 export const LINEAR = "linear";
 export const LOGSCALE = "logscale";
 
-const ChartContainer = (props) => {
-  const chartSeries = props.repos.flatMap(
+export default function ChartContainer({
+  repos,
+  chartType,
+  onTimeRangeChange,
+  onChartTypeChange,
+}) {
+  const chartSeries = repos.flatMap(
     ({ username, repo, stargazerData, forecast }) => {
       const series = [
         {
@@ -28,8 +33,8 @@ const ChartContainer = (props) => {
   );
 
   const onZoom = (chartContext, { xaxis, yaxis }) => {
-    if (props.onTimeRangeChange) {
-      props.onTimeRangeChange(xaxis);
+    if (onTimeRangeChange) {
+      onTimeRangeChange(xaxis);
     }
   };
 
@@ -37,7 +42,7 @@ const ChartContainer = (props) => {
     chart: {
       id: "stargazers",
       zoom: {
-        autoScaleYaxis: props.repos.length <= 1,
+        autoScaleYaxis: repos.length <= 1,
       },
       events: {
         zoomed: onZoom,
@@ -47,7 +52,7 @@ const ChartContainer = (props) => {
           // disable zoom and pan tools in log mode, see
           // https://github.com/seladb/StarTrack-js/issues/15#issuecomment-646945288
           ...["zoom", "zoomin", "zoomout", "pan", "reset"].reduce((a, k) => {
-            a[k] = props.chartType === LINEAR;
+            a[k] = chartType === LINEAR;
             return a;
           }, {}),
           customIcons: [
@@ -55,22 +60,22 @@ const ChartContainer = (props) => {
               icon: icon(faChartLine).html,
               index: -2,
               class: `chart-fa-icon mr-1 ml-3 ${
-                props.chartType === LINEAR ? "text-primary" : ""
+                chartType === LINEAR ? "text-primary" : ""
               }`,
               title: "Use linear scale",
               click() {
-                props.onChartTypeChange(LINEAR);
+                onChartTypeChange(LINEAR);
               },
             },
             {
               icon: icon(faSuperscript).html,
               index: -1,
               class: `chart-fa-icon mr-2 ${
-                props.chartType === LOGSCALE ? "text-primary" : ""
+                chartType === LOGSCALE ? "text-primary" : ""
               }`,
               title: "Use logarithmic scale",
               click() {
-                props.onChartTypeChange(LOGSCALE);
+                onChartTypeChange(LOGSCALE);
               },
             },
           ],
@@ -78,7 +83,7 @@ const ChartContainer = (props) => {
       },
     },
     yaxis: {
-      logarithmic: props.chartType === LOGSCALE,
+      logarithmic: chartType === LOGSCALE,
     },
     xaxis: {
       type: "datetime",
@@ -90,11 +95,11 @@ const ChartContainer = (props) => {
     },
     stroke: {
       curve: "straight",
-      dashArray: props.repos.flatMap(({ forecast }) => {
+      dashArray: repos.flatMap(({ forecast }) => {
         return forecast !== null ? [0, 5] : [0];
       }),
     },
-    colors: props.repos.flatMap(({ color, forecast }) => {
+    colors: repos.flatMap(({ color, forecast }) => {
       return forecast !== null ? [color, color] : [color];
     }),
   };
@@ -104,12 +109,10 @@ const ChartContainer = (props) => {
       <ReactApexChart options={chartOptions} series={chartSeries} type="line" />
     </Container>
   );
-};
+}
 ChartContainer.propTypes = {
   repos: PropTypes.array,
   onTimeRangeChange: PropTypes.func,
   onChartTypeChange: PropTypes.func,
   chartType: PropTypes.string,
 };
-
-export default ChartContainer;

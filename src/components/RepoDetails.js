@@ -7,19 +7,20 @@ import { useMediaQuery } from "react-responsive";
 import { Container } from "react-bootstrap/";
 import gh from "parse-github-url";
 
-const RepoDetails = (props) => {
+export default function RepoDetails({
+  loadInProgress,
+  onStopClick,
+  onRepoDetails,
+}) {
   const repoName = useRef();
   const userName = useRef();
 
   const onGoClick = () => {
-    props.onRepoDetails(
-      userName.current.value.trim(),
-      repoName.current.value.trim()
-    );
+    onRepoDetails(userName.current.value.trim(), repoName.current.value.trim());
   };
 
   const handleKeyPress = (target) => {
-    if (target.charCode === 13 && !props.loadInProgress) {
+    if (target.charCode === 13 && !loadInProgress) {
       onGoClick();
     }
 
@@ -62,8 +63,8 @@ const RepoDetails = (props) => {
           onGoClick={onGoClick}
           handleKeyPress={handleKeyPress}
           handlePaste={handlePaste}
-          loadInProgress={props.loadInProgress}
-          onStopClick={props.onStopClick}
+          loadInProgress={loadInProgress}
+          onStopClick={onStopClick}
         />
       ) : (
         <RepoDetailsDesktopLayout
@@ -72,17 +73,15 @@ const RepoDetails = (props) => {
           onGoClick={onGoClick}
           handleKeyPress={handleKeyPress}
           handlePaste={handlePaste}
-          loadInProgress={props.loadInProgress}
-          onStopClick={props.onStopClick}
+          loadInProgress={loadInProgress}
+          onStopClick={onStopClick}
         />
       )}
     </Container>
   );
-};
+}
 RepoDetails.propTypes = {
   loadInProgress: PropTypes.bool,
   onStopClick: PropTypes.func,
   onRepoDetails: PropTypes.func,
 };
-
-export default RepoDetails;
