@@ -78,7 +78,7 @@ Dev packages:
 - [husky](https://github.com/typicode/husky), [lint-staged](https://github.com/okonet/lint-staged) and [pretty-quick](https://github.com/azz/pretty-quick) for pre-commit hooks
 - [gh-pages](https://github.com/tschaub/gh-pages) for GitHub Pages deployment
 
-GitHub pages deployment status: [![Build Status](https://travis-ci.com/seladb/StarTrack-js.svg?branch=master)](https://travis-ci.com/seladb/StarTrack-js)
+GitHub pages deployment status: [![GitHub Pages](https://github.com/seladb/StarTrack-js/actions/workflows/deploy.yml/badge.svg)](https://github.com/seladb/StarTrack-js/actions/workflows/deploy.yml)
 
 To run it locally follow these steps:
 
