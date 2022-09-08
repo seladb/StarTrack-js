@@ -98,6 +98,11 @@ class StargazerStats {
       ret
     );
 
+    // This makes sure the forecast starts from the recent star count
+    const mostRecentData = stargazerFilteredData.at(-1);
+    const delta =
+      mostRecentData.y - Math.round(leastSquaresFun(mostRecentData.x));
+
     const forecastData = [...Array(forecastPoints + 1).keys()]
       .map((i) => (forecastDaysForward * i) / forecastPoints)
       .map((daysFromNow) => {
@@ -105,7 +110,7 @@ class StargazerStats {
         dateFromNow.setDate(dateFromNow.getDate() + daysFromNow);
         return {
           x: dateFromNow.toISOString(),
-          y: Math.round(leastSquaresFun(dateFromNow.getTime())),
+          y: Math.round(delta + leastSquaresFun(dateFromNow.getTime())),
         };
       });
     return forecastData;

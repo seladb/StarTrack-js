@@ -1,6 +1,6 @@
 {
   "name": "startrack-js",
-  "version": "2.4.0",
+  "version": "2.4.3",
   "private": true,
   "homepage": "http://seladb.github.io/StarTrack-js",
   "dependencies": {
@@ -11,7 +11,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-    "apexcharts": "^3.14.0",
+    "apexcharts": "3.33.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "least-squares": "0.0.2",
@@ -29,13 +29,14 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint ./",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "format-check": "prettier --check \"**/*.{js,jsx,json,md}\""
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
+    "test": "react-scripts --openssl-legacy-provider test",
+    "eject": "react-scripts --openssl-legacy-provider eject",
+    "format": "prettier --config .prettierrc . --check .",
+    "format:fix": "prettier --config .prettierrc . --write",
+    "lint": "eslint --ext js,jsx,ts,tsx src/",
+    "lint:fix": "eslint --ext js,jsx,ts,tsx --fix src/"
   },
   "browserslist": {
     "production": [
