@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/StarTrack-js/static/css/main.171ed4bc.chunk.css",
-    "main.js": "/StarTrack-js/static/js/main.ffa64ae6.chunk.js",
-    "main.js.map": "/StarTrack-js/static/js/main.ffa64ae6.chunk.js.map",
+    "main.js": "/StarTrack-js/static/js/main.9881d4a1.chunk.js",
+    "main.js.map": "/StarTrack-js/static/js/main.9881d4a1.chunk.js.map",
     "runtime-main.js": "/StarTrack-js/static/js/runtime-main.ab848313.js",
     "runtime-main.js.map": "/StarTrack-js/static/js/runtime-main.ab848313.js.map",
     "static/css/2.4c34b247.chunk.css": "/StarTrack-js/static/css/2.4c34b247.chunk.css",
-    "static/js/2.b188926f.chunk.js": "/StarTrack-js/static/js/2.b188926f.chunk.js",
-    "static/js/2.b188926f.chunk.js.map": "/StarTrack-js/static/js/2.b188926f.chunk.js.map",
+    "static/js/2.57f1bdcc.chunk.js": "/StarTrack-js/static/js/2.57f1bdcc.chunk.js",
+    "static/js/2.57f1bdcc.chunk.js.map": "/StarTrack-js/static/js/2.57f1bdcc.chunk.js.map",
     "index.html": "/StarTrack-js/index.html",
     "static/css/2.4c34b247.chunk.css.map": "/StarTrack-js/static/css/2.4c34b247.chunk.css.map",
     "static/css/main.171ed4bc.chunk.css.map": "/StarTrack-js/static/css/main.171ed4bc.chunk.css.map",
-    "static/js/2.b188926f.chunk.js.LICENSE.txt": "/StarTrack-js/static/js/2.b188926f.chunk.js.LICENSE.txt"
+    "static/js/2.57f1bdcc.chunk.js.LICENSE.txt": "/StarTrack-js/static/js/2.57f1bdcc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ab848313.js",
     "static/css/2.4c34b247.chunk.css",
-    "static/js/2.b188926f.chunk.js",
+    "static/js/2.57f1bdcc.chunk.js",
     "static/css/main.171ed4bc.chunk.css",
-    "static/js/main.ffa64ae6.chunk.js"
+    "static/js/main.9881d4a1.chunk.js"
   ]
 }
