@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/StarTrack-js/static/css/main.db8a8855.chunk.css",
-    "main.js": "/StarTrack-js/static/js/main.f01550f6.chunk.js",
-    "main.js.map": "/StarTrack-js/static/js/main.f01550f6.chunk.js.map",
+    "main.css": "/StarTrack-js/static/css/main.171ed4bc.chunk.css",
+    "main.js": "/StarTrack-js/static/js/main.d7519cc2.chunk.js",
+    "main.js.map": "/StarTrack-js/static/js/main.d7519cc2.chunk.js.map",
     "runtime-main.js": "/StarTrack-js/static/js/runtime-main.d620b3a3.js",
     "runtime-main.js.map": "/StarTrack-js/static/js/runtime-main.d620b3a3.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/StarTrack-js/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.76d0fc03.chunk.js": "/StarTrack-js/static/js/2.76d0fc03.chunk.js",
-    "static/js/2.76d0fc03.chunk.js.map": "/StarTrack-js/static/js/2.76d0fc03.chunk.js.map",
+    "static/js/2.18e71eda.chunk.js": "/StarTrack-js/static/js/2.18e71eda.chunk.js",
+    "static/js/2.18e71eda.chunk.js.map": "/StarTrack-js/static/js/2.18e71eda.chunk.js.map",
     "index.html": "/StarTrack-js/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/StarTrack-js/static/css/2.4c97ca4f.chunk.css.map",
-    "static/css/main.db8a8855.chunk.css.map": "/StarTrack-js/static/css/main.db8a8855.chunk.css.map",
-    "static/js/2.76d0fc03.chunk.js.LICENSE.txt": "/StarTrack-js/static/js/2.76d0fc03.chunk.js.LICENSE.txt"
+    "static/css/main.171ed4bc.chunk.css.map": "/StarTrack-js/static/css/main.171ed4bc.chunk.css.map",
+    "static/js/2.18e71eda.chunk.js.LICENSE.txt": "/StarTrack-js/static/js/2.18e71eda.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d620b3a3.js",
     "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.76d0fc03.chunk.js",
-    "static/css/main.db8a8855.chunk.css",
-    "static/js/main.f01550f6.chunk.js"
+    "static/js/2.18e71eda.chunk.js",
+    "static/css/main.171ed4bc.chunk.css",
+    "static/js/main.d7519cc2.chunk.js"
   ]
 }
