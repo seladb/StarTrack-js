@@ -12,7 +12,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "apexcharts": "3.33.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "^4.4.1",
     "least-squares": "0.0.2",
     "parse-github-url": "^1.0.2",
