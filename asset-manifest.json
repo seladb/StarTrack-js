@@ -5,18 +5,18 @@
     "main.js.map": "/StarTrack-js/static/js/main.d7519cc2.chunk.js.map",
     "runtime-main.js": "/StarTrack-js/static/js/runtime-main.d620b3a3.js",
     "runtime-main.js.map": "/StarTrack-js/static/js/runtime-main.d620b3a3.js.map",
-    "static/css/2.4c97ca4f.chunk.css": "/StarTrack-js/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.18e71eda.chunk.js": "/StarTrack-js/static/js/2.18e71eda.chunk.js",
-    "static/js/2.18e71eda.chunk.js.map": "/StarTrack-js/static/js/2.18e71eda.chunk.js.map",
+    "static/css/2.4c34b247.chunk.css": "/StarTrack-js/static/css/2.4c34b247.chunk.css",
+    "static/js/2.0a48c015.chunk.js": "/StarTrack-js/static/js/2.0a48c015.chunk.js",
+    "static/js/2.0a48c015.chunk.js.map": "/StarTrack-js/static/js/2.0a48c015.chunk.js.map",
     "index.html": "/StarTrack-js/index.html",
-    "static/css/2.4c97ca4f.chunk.css.map": "/StarTrack-js/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/2.4c34b247.chunk.css.map": "/StarTrack-js/static/css/2.4c34b247.chunk.css.map",
     "static/css/main.171ed4bc.chunk.css.map": "/StarTrack-js/static/css/main.171ed4bc.chunk.css.map",
-    "static/js/2.18e71eda.chunk.js.LICENSE.txt": "/StarTrack-js/static/js/2.18e71eda.chunk.js.LICENSE.txt"
+    "static/js/2.0a48c015.chunk.js.LICENSE.txt": "/StarTrack-js/static/js/2.0a48c015.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d620b3a3.js",
-    "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.18e71eda.chunk.js",
+    "static/css/2.4c34b247.chunk.css",
+    "static/js/2.0a48c015.chunk.js",
     "static/css/main.171ed4bc.chunk.css",
     "static/js/main.d7519cc2.chunk.js"
   ]
