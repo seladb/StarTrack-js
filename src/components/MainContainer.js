@@ -9,7 +9,6 @@ import StatsTable from "./StatsTable";
 import UrlDisplay from "./UrlDisplay";
 import ClosableBadge from "../shared/ClosableBadge";
 import Footer from "./Footer";
-import stargazerLoader, { maxReposAllowed } from "../utils/StargazerLoader";
 import stargazerStats from "./../utils/StargazerStats";
 import gitHubUtils from "../utils/GitHubUtils";
 
@@ -73,14 +72,6 @@ export default function MainContainer({ preloadedRepos }) {
       ) !== undefined
     ) {
       showAlert("Repo exists", "Repo already exists");
-      return;
-    }
-
-    if (repos.length + 1 > maxReposAllowed) {
-      showAlert(
-        "Reached max number of repos allowed",
-        "Maximum repos that can be shown at the same time is " + maxReposAllowed
-      );
       return;
     }
 

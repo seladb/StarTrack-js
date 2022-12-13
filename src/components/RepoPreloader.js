@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Container, ProgressBar, Button } from "react-bootstrap/";
 import "./RepoPreloader.css";
-import stargazerLoader, { maxReposAllowed } from "../utils/StargazerLoader";
 import MainPage from "./MainPage";
 
 export default function RepoPreloader({ location }) {
@@ -13,7 +12,6 @@ export default function RepoPreloader({ location }) {
       if (key === "r") {
         const repo = value.split(",");
         if (
-          result.length < maxReposAllowed &&
           repo.length === 2 &&
           result.find(
             (iter) => iter.username === repo[0] && iter.repo === repo[1]

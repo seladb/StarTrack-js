@@ -2,7 +2,7 @@
   "name": "startrack-js",
   "version": "2.4.3",
   "private": true,
-  "homepage": "http://seladb.github.io/StarTrack-js",
+  "homepage": "http://zhimin-z.github.io/StarTrack-js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
