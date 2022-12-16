@@ -9,6 +9,7 @@ import StatsTable from "./StatsTable";
 import UrlDisplay from "./UrlDisplay";
 import ClosableBadge from "../shared/ClosableBadge";
 import Footer from "./Footer";
+import stargazerLoader from "../utils/StargazerLoader";
 import stargazerStats from "./../utils/StargazerStats";
 import gitHubUtils from "../utils/GitHubUtils";
 
