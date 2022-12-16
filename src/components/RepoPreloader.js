@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Container, ProgressBar, Button } from "react-bootstrap/";
 import "./RepoPreloader.css";
+import stargazerLoader from "../utils/StargazerLoader";
 import MainPage from "./MainPage";
 
 export default function RepoPreloader({ location }) {
