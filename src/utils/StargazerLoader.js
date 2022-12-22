@@ -2,7 +2,7 @@ import gitHubUtils from "./GitHubUtils";
 import stargazerStats from "./StargazerStats";
 
 // Refer to post https://stackoverflow.com/questions/10014271/generate-random-color-distinguishable-to-humans
-Colors = [
+const Colors = [
   "#00ffff", // aqua
   "#f0ffff", // azure
   "#f5f5dc", // beige
