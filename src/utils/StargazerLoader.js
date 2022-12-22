@@ -2,11 +2,18 @@ import gitHubUtils from "./GitHubUtils";
 import stargazerStats from "./StargazerStats";
 
 function getColor() {
-  return "hsl(" + 360 * Math.random() + ',' + (25 + 70 * Math.random()) + '%,' + (85 + 10 * Math.random()) + '%)'
+  return (
+    "hsl(" +
+    360 * Math.random() +
+    "," +
+    (25 + 70 * Math.random()) +
+    "%," +
+    (85 + 10 * Math.random()) +
+    "%)"
+  );
 }
 
 class StargazerLoader {
-
   async loadStargazers(
     username,
     repo,
@@ -32,11 +39,11 @@ class StargazerLoader {
       forecast:
         forecastProps !== null
           ? stargazerStats.calcForecast(
-            stargazerData,
-            forecastProps.daysBackwards,
-            forecastProps.daysForward,
-            forecastProps.numValues
-          )
+              stargazerData,
+              forecastProps.daysBackwards,
+              forecastProps.daysForward,
+              forecastProps.numValues
+            )
           : null,
     };
   }
