@@ -48,7 +48,7 @@ Colors = [
   "#ffff00"  // yellow
 ];
 
-export const maxReposAllowed = 43;
+export const maxReposAllowed = Colors.length;
 
 class StargazerLoader {
   static colorIndex = -1;
