@@ -45,7 +45,7 @@ const Colors = [
   "#ff0000", // red
   "#c0c0c0", // silver
   "#ffffff", // white
-  "#ffff00", // yellow
+  "#ffff00"  // yellow
 ];
 
 export const maxReposAllowed = Colors.length;
@@ -82,11 +82,11 @@ class StargazerLoader {
       forecast:
         forecastProps !== null
           ? stargazerStats.calcForecast(
-              stargazerData,
-              forecastProps.daysBackwards,
-              forecastProps.daysForward,
-              forecastProps.numValues
-            )
+            stargazerData,
+            forecastProps.daysBackwards,
+            forecastProps.daysForward,
+            forecastProps.numValues
+          )
           : null,
     };
   }
