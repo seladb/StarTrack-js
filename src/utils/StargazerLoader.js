@@ -70,7 +70,7 @@ class StargazerLoader {
       return null;
     }
     StargazerLoader.colorIndex =
-      StargazerLoader.colorIndex + 1 === colors.length
+      StargazerLoader.colorIndex + 1 === maxReposAllowed
         ? 0
         : StargazerLoader.colorIndex + 1;
     return {
