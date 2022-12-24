@@ -4,7 +4,7 @@ import stargazerStats from "./StargazerStats";
 // Refer to post https://stackoverflow.com/questions/10014271/generate-random-color-distinguishable-to-humans
 function makeColor(number) {
   const hue = number * 137.508; // use golden angle approximation
-  return `hsl(${hue},50%,75%)`;
+  return `hsl(${hue},50%,50%)`;
 }
 
 class StargazerLoader {
