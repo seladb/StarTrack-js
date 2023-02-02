@@ -1,0 +1,6 @@
+# Ignore old source
+src_old
+old
+
+# Ignore artifacts
+build
