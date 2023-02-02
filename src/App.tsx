@@ -1,11 +1,13 @@
 import React from "react"
-import logo from "./logo.svg"
+// import logo from "./logo.svg"
 import "./App.css"
+import TopNav from "./components/TopNav"
 
-function App() {
+export default function App() {
   return (
     <div className='App'>
-      <header className='App-header'>
+      <TopNav></TopNav>
+      {/* <header className='App-header'>
         <img src={logo} className='App-logo' alt='logo' />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
@@ -18,9 +20,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   )
 }
-
-export default App
