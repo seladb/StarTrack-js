@@ -1,31 +1,34 @@
 {
   "env": {
     "browser": true,
-    "jest": true,
-    "es6": true
+    "es2021": true,
+    "jest": true
   },
   "extends": [
+    "eslint:recommended",
     "plugin:react/recommended",
-    "standard",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 2018,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react"],
-  "rules": {},
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "camelcase": "error",
+    "spaced-comment": "error",
+    "quotes": ["error", "single"],
+    "no-duplicate-imports": "error"
+  },
   "settings": {
-    "react": {
-      "version": "detect"
+    "import/resolver": {
+      "typescript": {}
     }
   }
 }
