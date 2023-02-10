@@ -171,6 +171,7 @@ export const loadStargazers = async (
       throw Error(
         "Cannot load a repo with more than " +
           100 * maxSupportedPagesWithoutAccessToken +
+          // eslint-disable-next-line quotes
           ' stars without GitHub access token. Please click "GitHub Authentication" and provide one',
       )
     }
@@ -213,7 +214,7 @@ export const loadStargazers = async (
           "API rate limit exceeded!" +
             (isLoggedIn()
               ? ""
-              : /* eslint quotes: ["error", "double", { "avoidEscape": true }] */
+              : // eslint-disable-next-line quotes
                 ' Please click "GitHub Authentication" and provide GitHub access token to increase rate limit'),
         )
       }

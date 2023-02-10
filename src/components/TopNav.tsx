@@ -1,12 +1,13 @@
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import GitHubIcon from "@mui/icons-material/GitHub"
+import { AppBar, Box, Toolbar, Typography } from "@mui/material"
 import packageJson from "../../package.json"
+import GitHubAuthBtn from "./GitHubAuthBtn"
+import GitHubToken from "./GitHubToken"
+import ProjectOnGitHubBtn from "./ProjectOnGitHubBtn"
+import LoginIcon from "@mui/icons-material/Login"
+import LogoutIcon from "@mui/icons-material/Logout"
+import { StorageType } from "../utils/GitHubUtils"
 
 export default function TopNav() {
-  const starTrackGitHubRepo = "https://github.com/seladb/startrack-js"
-  const smallScreen = useMediaQuery("(max-width: 650px)", { noSsr: true })
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
@@ -21,32 +22,16 @@ export default function TopNav() {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1, m: 1 }}>
             StarTrack v{packageJson.version}
           </Typography>
-          {smallScreen ? (
-            <Box>
-              <IconButton
-                rel='noopener noreferrer'
-                href={starTrackGitHubRepo}
-                target='_blank'
-                color='inherit'
-              >
-                <GitHubIcon />
-              </IconButton>
-            </Box>
-          ) : (
-            <Box>
-              <Button
-                rel='noopener noreferrer'
-                href={starTrackGitHubRepo}
-                target='_blank'
-                sx={{ m: 2 }}
-                color='inherit'
-                variant='outlined'
-                startIcon={<GitHubIcon />}
-              >
-                Project On GitHub
-              </Button>
-            </Box>
-          )}
+          <ProjectOnGitHubBtn />
+          <GitHubToken accessToken='ec5193' storageType={StorageType.LocalStorage} />
+          <GitHubAuthBtn text='GitHub Authentication' Icon={LoginIcon} />
+          <GitHubAuthBtn
+            text='Log Out'
+            Icon={LogoutIcon}
+            onClick={() => {
+              alert("bye")
+            }}
+          />
         </Toolbar>
       </AppBar>
     </Box>

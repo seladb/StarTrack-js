@@ -261,20 +261,22 @@ describe("Test getLastStargazerPage", () => {
 
   it("Throws an error if can't find 'last' value in link header", () => {
     const linkHeader =
+      // eslint-disable-next-line quotes
       '<https://api.github.com/repositories/24911519/stargazers?per_page=100&page=2>; rel="next"'
     expect(() => {
       utils.getLastStargazerPage(linkHeader)
     }).toThrow("Cannot find last stargazer page")
   })
 
-  /* eslint quotes: ["error", "double", { "avoidEscape": true }] */
   it.each([
     ["", 1],
     [
+      // eslint-disable-next-line quotes
       '<https://api.github.com/repositories/24911519/stargazers?per_page=100&page=2>; rel="next", <https://api.github.com/repositories/24911519/stargazers?per_page=100&page=22>; rel="last"',
       22,
     ],
     [
+      // eslint-disable-next-line quotes
       '<https://api.github.com/repositories/24911519/stargazers?per_page=100&page=22>; rel="last"',
       22,
     ],
