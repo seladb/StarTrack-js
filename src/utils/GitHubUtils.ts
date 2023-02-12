@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios"
+import * as GitHubUtils from "./GitHubUtils"
 
 const stargazersURL =
   "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}"
@@ -47,7 +48,7 @@ export const getStorage = (): Storage => {
 }
 
 export const getStorageType = () => {
-  switch (exports.getStorage()) {
+  switch (GitHubUtils.getStorage()) {
     case sessionStorage:
       return StorageType.SessionStorage
     case localStorage:
@@ -64,11 +65,11 @@ export const setStorageType = (storageType: StorageType) => {
 }
 
 export const getAccessToken = (): string | null => {
-  return exports.getStorage().getItem(storageKey)
+  return GitHubUtils.getStorage().getItem(storageKey)
 }
 
 export const removeAccessToken = () => {
-  exports.getStorage().removeItem(storageKey)
+  GitHubUtils.getStorage().removeItem(storageKey)
 }
 
 export const isLoggedIn = () => {
@@ -89,8 +90,8 @@ export const validateAndStoreAccessToken = async (
   storageType: StorageType,
 ) => {
   try {
-    await axios.get(validateAccessTokenURL, exports.prepareRequestHeaders(accessToken))
-    exports.setStorageType(storageType).setItem(storageKey, accessToken)
+    await axios.get(validateAccessTokenURL, GitHubUtils.prepareRequestHeaders(accessToken))
+    GitHubUtils.setStorageType(storageType).setItem(storageKey, accessToken)
     return true
   } catch {
     return false
@@ -102,13 +103,13 @@ export const loadStarGazerPage = async (
   repo: string,
   pageNum: number,
 ): Promise<AxiosResponse> => {
-  const accessToken = exports.getAccessToken()
+  const accessToken = GitHubUtils.getAccessToken()
   return await axios.get(
     stargazersURL
       .replace("{user}", user)
       .replace("{repo}", repo)
       .replace("{page}", pageNum.toString()),
-    exports.prepareRequestHeaders(accessToken),
+    GitHubUtils.prepareRequestHeaders(accessToken),
   )
 }
 
