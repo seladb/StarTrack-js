@@ -13,7 +13,7 @@ const createMatchMedia = (width: number) => (query: string) => ({
   dispatchEvent: jest.fn(),
 })
 
-describe("Project on GitHub button", () => {
+describe(ProjectOnGitHubBtn, () => {
   it("Display on large screen", () => {
     window.matchMedia = createMatchMedia(1000)
     render(<ProjectOnGitHubBtn />)

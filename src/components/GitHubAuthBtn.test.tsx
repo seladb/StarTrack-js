@@ -13,7 +13,7 @@ const createMatchMedia = (width: number) => (query: string) => ({
   dispatchEvent: jest.fn(),
 })
 
-describe("Auth button", () => {
+describe(GitHubAuthBtn, () => {
   const text = "Text"
   const Icon = jest.fn()
   const onBtnClick = jest.fn()

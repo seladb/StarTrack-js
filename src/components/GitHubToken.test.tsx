@@ -15,7 +15,7 @@ const createMatchMedia = (width: number) => (query: string) => ({
   dispatchEvent: jest.fn(),
 })
 
-describe("GitHub Token", () => {
+describe(GitHubToken, () => {
   const accessToken = "my_access_token"
   const storageType = StorageType.SessionStorage
 
