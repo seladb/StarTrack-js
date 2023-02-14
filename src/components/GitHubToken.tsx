@@ -14,11 +14,13 @@ export default function GitHubToken({ accessToken, storageType }: GitHubTokenPro
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
   const [tooltipIsOpen, setTooltipIsOpen] = useState(false)
 
+  const accessTokenShort = accessToken.slice(-6)
+
   return smallScreen ? (
     <IconButton color='inherit' onClick={() => setTooltipIsOpen(!tooltipIsOpen)}>
       <Tooltip
         open={tooltipIsOpen}
-        title={`Access token '${accessToken}' stored in ${storageType}`}
+        title={`Access token '${accessTokenShort}' stored in ${storageType}`}
         arrow
       >
         <KeyIcon />
@@ -28,7 +30,7 @@ export default function GitHubToken({ accessToken, storageType }: GitHubTokenPro
     <>
       <KeyIcon sx={{ m: 1 }} />
       <Tooltip title={`Access token stored in ${storageType}`} arrow>
-        <p>{accessToken}</p>
+        <p>{accessTokenShort}</p>
       </Tooltip>
     </>
   )

@@ -19,12 +19,15 @@ describe(GitHubToken, () => {
   const accessToken = "my_access_token"
   const storageType = StorageType.SessionStorage
 
+  const accessTokenShort = accessToken.slice(-6)
+
   it("Display on large screen", async () => {
     window.matchMedia = createMatchMedia(1000)
     render(<GitHubToken accessToken={accessToken} storageType={storageType} />)
-    expect(screen.getByText(accessToken)).toBeInTheDocument()
+    expect(screen.queryByText(accessToken)).not.toBeInTheDocument()
+    expect(screen.getByText(accessTokenShort)).toBeInTheDocument()
 
-    const text = await screen.findByText(accessToken)
+    const text = await screen.findByText(accessTokenShort)
     userEvent.hover(text)
 
     await waitFor(() => {
@@ -42,6 +45,7 @@ describe(GitHubToken, () => {
     render(<GitHubToken accessToken={accessToken} storageType={storageType} />)
 
     expect(screen.queryByText(accessToken)).not.toBeInTheDocument()
+    expect(screen.queryByText(accessTokenShort)).not.toBeInTheDocument()
 
     const keyIconBtn = screen.getByRole("button")
     fireEvent.click(keyIconBtn)
@@ -49,7 +53,7 @@ describe(GitHubToken, () => {
     await waitFor(() => {
       expect(
         screen.getByRole("tooltip", {
-          name: `Access token '${accessToken}' stored in ${storageType}`,
+          name: `Access token '${accessTokenShort}' stored in ${storageType}`,
           hidden: true,
         }),
       ).toBeVisible()
