@@ -1,11 +1,8 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material"
 import packageJson from "../../package.json"
-import GitHubAuthBtn from "./GitHubAuthBtn"
-import GitHubToken from "./GitHubToken"
 import ProjectOnGitHubBtn from "./ProjectOnGitHubBtn"
-import LoginIcon from "@mui/icons-material/Login"
-import LogoutIcon from "@mui/icons-material/Logout"
-import { StorageType } from "../utils/GitHubUtils"
+import React from "react"
+import GitHubAuthContainer from "./GitHubAuthContainer"
 
 export default function TopNav() {
   return (
@@ -23,15 +20,7 @@ export default function TopNav() {
             StarTrack v{packageJson.version}
           </Typography>
           <ProjectOnGitHubBtn />
-          <GitHubToken accessToken='ec5193' storageType={StorageType.LocalStorage} />
-          <GitHubAuthBtn text='GitHub Authentication' Icon={LoginIcon} />
-          <GitHubAuthBtn
-            text='Log Out'
-            Icon={LogoutIcon}
-            onClick={() => {
-              alert("bye")
-            }}
-          />
+          <GitHubAuthContainer />
         </Toolbar>
       </AppBar>
     </Box>
