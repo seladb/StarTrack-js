@@ -1,17 +1,6 @@
-import mediaQuery from "css-mediaquery"
 import { fireEvent, render, screen } from "@testing-library/react"
+import { createMatchMedia } from "../utils/test"
 import GitHubAuthBtn from "./GitHubAuthBtn"
-
-const createMatchMedia = (width: number) => (query: string) => ({
-  matches: mediaQuery.match(query, { width }),
-  media: query,
-  onchange: null,
-  addListener: jest.fn(),
-  removeListener: jest.fn(),
-  addEventListener: jest.fn(),
-  removeEventListener: jest.fn(),
-  dispatchEvent: jest.fn(),
-})
 
 describe(GitHubAuthBtn, () => {
   const text = "Text"

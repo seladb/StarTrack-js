@@ -1,19 +1,8 @@
-import mediaQuery from "css-mediaquery"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import GitHubToken from "./GitHubToken"
 import { StorageType } from "../utils/GitHubUtils"
-
-const createMatchMedia = (width: number) => (query: string) => ({
-  matches: mediaQuery.match(query, { width }),
-  media: query,
-  onchange: null,
-  addListener: jest.fn(),
-  removeListener: jest.fn(),
-  addEventListener: jest.fn(),
-  removeEventListener: jest.fn(),
-  dispatchEvent: jest.fn(),
-})
+import { createMatchMedia } from "../utils/test"
 
 describe(GitHubToken, () => {
   const accessToken = "my_access_token"
