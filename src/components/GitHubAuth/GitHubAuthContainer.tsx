@@ -27,7 +27,7 @@ export default function GitHubAuthContainer() {
 
   const LoginBtn = (
     <GitHubAuthBtn
-      text='GitHub Authentication'
+      text="GitHub Authentication"
       Icon={LoginIcon}
       onClick={() => {
         setAuthFormOpen(true)
@@ -35,7 +35,7 @@ export default function GitHubAuthContainer() {
     />
   )
 
-  const LogoutBtn = <GitHubAuthBtn text='Log Out' Icon={LogoutIcon} onClick={handleLogout} />
+  const LogoutBtn = <GitHubAuthBtn text="Log Out" Icon={LogoutIcon} onClick={handleLogout} />
 
   const LoginContainer = (
     <>

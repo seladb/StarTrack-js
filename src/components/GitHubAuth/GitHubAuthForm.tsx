@@ -72,9 +72,9 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
           <p>
             GitHub API{" "}
             <a
-              target='_blank'
-              rel='noopener noreferrer'
-              href='https://developer.github.com/v3/#rate-limiting'
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://developer.github.com/v3/#rate-limiting"
             >
               rate limiter
             </a>{" "}
@@ -92,7 +92,7 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
           </p>
           <p>
             You can generate an access token{" "}
-            <a target='_blank' rel='noopener noreferrer' href='https://github.com/settings/tokens'>
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens">
               here
             </a>
             .
@@ -100,12 +100,12 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
         </DialogContentText>
         <TextField
           autoFocus
-          margin='dense'
-          id='name'
-          label='GitHub Access Token'
+          margin="dense"
+          id="name"
+          label="GitHub Access Token"
           value={accessTokenValue || ""}
           fullWidth
-          variant='standard'
+          variant="standard"
           required
           error={accessTokenValid === TokenValidationStatus.Invalid}
           helperText={textFieldHelperText()}
@@ -115,7 +115,7 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
         />
         <FormControlLabel
           control={<Checkbox onChange={handleStorageTypeCheckChanged} />}
-          label='Save access token in local storage'
+          label="Save access token in local storage"
         />
       </DialogContent>
       <DialogActions>

@@ -6,16 +6,16 @@ import GitHubAuthContainer from "../GitHubAuth/GitHubAuthContainer"
 export default function TopNav() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position='static'>
+      <AppBar position="static">
         <Toolbar>
           <img
-            src='star-icon.png'
-            alt='logo'
-            width='30'
-            height='30'
-            className='d-inline-block align-top'
+            src="star-icon.png"
+            alt="logo"
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
           />
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1, m: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, m: 1 }}>
             StarTrack v{packageJson.version}
           </Typography>
           <ProjectOnGitHubBtn />

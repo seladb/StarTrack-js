@@ -20,8 +20,8 @@ const accessToken = "access_token"
 const MockGitHubAuthForm = ({ onClose }: mockGitHubAuthFormProps) => {
   return (
     <div>
-      <button data-testid='form-login' onClick={() => onClose(accessToken)} />
-      <button data-testid='form-close' onClick={() => onClose(null)} />
+      <button data-testid="form-login" onClick={() => onClose(accessToken)} />
+      <button data-testid="form-close" onClick={() => onClose(null)} />
     </div>
   )
 }

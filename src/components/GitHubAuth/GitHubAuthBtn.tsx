@@ -15,7 +15,7 @@ export default function GitHubAuthBtn({ text, Icon, onClick }: GitHubAuthBtnProp
 
   return smallScreen ? (
     <Box>
-      <IconButton color='inherit' onClick={onClick}>
+      <IconButton color="inherit" onClick={onClick}>
         <Icon />
       </IconButton>
     </Box>
@@ -23,8 +23,8 @@ export default function GitHubAuthBtn({ text, Icon, onClick }: GitHubAuthBtnProp
     <Box>
       <Button
         sx={{ m: 1 }}
-        color='inherit'
-        variant='outlined'
+        color="inherit"
+        variant="outlined"
         startIcon={<Icon />}
         onClick={onClick}
       >

@@ -26,21 +26,21 @@ export default function RepoDetailsInputMobile({
 
   return (
     <FormGroup>
-      <Typography variant='body1' sx={{ margin: "auto", fontWeight: "bold" }}>
+      <Typography variant="body1" sx={{ margin: "auto", fontWeight: "bold" }}>
         Repo Details
       </Typography>
       <StyledTextField
         value={username}
-        size='small'
-        placeholder='Username'
+        size="small"
+        placeholder="Username"
         onChange={(e) => {
           setUsername(e.target.value)
         }}
       />
       <StyledTextField
         value={repo}
-        size='small'
-        placeholder='Repo name'
+        size="small"
+        placeholder="Repo name"
         onChange={(e) => {
           setRepo(e.target.value)
         }}
@@ -49,21 +49,21 @@ export default function RepoDetailsInputMobile({
         <FormGroup sx={{ marginTop: "5px", flexDirection: "row" }}>
           <LoadingButton
             loading
-            loadingPosition='start'
+            loadingPosition="start"
             startIcon={<SaveIcon />}
-            variant='contained'
+            variant="contained"
             sx={{ flex: 1 }}
           >
             Loading...
           </LoadingButton>
           <CancelButton
-            variant='contained'
+            variant="contained"
             onClick={onCancelClick}
             startIcon={<StopCircleIcon />}
           ></CancelButton>
         </FormGroup>
       ) : (
-        <Button variant='contained' onClick={handleClick} sx={{ marginTop: "5px" }}>
+        <Button variant="contained" onClick={handleClick} sx={{ marginTop: "5px" }}>
           Go!
         </Button>
       )}

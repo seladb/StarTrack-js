@@ -27,21 +27,21 @@ export default function RepoDetailsInputDesktop({
 
   return (
     <FormGroup sx={{ flexDirection: "row", maxWidth: "800px", margin: "auto" }}>
-      <InputGroupText text='Repo Details' />
+      <InputGroupText text="Repo Details" />
       <StyledTextField
-        variant='outlined'
-        size='small'
-        placeholder='Username'
+        variant="outlined"
+        size="small"
+        placeholder="Username"
         value={username}
         onChange={(e) => {
           setUsername(e.target.value)
         }}
       />
-      <InputGroupText text='/' />
+      <InputGroupText text="/" />
       <StyledTextField
-        variant='outlined'
-        size='small'
-        placeholder='Repo name'
+        variant="outlined"
+        size="small"
+        placeholder="Repo name"
         value={repo}
         onChange={(e) => {
           setRepo(e.target.value)
@@ -51,22 +51,22 @@ export default function RepoDetailsInputDesktop({
         <>
           <LoadingButton
             loading
-            loadingPosition='start'
+            loadingPosition="start"
             startIcon={<SaveIcon />}
-            variant='contained'
+            variant="contained"
             sx={{ width: goBtnWidth }}
           >
             Loading...
           </LoadingButton>
           <CancelButton
-            variant='contained'
-            size='small'
+            variant="contained"
+            size="small"
             onClick={onCancelClick}
             startIcon={<StopCircleIcon />}
           />
         </>
       ) : (
-        <Button variant='contained' size='small' sx={{ width: goBtnWidth }} onClick={handleClick}>
+        <Button variant="contained" size="small" sx={{ width: goBtnWidth }} onClick={handleClick}>
           Go!
         </Button>
       )}

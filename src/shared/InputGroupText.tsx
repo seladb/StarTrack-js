@@ -7,7 +7,7 @@ export interface InputGroupTextProps {
 export default function InputGroupText({ text }: InputGroupTextProps) {
   return (
     <Box
-      component='div'
+      component="div"
       sx={{
         display: "inline",
         p: 1,

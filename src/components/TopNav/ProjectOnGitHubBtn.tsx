@@ -11,10 +11,10 @@ export default function ProjectOnGitHubBtn() {
   return smallScreen ? (
     <Box>
       <IconButton
-        rel='noopener noreferrer'
+        rel="noopener noreferrer"
         href={starTrackGitHubRepo}
-        target='_blank'
-        color='inherit'
+        target="_blank"
+        color="inherit"
       >
         <GitHubIcon />
       </IconButton>
@@ -22,11 +22,11 @@ export default function ProjectOnGitHubBtn() {
   ) : (
     <Box>
       <Button
-        rel='noopener noreferrer'
+        rel="noopener noreferrer"
         href={starTrackGitHubRepo}
-        target='_blank'
-        color='inherit'
-        variant='outlined'
+        target="_blank"
+        color="inherit"
+        variant="outlined"
         startIcon={<GitHubIcon />}
       >
         Project On GitHub

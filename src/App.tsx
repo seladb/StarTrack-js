@@ -6,7 +6,7 @@ import TopNav from "./components/TopNav/TopNav"
 
 export default function App() {
   return (
-    <div className='App'>
+    <div className="App">
       <TopNav></TopNav>
       <MainContainer></MainContainer>
       {/* <header className='App-header'>

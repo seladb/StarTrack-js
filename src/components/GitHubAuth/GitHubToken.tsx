@@ -17,7 +17,7 @@ export default function GitHubToken({ accessToken, storageType }: GitHubTokenPro
   const accessTokenShort = accessToken.slice(-6)
 
   return smallScreen ? (
-    <IconButton color='inherit' onClick={() => setTooltipIsOpen(!tooltipIsOpen)}>
+    <IconButton color="inherit" onClick={() => setTooltipIsOpen(!tooltipIsOpen)}>
       <Tooltip
         open={tooltipIsOpen}
         title={`Access token '${accessTokenShort}' stored in ${storageType}`}
