@@ -1,7 +1,7 @@
 import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material"
 import Typography from "@mui/material/Typography"
 import React from "react"
-import { CancelButton } from "../shared/CancelButton"
+import { CancelButton } from "../../shared/CancelButton"
 import StopCircleIcon from "@mui/icons-material/StopCircle"
 import RepoDetailsInputProps from "./RepoDetailsInputProps"
 import { LoadingButton } from "@mui/lab"

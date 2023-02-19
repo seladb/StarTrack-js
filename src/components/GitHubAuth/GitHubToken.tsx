@@ -2,7 +2,7 @@ import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { IconButton, Tooltip } from "@mui/material"
 import KeyIcon from "@mui/icons-material/Key"
-import { StorageType } from "../utils/GitHubUtils"
+import { StorageType } from "../../utils/GitHubUtils"
 import { useState } from "react"
 
 interface GitHubTokenProps {

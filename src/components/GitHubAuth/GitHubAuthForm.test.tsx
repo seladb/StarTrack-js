@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import GitHubAuthForm from "./GitHubAuthForm"
-import * as GitHubUtils from "../utils/GitHubUtils"
+import * as GitHubUtils from "../../utils/GitHubUtils"
 
 describe(GitHubAuthForm, () => {
   const onClose = jest.fn()

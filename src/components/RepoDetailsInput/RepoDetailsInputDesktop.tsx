@@ -2,9 +2,9 @@ import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/mater
 import LoadingButton from "@mui/lab/LoadingButton"
 import React from "react"
 import StopCircleIcon from "@mui/icons-material/StopCircle"
-import { cancelBtnWidth, CancelButton } from "../shared/CancelButton"
+import { cancelBtnWidth, CancelButton } from "../../shared/CancelButton"
 import RepoDetailsInputProps from "./RepoDetailsInputProps"
-import InputGroupText from "../shared/InputGroupText"
+import InputGroupText from "../../shared/InputGroupText"
 import SaveIcon from "@mui/icons-material/Save"
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({

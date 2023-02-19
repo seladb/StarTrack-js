@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import GitHubAuthContainer from "./GitHubAuthContainer"
-import * as GitHubUtils from "../utils/GitHubUtils"
+import * as GitHubUtils from "../../utils/GitHubUtils"
 
 const mockGitHubToken = jest.fn()
 jest.mock("./GitHubToken", () => ({

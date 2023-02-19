@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react"
-import { createMatchMedia } from "../utils/test"
+import { createMatchMedia } from "../../utils/test"
 import GitHubAuthBtn from "./GitHubAuthBtn"
 
 describe(GitHubAuthBtn, () => {

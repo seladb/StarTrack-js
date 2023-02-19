@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import GitHubToken from "./GitHubToken"
-import { StorageType } from "../utils/GitHubUtils"
-import { createMatchMedia } from "../utils/test"
+import { StorageType } from "../../utils/GitHubUtils"
+import { createMatchMedia } from "../../utils/test"
 
 describe(GitHubToken, () => {
   const accessToken = "my_access_token"
