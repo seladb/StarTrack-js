@@ -2,7 +2,7 @@ import React from "react"
 // import logo from "./logo.svg"
 import "./App.css"
 import MainContainer from "./components/MainContainer"
-import TopNav from "./components/TopNav"
+import TopNav from "./components/TopNav/TopNav"
 
 export default function App() {
   return (

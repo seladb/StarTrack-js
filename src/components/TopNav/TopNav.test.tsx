@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import TopNav from "./TopNav"
-import packageJson from "../../package.json"
+import packageJson from "../../../package.json"
 
 describe(TopNav, () => {
   it("Display correct version", () => {
