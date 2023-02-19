@@ -1,12 +1,14 @@
 import React from "react"
 // import logo from "./logo.svg"
 import "./App.css"
+import MainContainer from "./components/MainContainer"
 import TopNav from "./components/TopNav"
 
 export default function App() {
   return (
     <div className='App'>
       <TopNav></TopNav>
+      <MainContainer></MainContainer>
       {/* <header className='App-header'>
         <img src={logo} className='App-logo' alt='logo' />
         <p>
