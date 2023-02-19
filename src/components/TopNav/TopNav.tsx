@@ -1,7 +1,7 @@
-import { AppBar, Box, Toolbar, Typography } from "@mui/material"
-import packageJson from "../../../package.json"
-import ProjectOnGitHubBtn from "./ProjectOnGitHubBtn"
-import GitHubAuthContainer from "../GitHubAuth/GitHubAuthContainer"
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import packageJson from "../../../package.json";
+import ProjectOnGitHubBtn from "./ProjectOnGitHubBtn";
+import GitHubAuthContainer from "../GitHubAuth/GitHubAuthContainer";
 
 export default function TopNav() {
   return (
@@ -23,5 +23,5 @@ export default function TopNav() {
         </Toolbar>
       </AppBar>
     </Box>
-  )
+  );
 }

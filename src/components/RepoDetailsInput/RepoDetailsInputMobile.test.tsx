@@ -1,11 +1,11 @@
-import { fireEvent, render, screen } from "@testing-library/react"
-import RepoDetailsInputMobile from "./RepoDetailsInputMobile"
+import { fireEvent, render, screen } from "@testing-library/react";
+import RepoDetailsInputMobile from "./RepoDetailsInputMobile";
 
-const goClickHandler = jest.fn()
-const cancelClickHandler = jest.fn()
+const goClickHandler = jest.fn();
+const cancelClickHandler = jest.fn();
 
-const username = "user"
-const repo = "repo"
+const username = "user";
+const repo = "repo";
 
 describe(RepoDetailsInputMobile, () => {
   it("Renders correctly on non-loading state and fires an event on Go click", () => {
@@ -15,18 +15,18 @@ describe(RepoDetailsInputMobile, () => {
         onGoClick={goClickHandler}
         onCancelClick={cancelClickHandler}
       />,
-    )
+    );
 
-    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox")
-    fireEvent.change(usernameTextBox, { target: { value: username } })
-    fireEvent.change(repoTextBox, { target: { value: repo } })
+    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+    fireEvent.change(usernameTextBox, { target: { value: username } });
+    fireEvent.change(repoTextBox, { target: { value: repo } });
 
-    const goBtn = screen.getByRole("button")
-    fireEvent.click(goBtn)
+    const goBtn = screen.getByRole("button");
+    fireEvent.click(goBtn);
 
-    expect(goClickHandler).toBeCalledWith(username, repo)
-    expect(cancelClickHandler).not.toBeCalled()
-  })
+    expect(goClickHandler).toBeCalledWith(username, repo);
+    expect(cancelClickHandler).not.toBeCalled();
+  });
 
   it("Renders correctly in loading state and fires an event on Cancel click", () => {
     render(
@@ -35,21 +35,21 @@ describe(RepoDetailsInputMobile, () => {
         onGoClick={goClickHandler}
         onCancelClick={cancelClickHandler}
       />,
-    )
+    );
 
-    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox")
-    fireEvent.change(usernameTextBox, { target: { value: username } })
-    fireEvent.change(repoTextBox, { target: { value: repo } })
+    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+    fireEvent.change(usernameTextBox, { target: { value: username } });
+    fireEvent.change(repoTextBox, { target: { value: repo } });
 
-    const [loadingBtn, cancelBtn] = screen.getAllByRole("button")
+    const [loadingBtn, cancelBtn] = screen.getAllByRole("button");
 
-    expect(loadingBtn.textContent).toStrictEqual("Loading...")
+    expect(loadingBtn.textContent).toStrictEqual("Loading...");
 
-    fireEvent.click(cancelBtn)
+    fireEvent.click(cancelBtn);
 
-    expect(goClickHandler).not.toBeCalled()
-    expect(cancelClickHandler).toBeCalled()
-  })
+    expect(goClickHandler).not.toBeCalled();
+    expect(cancelClickHandler).toBeCalled();
+  });
 
   it("Trims the username and repo", () => {
     render(
@@ -58,15 +58,15 @@ describe(RepoDetailsInputMobile, () => {
         onGoClick={goClickHandler}
         onCancelClick={cancelClickHandler}
       />,
-    )
+    );
 
-    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox")
-    fireEvent.change(usernameTextBox, { target: { value: `   ${username}   ` } })
-    fireEvent.change(repoTextBox, { target: { value: ` ${repo}  ` } })
+    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+    fireEvent.change(usernameTextBox, { target: { value: `   ${username}   ` } });
+    fireEvent.change(repoTextBox, { target: { value: ` ${repo}  ` } });
 
-    const goBtn = screen.getByRole("button")
-    fireEvent.click(goBtn)
+    const goBtn = screen.getByRole("button");
+    fireEvent.click(goBtn);
 
-    expect(goClickHandler).toBeCalledWith(username, repo)
-  })
-})
+    expect(goClickHandler).toBeCalledWith(username, repo);
+  });
+});

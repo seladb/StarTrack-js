@@ -1,20 +1,20 @@
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { IconButton, Tooltip } from "@mui/material"
-import KeyIcon from "@mui/icons-material/Key"
-import { StorageType } from "../../utils/GitHubUtils"
-import { useState } from "react"
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { IconButton, Tooltip } from "@mui/material";
+import KeyIcon from "@mui/icons-material/Key";
+import { StorageType } from "../../utils/GitHubUtils";
+import { useState } from "react";
 
 interface GitHubTokenProps {
-  accessToken: string
-  storageType: StorageType
+  accessToken: string;
+  storageType: StorageType;
 }
 export default function GitHubToken({ accessToken, storageType }: GitHubTokenProps) {
-  const theme = useTheme()
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
-  const [tooltipIsOpen, setTooltipIsOpen] = useState(false)
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
 
-  const accessTokenShort = accessToken.slice(-6)
+  const accessTokenShort = accessToken.slice(-6);
 
   return smallScreen ? (
     <IconButton color="inherit" onClick={() => setTooltipIsOpen(!tooltipIsOpen)}>
@@ -33,5 +33,5 @@ export default function GitHubToken({ accessToken, storageType }: GitHubTokenPro
         <p>{accessTokenShort}</p>
       </Tooltip>
     </>
-  )
+  );
 }

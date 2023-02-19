@@ -1,17 +1,17 @@
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { Box, Button, IconButton, SvgIconTypeMap } from "@mui/material"
-import { OverridableComponent } from "@mui/material/OverridableComponent"
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Box, Button, IconButton, SvgIconTypeMap } from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface GitHubAuthBtnProps {
-  text: string
-  Icon: OverridableComponent<SvgIconTypeMap>
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  text: string;
+  Icon: OverridableComponent<SvgIconTypeMap>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function GitHubAuthBtn({ text, Icon, onClick }: GitHubAuthBtnProps) {
-  const theme = useTheme()
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return smallScreen ? (
     <Box>
@@ -31,5 +31,5 @@ export default function GitHubAuthBtn({ text, Icon, onClick }: GitHubAuthBtnProp
         {text}
       </Button>
     </Box>
-  )
+  );
 }

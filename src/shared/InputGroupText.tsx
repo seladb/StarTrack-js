@@ -1,7 +1,7 @@
-import { Box } from "@mui/material"
+import { Box } from "@mui/material";
 
 export interface InputGroupTextProps {
-  text: string
+  text: string;
 }
 
 export default function InputGroupText({ text }: InputGroupTextProps) {
@@ -24,5 +24,5 @@ export default function InputGroupText({ text }: InputGroupTextProps) {
     >
       {text}
     </Box>
-  )
+  );
 }

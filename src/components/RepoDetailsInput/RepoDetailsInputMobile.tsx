@@ -1,28 +1,28 @@
-import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material"
-import Typography from "@mui/material/Typography"
-import React from "react"
-import { CancelButton } from "../../shared/CancelButton"
-import StopCircleIcon from "@mui/icons-material/StopCircle"
-import RepoDetailsInputProps from "./RepoDetailsInputProps"
-import { LoadingButton } from "@mui/lab"
-import SaveIcon from "@mui/icons-material/Save"
+import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { CancelButton } from "../../shared/CancelButton";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import RepoDetailsInputProps from "./RepoDetailsInputProps";
+import { LoadingButton } from "@mui/lab";
+import SaveIcon from "@mui/icons-material/Save";
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
   marginTop: "2px",
   marginBottom: "2px",
-}))
+}));
 
 export default function RepoDetailsInputMobile({
   loading,
   onGoClick,
   onCancelClick,
 }: RepoDetailsInputProps) {
-  const [username, setUsername] = React.useState<string>("")
-  const [repo, setRepo] = React.useState<string>("")
+  const [username, setUsername] = React.useState<string>("");
+  const [repo, setRepo] = React.useState<string>("");
 
   const handleClick = () => {
-    onGoClick(username.trim(), repo.trim())
-  }
+    onGoClick(username.trim(), repo.trim());
+  };
 
   return (
     <FormGroup>
@@ -34,7 +34,7 @@ export default function RepoDetailsInputMobile({
         size="small"
         placeholder="Username"
         onChange={(e) => {
-          setUsername(e.target.value)
+          setUsername(e.target.value);
         }}
       />
       <StyledTextField
@@ -42,7 +42,7 @@ export default function RepoDetailsInputMobile({
         size="small"
         placeholder="Repo name"
         onChange={(e) => {
-          setRepo(e.target.value)
+          setRepo(e.target.value);
         }}
       />
       {loading ? (
@@ -68,5 +68,5 @@ export default function RepoDetailsInputMobile({
         </Button>
       )}
     </FormGroup>
-  )
+  );
 }

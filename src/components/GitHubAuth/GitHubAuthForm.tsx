@@ -6,11 +6,11 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-} from "@mui/material"
-import Checkbox from "@mui/material/Checkbox"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import React from "react"
-import { StorageType, validateAndStoreAccessToken } from "../../utils/GitHubUtils"
+} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import React from "react";
+import { StorageType, validateAndStoreAccessToken } from "../../utils/GitHubUtils";
 
 enum TokenValidationStatus {
   Init = "init",
@@ -19,50 +19,50 @@ enum TokenValidationStatus {
 }
 
 interface GitHubAuthFormProps {
-  open: boolean
-  onClose: (accessToken: string | null) => void
+  open: boolean;
+  onClose: (accessToken: string | null) => void;
 }
 
 export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
-  const [accessTokenValue, setAccessTokenValue] = React.useState<string | null>(null)
+  const [accessTokenValue, setAccessTokenValue] = React.useState<string | null>(null);
   const [accessTokenValid, setAccessTokenValid] = React.useState<TokenValidationStatus>(
     TokenValidationStatus.Init,
-  )
-  const [storageType, setStorageType] = React.useState<StorageType>(StorageType.SessionStorage)
+  );
+  const [storageType, setStorageType] = React.useState<StorageType>(StorageType.SessionStorage);
 
   const handleStorageTypeCheckChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStorageType(event.target.checked ? StorageType.LocalStorage : StorageType.SessionStorage)
-  }
+    setStorageType(event.target.checked ? StorageType.LocalStorage : StorageType.SessionStorage);
+  };
 
   const handleLoginClick = async () => {
     if (accessTokenValue) {
-      const isValid = await validateAndStoreAccessToken(accessTokenValue, storageType)
+      const isValid = await validateAndStoreAccessToken(accessTokenValue, storageType);
       isValid
         ? setAccessTokenValid(TokenValidationStatus.Valid)
-        : setAccessTokenValid(TokenValidationStatus.Invalid)
+        : setAccessTokenValid(TokenValidationStatus.Invalid);
     } else {
-      setAccessTokenValid(TokenValidationStatus.Invalid)
+      setAccessTokenValid(TokenValidationStatus.Invalid);
     }
-  }
+  };
 
   const handleClose = () => {
-    const accessToken = accessTokenValid === TokenValidationStatus.Valid ? accessTokenValue : null
-    setAccessTokenValid(TokenValidationStatus.Init)
-    setAccessTokenValue(null)
-    onClose(accessToken)
-  }
+    const accessToken = accessTokenValid === TokenValidationStatus.Valid ? accessTokenValue : null;
+    setAccessTokenValid(TokenValidationStatus.Init);
+    setAccessTokenValue(null);
+    onClose(accessToken);
+  };
 
   const textFieldHelperText = () => {
     return accessTokenValid === TokenValidationStatus.Invalid
       ? "Access token is empty or invalid."
-      : "These credentials aren't stored in any server."
-  }
+      : "These credentials aren't stored in any server.";
+  };
 
   React.useEffect(() => {
     if (accessTokenValid === TokenValidationStatus.Valid) {
-      handleClose()
+      handleClose();
     }
-  }, [accessTokenValid])
+  }, [accessTokenValid]);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -110,7 +110,7 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
           error={accessTokenValid === TokenValidationStatus.Invalid}
           helperText={textFieldHelperText()}
           onChange={(e) => {
-            setAccessTokenValue(e.target.value)
+            setAccessTokenValue(e.target.value);
           }}
         />
         <FormControlLabel
@@ -125,5 +125,5 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
         </Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

@@ -1,29 +1,29 @@
-import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material"
-import LoadingButton from "@mui/lab/LoadingButton"
-import React from "react"
-import StopCircleIcon from "@mui/icons-material/StopCircle"
-import { cancelBtnWidth, CancelButton } from "../../shared/CancelButton"
-import RepoDetailsInputProps from "./RepoDetailsInputProps"
-import InputGroupText from "../../shared/InputGroupText"
-import SaveIcon from "@mui/icons-material/Save"
+import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import React from "react";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import { cancelBtnWidth, CancelButton } from "../../shared/CancelButton";
+import RepoDetailsInputProps from "./RepoDetailsInputProps";
+import InputGroupText from "../../shared/InputGroupText";
+import SaveIcon from "@mui/icons-material/Save";
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
   flex: "1 1 auto",
-}))
+}));
 
 export default function RepoDetailsInputDesktop({
   loading,
   onGoClick,
   onCancelClick,
 }: RepoDetailsInputProps) {
-  const [username, setUsername] = React.useState<string>("")
-  const [repo, setRepo] = React.useState<string>("")
+  const [username, setUsername] = React.useState<string>("");
+  const [repo, setRepo] = React.useState<string>("");
 
   const handleClick = () => {
-    onGoClick(username.trim(), repo.trim())
-  }
+    onGoClick(username.trim(), repo.trim());
+  };
 
-  const goBtnWidth = 155 - (loading ? cancelBtnWidth : 0)
+  const goBtnWidth = 155 - (loading ? cancelBtnWidth : 0);
 
   return (
     <FormGroup sx={{ flexDirection: "row", maxWidth: "800px", margin: "auto" }}>
@@ -34,7 +34,7 @@ export default function RepoDetailsInputDesktop({
         placeholder="Username"
         value={username}
         onChange={(e) => {
-          setUsername(e.target.value)
+          setUsername(e.target.value);
         }}
       />
       <InputGroupText text="/" />
@@ -44,7 +44,7 @@ export default function RepoDetailsInputDesktop({
         placeholder="Repo name"
         value={repo}
         onChange={(e) => {
-          setRepo(e.target.value)
+          setRepo(e.target.value);
         }}
       />
       {loading ? (
@@ -71,5 +71,5 @@ export default function RepoDetailsInputDesktop({
         </Button>
       )}
     </FormGroup>
-  )
+  );
 }

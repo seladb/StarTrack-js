@@ -1,4 +1,4 @@
-import mediaQuery from "css-mediaquery"
+import mediaQuery from "css-mediaquery";
 
 export const createMatchMedia = (width: number) => (query: string) => ({
   matches: mediaQuery.match(query, { width }),
@@ -9,4 +9,4 @@ export const createMatchMedia = (width: number) => (query: string) => ({
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
   dispatchEvent: jest.fn(),
-})
+});
