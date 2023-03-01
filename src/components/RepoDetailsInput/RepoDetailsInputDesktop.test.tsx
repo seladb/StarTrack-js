@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import RepoDetailsInputDesktop from "./RepoDetailsInputDesktop";
 
 const goClickHandler = jest.fn();
@@ -69,4 +70,45 @@ describe(RepoDetailsInputDesktop, () => {
 
     expect(goClickHandler).toBeCalledWith(username, repo);
   });
+
+  it("Renders a tooltip when hovering on repo details", async () => {
+    render(
+      <RepoDetailsInputDesktop
+        loading={false}
+        onGoClick={goClickHandler}
+        onCancelClick={cancelClickHandler}
+      />,
+    );
+
+    const repoDetails = screen.getByText("Repo details");
+    userEvent.hover(repoDetails);
+
+    const toolTip = await screen.findByRole("tooltip");
+    expect(toolTip).toBeInTheDocument();
+  });
+
+  it.each([
+    ["username", "https://github.com/seladb/pcapplusplus", "seladb", "pcapplusplus"],
+    ["repo", "https://github.com/seladb/pcapplusplus", "seladb", "pcapplusplus"],
+    ["username", "https://google.com", "", ""],
+    ["repo", "https://google.com", "", ""],
+  ])(
+    "Parses pasted GitHub URL",
+    (whereToPaste, pasted, expectedValueInUserBox, expectedValueInRepoBox) => {
+      render(
+        <RepoDetailsInputDesktop
+          loading={false}
+          onGoClick={goClickHandler}
+          onCancelClick={cancelClickHandler}
+        />,
+      );
+
+      const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+      const boxToPaste = whereToPaste === "username" ? usernameTextBox : repoTextBox;
+      fireEvent.paste(boxToPaste, { clipboardData: { getData: () => pasted } });
+
+      expect(usernameTextBox).toHaveValue(expectedValueInUserBox);
+      expect(repoTextBox).toHaveValue(expectedValueInRepoBox);
+    },
+  );
 });

@@ -1,12 +1,19 @@
 import { Box } from "@mui/material";
+import { BoxProps } from "@mui/material/Box/Box";
+import React from "react";
 
-export interface InputGroupTextProps {
+export interface InputGroupTextProps extends BoxProps {
   text: string;
 }
 
-export default function InputGroupText({ text }: InputGroupTextProps) {
+export const InputGroupText = React.forwardRef<BoxProps, BoxProps>(function InputGroupText(
+  props,
+  ref,
+) {
   return (
     <Box
+      {...props}
+      ref={ref}
       component="div"
       sx={{
         display: "inline",
@@ -22,7 +29,7 @@ export default function InputGroupText({ text }: InputGroupTextProps) {
         margin: 0,
       }}
     >
-      {text}
+      {props.children}
     </Box>
   );
-}
+});

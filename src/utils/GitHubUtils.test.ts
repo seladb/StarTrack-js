@@ -287,3 +287,26 @@ describe("Test getLastStargazerPage", () => {
     },
   );
 });
+
+describe("Test parseGitHubUrl", () => {
+  it.each([
+    "invalid",
+    "invalid/url",
+    "http://github.com/seladb/PcapPlusPlus",
+    "https://github1.com/seladb/PcapPlusPlus",
+    "https://github.com/",
+    "https://github.com/seladb",
+    "https://github.com/seladb/",
+    "https://github.com//seladb/pcapplusplus",
+  ])("Returns null for invalid URL: '%s'", (url) => {
+    expect(utils.parseGitHubUrl(url)).toBeNull();
+  });
+
+  it.each([
+    "https://github.com/seladb/pcapplusplus",
+    "https://github.com/seladb/pcapplusplus/",
+    "https://github.com/seladb/pcapplusplus/bla/bla",
+  ])("Returns repo and username for URL: '%s'", (url) => {
+    expect(utils.parseGitHubUrl(url)).toStrictEqual(["seladb", "pcapplusplus"]);
+  });
+});

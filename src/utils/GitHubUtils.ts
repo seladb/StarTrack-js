@@ -37,6 +37,29 @@ export const getRepoUrl = (user: string, repo: string) => {
   return repoUrlTemplate.replace("{user}", user).replace("{repo}", repo);
 };
 
+export const parseGitHubUrl = (url: string): [string, string] | null => {
+  try {
+    const urlObj = new URL(url);
+
+    if (urlObj.protocol !== "https:" || urlObj.host !== "github.com") {
+      return null;
+    }
+
+    const userAndRepo = urlObj.pathname.split("/", 3);
+    if (userAndRepo.length < 3) {
+      return null;
+    }
+
+    if (!(userAndRepo[1] && userAndRepo[2])) {
+      return null;
+    }
+
+    return [userAndRepo[1], userAndRepo[2]];
+  } catch {
+    return null;
+  }
+};
+
 export const getStorage = (): Storage => {
   if (sessionStorage.getItem(storageKey)) {
     return sessionStorage;
