@@ -69,4 +69,29 @@ describe(RepoDetailsInputMobile, () => {
 
     expect(goClickHandler).toBeCalledWith(username, repo);
   });
+
+  it.each([
+    ["username", "https://github.com/seladb/pcapplusplus", "seladb", "pcapplusplus"],
+    ["repo", "https://github.com/seladb/pcapplusplus", "seladb", "pcapplusplus"],
+    ["username", "https://google.com", "", ""],
+    ["repo", "https://google.com", "", ""],
+  ])(
+    "Parses pasted GitHub URL",
+    (whereToPaste, pasted, expectedValueInUserBox, expectedValueInRepoBox) => {
+      render(
+        <RepoDetailsInputMobile
+          loading={false}
+          onGoClick={goClickHandler}
+          onCancelClick={cancelClickHandler}
+        />,
+      );
+
+      const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+      const boxToPaste = whereToPaste === "username" ? usernameTextBox : repoTextBox;
+      fireEvent.paste(boxToPaste, { clipboardData: { getData: () => pasted } });
+
+      expect(usernameTextBox).toHaveValue(expectedValueInUserBox);
+      expect(repoTextBox).toHaveValue(expectedValueInRepoBox);
+    },
+  );
 });

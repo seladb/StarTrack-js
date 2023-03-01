@@ -6,6 +6,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 import RepoDetailsInputProps from "./RepoDetailsInputProps";
 import { LoadingButton } from "@mui/lab";
 import SaveIcon from "@mui/icons-material/Save";
+import { parseGitHubUrl } from "../../utils/GitHubUtils";
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
   marginTop: "2px",
@@ -24,6 +25,16 @@ export default function RepoDetailsInputMobile({
     onGoClick(username.trim(), repo.trim());
   };
 
+  const handlePaste = (event: React.ClipboardEvent<HTMLElement>) => {
+    const url = parseGitHubUrl(event.clipboardData.getData("Text"));
+    if (!url) {
+      return;
+    }
+    event.preventDefault();
+    setUsername(url[0]);
+    setRepo(url[1]);
+  };
+
   return (
     <FormGroup>
       <Typography variant="body1" sx={{ margin: "auto", fontWeight: "bold" }}>
@@ -36,6 +47,7 @@ export default function RepoDetailsInputMobile({
         onChange={(e) => {
           setUsername(e.target.value);
         }}
+        onPaste={handlePaste}
       />
       <StyledTextField
         value={repo}
@@ -44,6 +56,7 @@ export default function RepoDetailsInputMobile({
         onChange={(e) => {
           setRepo(e.target.value);
         }}
+        onPaste={handlePaste}
       />
       {loading ? (
         <FormGroup sx={{ marginTop: "5px", flexDirection: "row" }}>
