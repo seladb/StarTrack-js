@@ -6,7 +6,7 @@ import RepoDetailsInputProps from "./RepoDetailsInputProps";
 
 export default function RepoDetailsInput(props: RepoDetailsInputProps) {
   const theme = useTheme();
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const smallScreen = useMediaQuery(theme.breakpoints.down(550));
 
   return smallScreen ? (
     <RepoDetailsInputMobile {...props} />

@@ -9,7 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { parseGitHubUrl } from "../../utils/GitHubUtils";
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
-  flex: "1 1 auto",
+  flex: "1 1",
 }));
 
 export default function RepoDetailsInputDesktop({

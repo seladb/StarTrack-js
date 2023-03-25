@@ -11,7 +11,7 @@ interface GitHubAuthBtnProps {
 
 export default function GitHubAuthBtn({ text, Icon, onClick }: GitHubAuthBtnProps) {
   const theme = useTheme();
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const smallScreen = useMediaQuery(theme.breakpoints.down(750));
 
   return smallScreen ? (
     <Box>

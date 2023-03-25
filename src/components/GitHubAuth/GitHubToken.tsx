@@ -11,7 +11,7 @@ interface GitHubTokenProps {
 }
 export default function GitHubToken({ accessToken, storageType }: GitHubTokenProps) {
   const theme = useTheme();
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const smallScreen = useMediaQuery(theme.breakpoints.down(750));
   const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
 
   const accessTokenShort = accessToken.slice(-6);

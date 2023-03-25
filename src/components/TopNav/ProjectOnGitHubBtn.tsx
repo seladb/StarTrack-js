@@ -6,7 +6,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 export default function ProjectOnGitHubBtn() {
   const starTrackGitHubRepo = "https://github.com/seladb/startrack-js";
   const theme = useTheme();
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const smallScreen = useMediaQuery(theme.breakpoints.down(750));
 
   return smallScreen ? (
     <Box>
