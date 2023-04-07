@@ -21,7 +21,7 @@ interface GitHubStarData {
   starred_at: string;
 }
 
-interface InternalStarData {
+export interface StarData {
   x: string;
   y: number;
 }
@@ -137,7 +137,7 @@ export const loadStarGazerPage = async (
 };
 
 export const addStarData = (
-  starData: Array<InternalStarData>,
+  starData: Array<StarData>,
   starCount: number,
   pageData: Array<GitHubStarData>,
 ) => {
@@ -184,7 +184,7 @@ export const loadStargazers = async (
   shouldStop: ShouldStopCallback,
 ) => {
   try {
-    const starData: Array<InternalStarData> = [];
+    const starData: Array<StarData> = [];
     let starCount = 0;
 
     handleProgress(0);
