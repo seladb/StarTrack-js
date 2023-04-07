@@ -1,6 +1,6 @@
 import { Button, FormGroup, styled, TextField, TextFieldProps, Tooltip } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import React from "react";
+import React, { KeyboardEvent } from "react";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import { cancelBtnWidth, CancelButton } from "../../shared/CancelButton";
 import RepoDetailsInputProps from "./RepoDetailsInputProps";
@@ -34,6 +34,13 @@ export default function RepoDetailsInputDesktop({
     setRepo(url[1]);
   };
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Enter") {
+      onGoClick(username.trim(), repo.trim());
+      event.preventDefault();
+    }
+  };
+
   const goBtnWidth = 155 - (loading ? cancelBtnWidth : 0);
 
   return (
@@ -50,6 +57,7 @@ export default function RepoDetailsInputDesktop({
           setUsername(e.target.value);
         }}
         onPaste={handlePaste}
+        onKeyDown={handleKeyDown}
       />
       <InputGroupText>/</InputGroupText>
       <StyledTextField
@@ -61,6 +69,7 @@ export default function RepoDetailsInputDesktop({
           setRepo(e.target.value);
         }}
         onPaste={handlePaste}
+        onKeyDown={handleKeyDown}
       />
       {loading ? (
         <>

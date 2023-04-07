@@ -29,6 +29,32 @@ describe(RepoDetailsInputDesktop, () => {
     expect(cancelClickHandler).not.toBeCalled();
   });
 
+  it.each(["repoTextBox", "usernameTextBox"])(
+    "Renders correctly on non-loading state and fires an event on Enter key",
+    (textbox) => {
+      render(
+        <RepoDetailsInputDesktop
+          loading={false}
+          onGoClick={goClickHandler}
+          onCancelClick={cancelClickHandler}
+        />,
+      );
+
+      const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+      fireEvent.change(usernameTextBox, { target: { value: username } });
+      fireEvent.change(repoTextBox, { target: { value: repo } });
+
+      if (textbox == "repoTextBox") {
+        userEvent.type(repoTextBox, "{Enter}");
+      } else {
+        userEvent.type(usernameTextBox, "{Enter}");
+      }
+
+      expect(goClickHandler).toBeCalledWith(username, repo);
+      expect(cancelClickHandler).not.toBeCalled();
+    },
+  );
+
   it("Renders correctly in loading state and fires an event on Cancel click", () => {
     render(
       <RepoDetailsInputDesktop
