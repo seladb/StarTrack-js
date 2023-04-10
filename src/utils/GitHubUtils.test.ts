@@ -1,5 +1,6 @@
 import * as utils from "./GitHubUtils";
 import axios from "axios";
+import StarData from "./StarData";
 
 describe("Test range", () => {
   it("Returns a range starting from zero", () => {
@@ -216,12 +217,10 @@ describe("Test loadStarGazerPage", () => {
 describe("Test addStarData", () => {
   it("Adds stars data correctly", () => {
     const curStarCount = 1;
-    const starData = [
-      {
-        x: "100",
-        y: curStarCount,
-      },
-    ];
+    const starData: StarData = {
+      timestamps: ["100"],
+      starCounts: [curStarCount],
+    };
 
     const githubStarData = [
       {
@@ -237,20 +236,10 @@ describe("Test addStarData", () => {
     const result = utils.addStarData(starData, curStarCount, githubStarData);
 
     expect(result).toStrictEqual(curStarCount + githubStarData.length);
-    expect(starData).toStrictEqual([
-      {
-        x: "100",
-        y: curStarCount,
-      },
-      {
-        x: "200",
-        y: curStarCount + 1,
-      },
-      {
-        x: "300",
-        y: curStarCount + 2,
-      },
-    ]);
+    expect(starData).toStrictEqual({
+      timestamps: ["100", "200", "300"],
+      starCounts: [curStarCount, curStarCount + 1, curStarCount + 2],
+    });
   });
 });
 

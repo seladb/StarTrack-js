@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import * as GitHubUtils from "./GitHubUtils";
+import StarData from "./StarData";
 
 const stargazersURL =
   "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
@@ -19,11 +20,6 @@ export enum StorageType {
 
 interface GitHubStarData {
   starred_at: string;
-}
-
-export interface StarData {
-  x: string;
-  y: number;
 }
 
 type HandleProgressCallback = (progress: number) => void;
@@ -137,15 +133,13 @@ export const loadStarGazerPage = async (
 };
 
 export const addStarData = (
-  starData: Array<StarData>,
+  starData: StarData,
   starCount: number,
   pageData: Array<GitHubStarData>,
 ) => {
   for (let i = 0; i < pageData.length; i++) {
-    starData.push({
-      x: pageData[i].starred_at,
-      y: ++starCount,
-    });
+    starData.timestamps.push(pageData[i].starred_at);
+    starData.starCounts.push(++starCount);
   }
 
   return starCount;
@@ -184,7 +178,7 @@ export const loadStargazers = async (
   shouldStop: ShouldStopCallback,
 ) => {
   try {
-    const starData: Array<StarData> = [];
+    const starData: StarData = { timestamps: [], starCounts: [] };
     let starCount = 0;
 
     handleProgress(0);
