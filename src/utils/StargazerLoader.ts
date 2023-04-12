@@ -1,6 +1,7 @@
 import * as gitHubUtils from "./GitHubUtils";
 import * as stargazerStats from "./StargazerStats";
 import * as stargazerLoader from "./StargazerLoader";
+import RepoInfo from "./RepoInfo";
 
 // Refer to post https://stackoverflow.com/questions/10014271/generate-random-color-distinguishable-to-humans
 
@@ -21,7 +22,7 @@ export const loadStargazers = async (
   handleProgress: HandleProgressCallback,
   shouldStop: ShouldStopCallback,
   forecastProps?: stargazerStats.ForecastProps,
-) => {
+): Promise<RepoInfo | null> => {
   const stargazerData = await gitHubUtils.loadStargazers(
     username,
     repo,

@@ -24,10 +24,10 @@ describe(stargazerLoader.loadStargazers, () => {
   const stats = {
     "Number of stars": 1,
     "Number of days": 1,
-    "Average stars per day": 1,
+    "Average stars per day": "1.0",
     "Days with stars": 1,
     "Max stars in one day": 1,
-    "Day with most stars": 1,
+    "Day with most stars": "1",
   };
 
   const user = "user";
