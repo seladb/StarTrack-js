@@ -21,7 +21,7 @@ describe(stargazerStats.calcStats, () => {
     expect(stargazerStats.calcStats({ timestamps: [], starCounts: [] })).toStrictEqual({
       "Number of stars": 0,
       "Number of days": 0,
-      "Average stars per day": 0,
+      "Average stars per day": "0",
       "Days with stars": 0,
       "Max stars in one day": 0,
       "Day with most stars": 0,
