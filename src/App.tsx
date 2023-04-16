@@ -4,27 +4,16 @@ import "./App.css";
 import MainContainer from "./components/MainContainer";
 import TopNav from "./components/TopNav";
 import { AlertContextProvider } from "./shared/AlertContext";
+import { ProgressProvider } from "./shared/ProgressContext";
 
 export default function App() {
   return (
     <div className="App">
       <AlertContextProvider>
-        <TopNav></TopNav>
-        <MainContainer></MainContainer>
-        {/* <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-        </header> */}
+        <TopNav />
+        <ProgressProvider>
+          <MainContainer />
+        </ProgressProvider>
       </AlertContextProvider>
     </div>
   );
