@@ -11,6 +11,7 @@ const TestComponent = () => {
 
   return <Button onClick={handleClick}></Button>;
 };
+
 describe("Alert context", () => {
   it("shows an alert", async () => {
     render(

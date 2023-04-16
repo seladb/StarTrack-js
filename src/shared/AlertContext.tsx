@@ -1,5 +1,5 @@
 import Snackbar from "@mui/material/Snackbar";
-import { Alert } from "@mui/lab";
+import Alert from "@mui/material/Alert";
 import React, { createContext, useContext } from "react";
 
 type AlertDialogContextActions = {
