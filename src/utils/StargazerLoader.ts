@@ -7,10 +7,29 @@ import RepoInfo from "./RepoInfo";
 
 let colorIndex = 0;
 
+const hslToHex = (hue: number, saturation: number, lightness: number) => {
+  lightness /= 100;
+  const a = (saturation * Math.min(lightness, 1 - lightness)) / 100;
+  const f = (n: number) => {
+    const k = (n + hue / 30) % 12;
+    const color = lightness - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, "0"); // convert to Hex and prefix "0" if needed
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+};
+
 export const makeColor = () => {
   const hue = colorIndex * 137.508; // use golden angle approximation
+  const saturation = 50;
+  const lightness = 50;
   colorIndex++;
-  return `hsl(${hue},50%,50%)`;
+
+  return {
+    hsl: `hsl(${hue},${saturation}%,${lightness}%)`,
+    hex: hslToHex(hue, saturation, lightness),
+  };
 };
 
 type HandleProgressCallback = (progress: number) => void;

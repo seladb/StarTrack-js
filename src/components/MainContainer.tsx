@@ -6,6 +6,7 @@ import { loadStargazers } from "../utils/StargazerLoader";
 import RepoInfo from "../utils/RepoInfo";
 import { useAlertDialog } from "../shared/AlertContext";
 import { useProgress } from "../shared/ProgressContext";
+// import Chart from "./Chart";
 
 export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -81,11 +82,16 @@ export default function MainContainer() {
       <Container sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
         <RepoChipContainer
           reposDetails={repoInfos.map((repoInfo) => {
-            return { user: repoInfo.username, repo: repoInfo.repo, color: repoInfo.color };
+            return { user: repoInfo.username, repo: repoInfo.repo, color: repoInfo.color.hex };
           })}
           onDelete={handleRemoveRepo}
         />
       </Container>
+      {/* <Container
+        sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}
+      >
+        <Chart repoInfos={repoInfos} />
+      </Container> */}
     </Container>
   );
 }

@@ -5,8 +5,14 @@ import StarData from "./StarData";
 
 describe(stargazerLoader.makeColor, () => {
   it("generate a color", () => {
-    expect(stargazerLoader.makeColor()).toBe(`hsl(${0},50%,50%)`);
-    expect(stargazerLoader.makeColor()).toBe(`hsl(${137.508},50%,50%)`);
+    expect(stargazerLoader.makeColor()).toStrictEqual({
+      hsl: `hsl(${0},50%,50%)`,
+      hex: "#bf4040",
+    });
+    expect(stargazerLoader.makeColor()).toStrictEqual({
+      hsl: `hsl(${137.508},50%,50%)`,
+      hex: "#40bf65",
+    });
   });
 });
 
@@ -40,7 +46,9 @@ describe(stargazerLoader.loadStargazers, () => {
       loadStargazersMock: jest
         .spyOn(gitHubUtils, "loadStargazers")
         .mockReturnValue(Promise.resolve(stargazerData)),
-      makeColorMock: jest.spyOn(stargazerLoader, "makeColor").mockReturnValue("color"),
+      makeColorMock: jest
+        .spyOn(stargazerLoader, "makeColor")
+        .mockReturnValue({ hsl: "hslColor", hex: "hexColor" }),
       calcStatsMock: jest.spyOn(stargazerStats, "calcStats").mockReturnValue(stats),
       calcForecastMock: jest.spyOn(stargazerStats, "calcForecast").mockReturnValue(forecastData),
     };
@@ -69,7 +77,7 @@ describe(stargazerLoader.loadStargazers, () => {
     expect(result).toStrictEqual({
       username: user,
       repo: repo,
-      color: "color",
+      color: { hsl: "hslColor", hex: "hexColor" },
       stargazerData: stargazerData,
       stats: stats,
       forecast: undefined,
@@ -100,7 +108,7 @@ describe(stargazerLoader.loadStargazers, () => {
     expect(result).toStrictEqual({
       username: user,
       repo: repo,
-      color: "color",
+      color: { hsl: "hslColor", hex: "hexColor" },
       stargazerData: stargazerData,
       stats: stats,
       forecast: forecastData,
