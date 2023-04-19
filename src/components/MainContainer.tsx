@@ -6,7 +6,7 @@ import { loadStargazers } from "../utils/StargazerLoader";
 import RepoInfo from "../utils/RepoInfo";
 import { useAlertDialog } from "../shared/AlertContext";
 import { useProgress } from "../shared/ProgressContext";
-// import Chart from "./Chart";
+import Chart from "./Chart";
 
 export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -79,19 +79,23 @@ export default function MainContainer() {
           onCancelClick={handleCancelLoading}
         />
       </Container>
-      <Container sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
-        <RepoChipContainer
-          reposDetails={repoInfos.map((repoInfo) => {
-            return { user: repoInfo.username, repo: repoInfo.repo, color: repoInfo.color.hex };
-          })}
-          onDelete={handleRemoveRepo}
-        />
-      </Container>
-      {/* <Container
-        sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}
-      >
-        <Chart repoInfos={repoInfos} />
-      </Container> */}
+      {repoInfos.length > 0 && (
+        <Container>
+          <Container sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
+            <RepoChipContainer
+              reposDetails={repoInfos.map((repoInfo) => {
+                return { user: repoInfo.username, repo: repoInfo.repo, color: repoInfo.color.hex };
+              })}
+              onDelete={handleRemoveRepo}
+            />
+          </Container>
+          <Container
+            sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}
+          >
+            <Chart repoInfos={repoInfos} />
+          </Container>
+        </Container>
+      )}
     </Container>
   );
 }
