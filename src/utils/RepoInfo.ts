@@ -5,6 +5,5 @@ export default interface RepoInfo {
   repo: string;
   color: { hsl: string; hex: string };
   stargazerData: StarData;
-  stats: { [stat: string]: number | string };
   forecast?: StarData | null;
 }

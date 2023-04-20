@@ -27,15 +27,6 @@ describe(stargazerLoader.loadStargazers, () => {
     starCounts: [2],
   };
 
-  const stats = {
-    "Number of stars": 1,
-    "Number of days": 1,
-    "Average stars per day": "1.0",
-    "Days with stars": 1,
-    "Max stars in one day": 1,
-    "Day with most stars": "1",
-  };
-
   const user = "user";
   const repo = "repo";
   const handleProgressCallback = jest.fn();
@@ -49,7 +40,6 @@ describe(stargazerLoader.loadStargazers, () => {
       makeColorMock: jest
         .spyOn(stargazerLoader, "makeColor")
         .mockReturnValue({ hsl: "hslColor", hex: "hexColor" }),
-      calcStatsMock: jest.spyOn(stargazerStats, "calcStats").mockReturnValue(stats),
       calcForecastMock: jest.spyOn(stargazerStats, "calcForecast").mockReturnValue(forecastData),
     };
   };
@@ -66,7 +56,7 @@ describe(stargazerLoader.loadStargazers, () => {
   });
 
   it("loads star data without forecast", async () => {
-    const { loadStargazersMock, makeColorMock, calcStatsMock, calcForecastMock } = setup();
+    const { loadStargazersMock, makeColorMock, calcForecastMock } = setup();
 
     const result = await stargazerLoader.loadStargazers(
       user,
@@ -79,18 +69,16 @@ describe(stargazerLoader.loadStargazers, () => {
       repo: repo,
       color: { hsl: "hslColor", hex: "hexColor" },
       stargazerData: stargazerData,
-      stats: stats,
       forecast: undefined,
     });
 
     expect(loadStargazersMock).toHaveBeenCalledWith(user, repo, handleProgressCallback, shouldStop);
     expect(makeColorMock).toHaveBeenCalled();
-    expect(calcStatsMock).toHaveBeenCalledWith(stargazerData);
     expect(calcForecastMock).not.toHaveBeenCalled();
   });
 
   it("loads star data with forecast", async () => {
-    const { loadStargazersMock, makeColorMock, calcStatsMock, calcForecastMock } = setup();
+    const { loadStargazersMock, makeColorMock, calcForecastMock } = setup();
 
     const forecastProps = {
       daysBackwards: 1,
@@ -110,13 +98,11 @@ describe(stargazerLoader.loadStargazers, () => {
       repo: repo,
       color: { hsl: "hslColor", hex: "hexColor" },
       stargazerData: stargazerData,
-      stats: stats,
       forecast: forecastData,
     });
 
     expect(loadStargazersMock).toHaveBeenCalledWith(user, repo, handleProgressCallback, shouldStop);
     expect(makeColorMock).toHaveBeenCalled();
-    expect(calcStatsMock).toHaveBeenCalledWith(stargazerData);
     expect(calcForecastMock).toHaveBeenCalledWith(stargazerData, forecastProps);
   });
 });

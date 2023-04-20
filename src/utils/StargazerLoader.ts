@@ -57,7 +57,6 @@ export const loadStargazers = async (
     repo: repo,
     color: stargazerLoader.makeColor(),
     stargazerData: stargazerData,
-    stats: stargazerStats.calcStats(stargazerData),
     forecast: forecastProps && stargazerStats.calcForecast(stargazerData, forecastProps),
   };
 };
