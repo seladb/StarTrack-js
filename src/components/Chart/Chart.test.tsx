@@ -7,7 +7,6 @@ jest.mock("react-plotly.js", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockPlot(props);
-    console.log(props);
     return <></>;
   },
 }));
@@ -22,7 +21,6 @@ describe(Chart, () => {
         timestamps: ["ts1", "ts2"],
         starCounts: [1, 2],
       },
-      stats: { stat: "stat" },
     },
     {
       username: "user2",
@@ -32,7 +30,6 @@ describe(Chart, () => {
         timestamps: ["ts3", "ts4"],
         starCounts: [3, 4],
       },
-      stats: { stat: "stat" },
     },
   ];
 

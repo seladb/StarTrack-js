@@ -28,7 +28,10 @@ interface DateRange {
   max: string;
 }
 
-export const calcStats = (stargazerData: StarData, dateRange?: DateRange) => {
+export const calcStats = (
+  stargazerData: StarData,
+  dateRange?: DateRange,
+): Record<string, string | number> => {
   const timestampToDays = (ts: number) => Math.floor(ts / 1000 / 60 / 60 / 24);
   const daysToTimestamp = (days: number) => days * 1000 * 60 * 60 * 24;
 

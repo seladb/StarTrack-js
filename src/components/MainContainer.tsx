@@ -7,6 +7,7 @@ import RepoInfo from "../utils/RepoInfo";
 import { useAlertDialog } from "../shared/AlertContext";
 import { useProgress } from "../shared/ProgressContext";
 import Chart from "./Chart";
+import StatsGrid from "./StatsGrid";
 
 export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -93,6 +94,9 @@ export default function MainContainer() {
             sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}
           >
             <Chart repoInfos={repoInfos} />
+          </Container>
+          <Container>
+            <StatsGrid repoInfos={repoInfos}></StatsGrid>
           </Container>
         </Container>
       )}
