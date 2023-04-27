@@ -37,8 +37,8 @@ export const calcStats = (
 
   let stargazerDates = stargazerData.timestamps.map((cur) => new Date(cur));
   if (dateRange) {
-    const minDate = new Date(dateRange.min.replace(/ /g,"T"));
-    const maxDate = new Date(dateRange.max.replace(/ /g,"T"));
+    const minDate = new Date(dateRange.min.replace(/ /g, "T"));
+    const maxDate = new Date(dateRange.max.replace(/ /g, "T"));
     stargazerDates = stargazerDates.filter((cur) => cur >= minDate && cur <= maxDate);
   }
 

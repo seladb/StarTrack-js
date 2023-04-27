@@ -63,39 +63,39 @@ jest.mock("@mui/x-data-grid", () => ({
 }));
 
 describe(StatsGrid, () => {
+  const repoInfos: Array<RepoInfo> = [
+    {
+      username: "user1",
+      repo: "repo1",
+      color: {
+        hex: "hexColor1",
+        hsl: "stlColor1",
+      },
+      stargazerData: {
+        timestamps: ["ts1", "ts2"],
+        starCounts: [1, 2],
+      },
+    },
+    {
+      username: "user2",
+      repo: "repo2",
+      color: {
+        hex: "hexColor2",
+        hsl: "stlColor2",
+      },
+      stargazerData: {
+        timestamps: ["ts1", "ts2"],
+        starCounts: [1, 2],
+      },
+    },
+  ];
+
+  const stats = {
+    "Stat 1": 1,
+    "Stat 2": "2",
+  };
+
   it("renders a grid with stats", () => {
-    const repoInfos: Array<RepoInfo> = [
-      {
-        username: "user1",
-        repo: "repo1",
-        color: {
-          hex: "hexColor1",
-          hsl: "stlColor1",
-        },
-        stargazerData: {
-          timestamps: ["ts1", "ts2"],
-          starCounts: [1, 2],
-        },
-      },
-      {
-        username: "user2",
-        repo: "repo2",
-        color: {
-          hex: "hexColor2",
-          hsl: "stlColor2",
-        },
-        stargazerData: {
-          timestamps: ["ts1", "ts2"],
-          starCounts: [1, 2],
-        },
-      },
-    ];
-
-    const stats = {
-      "Stat 1": 1,
-      "Stat 2": "2",
-    };
-
     jest.spyOn(stargazerStats, "calcStats").mockReturnValue(stats);
 
     render(<StatsGrid repoInfos={repoInfos} />);
@@ -161,5 +161,61 @@ describe(StatsGrid, () => {
     expect(screen.getByTestId("datagrid").parentElement).toHaveStyle({
       height: `${120 + 60 * repoInfos.length}px`,
     });
+  });
+
+  it("calcs stats with date range", () => {
+    const mockCalcStats = jest.spyOn(stargazerStats, "calcStats").mockReturnValue(stats);
+
+    const minDate = new Date();
+    minDate.setDate(new Date().getDate() - 30);
+    const maxDate = new Date();
+    maxDate.setDate(new Date().getDate() - 2);
+    const dateRange = {
+      min: minDate.toISOString(),
+      max: maxDate.toISOString(),
+    };
+
+    render(<StatsGrid repoInfos={repoInfos} dateRange={dateRange} />);
+
+    expect(mockCalcStats.mock.calls).toEqual([
+      [repoInfos[0].stargazerData, undefined],
+      [repoInfos[1].stargazerData, undefined],
+    ]);
+
+    expect(screen.queryByText("Date range:")).not.toBeInTheDocument();
+
+    mockCalcStats.mockReset();
+    mockCalcStats.mockReturnValue(stats);
+
+    const checkBox = screen.getByLabelText("Sync stats to chart zoom level");
+    fireEvent.click(checkBox);
+
+    expect(mockCalcStats.mock.calls).toEqual([
+      [repoInfos[0].stargazerData, dateRange],
+      [repoInfos[1].stargazerData, dateRange],
+    ]);
+
+    expect(screen.queryByText("Date range:")).toBeInTheDocument();
+    expect(screen.queryByText(minDate.toLocaleDateString())).toBeInTheDocument();
+    expect(screen.queryByText(maxDate.toLocaleDateString())).toBeInTheDocument();
+  });
+
+  it("renders correctly when date range is undefined", () => {
+    const mockCalcStats = jest.spyOn(stargazerStats, "calcStats").mockReturnValue(stats);
+
+    render(<StatsGrid repoInfos={repoInfos} dateRange={undefined} />);
+
+    mockCalcStats.mockReset();
+    mockCalcStats.mockReturnValue(stats);
+
+    const checkBox = screen.getByLabelText("Sync stats to chart zoom level");
+    fireEvent.click(checkBox);
+
+    expect(mockCalcStats.mock.calls).toEqual([
+      [repoInfos[0].stargazerData, undefined],
+      [repoInfos[1].stargazerData, undefined],
+    ]);
+
+    expect(screen.queryByText("Date range:")).not.toBeInTheDocument();
   });
 });

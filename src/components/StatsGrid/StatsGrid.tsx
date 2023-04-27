@@ -1,4 +1,5 @@
-import { Chip, Container } from "@mui/material";
+import React from "react";
+import { Box, Checkbox, Chip, Container, FormControlLabel } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import RepoInfo from "../../utils/RepoInfo";
 import * as stargazerStats from "../../utils/StargazerStats";
@@ -54,10 +55,16 @@ interface RepoInfoWithStats extends RepoInfo {
 }
 
 export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
+  const [syncStatsToDisplayedDateRange, setSyncStatsToDisplayedDateRange] =
+    React.useState<boolean>(false);
+
   const repoInfosWithStats: Array<RepoInfoWithStats> = repoInfos.map((repoInfo) => {
     return {
       ...repoInfo,
-      stats: stargazerStats.calcStats(repoInfo.stargazerData, dateRange),
+      stats: stargazerStats.calcStats(
+        repoInfo.stargazerData,
+        syncStatsToDisplayedDateRange ? dateRange : undefined,
+      ),
     };
   });
 
@@ -103,10 +110,32 @@ export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
     });
   };
 
+  const handleCheckBoxChange = (_: React.SyntheticEvent, checked: boolean) => {
+    setSyncStatsToDisplayedDateRange(checked);
+  };
+
   const gridHeight = 120 + repoInfos.length * 60;
 
   return (
     <Container sx={{ height: gridHeight }}>
+      <h1>Repo Statistics</h1>
+      <Box sx={{ marginBottom: "20px" }}>
+        <FormControlLabel
+          control={<Checkbox />}
+          label="Sync stats to chart zoom level"
+          onChange={handleCheckBoxChange}
+        />
+        {syncStatsToDisplayedDateRange && dateRange && (
+          <>
+            <p style={{ marginTop: 5 }}>
+              <b>Date range:</b>{" "}
+              <Chip label={new Date(dateRange.min).toLocaleDateString()} variant="outlined"></Chip>{" "}
+              -{" "}
+              <Chip label={new Date(dateRange.max).toLocaleDateString()} variant="outlined"></Chip>
+            </p>
+          </>
+        )}
+      </Box>
       <DataGrid
         rows={buildRows(repoInfosWithStats)}
         columns={buildColumns(repoInfosWithStats[0].stats)}
