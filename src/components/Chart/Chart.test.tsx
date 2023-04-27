@@ -12,7 +12,7 @@ jest.mock("react-plotly.js", () => ({
 
     const onZoomChanged = () => {
       props.onRelayout && props.onRelayout(mockOnRelayoutEvent());
-    }
+    };
     return <button data-testid="plot-zoom-change" onClick={onZoomChanged}></button>;
   },
 }));
@@ -96,11 +96,14 @@ describe("Chart", () => {
 
   it("fires event on zoom change", () => {
     const zoomChangedCallback = jest.fn();
-    render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback}/>);
+    render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback} />);
 
     const zoomMinTS = "zoomMinTS";
-    const zoomMaxTS = "zoomMaxTS"
-    mockOnRelayoutEvent.mockReturnValue({"xaxis.range[0]": zoomMinTS, "xaxis.range[1]": zoomMaxTS});
+    const zoomMaxTS = "zoomMaxTS";
+    mockOnRelayoutEvent.mockReturnValue({
+      "xaxis.range[0]": zoomMinTS,
+      "xaxis.range[1]": zoomMaxTS,
+    });
 
     const mockZoomChange = screen.getByTestId("plot-zoom-change");
     fireEvent.click(mockZoomChange);
@@ -133,9 +136,9 @@ describe("Chart", () => {
     ];
 
     const zoomChangedCallback = jest.fn();
-    render(<Chart repoInfos={repoInfos2} onZoomChanged={zoomChangedCallback}/>);
+    render(<Chart repoInfos={repoInfos2} onZoomChanged={zoomChangedCallback} />);
 
-    mockOnRelayoutEvent.mockReturnValue({"xaxis.autorange": true});
+    mockOnRelayoutEvent.mockReturnValue({ "xaxis.autorange": true });
 
     const mockZoomChange = screen.getByTestId("plot-zoom-change");
     fireEvent.click(mockZoomChange);
@@ -144,7 +147,7 @@ describe("Chart", () => {
 
     zoomChangedCallback.mockReset();
 
-    mockOnRelayoutEvent.mockReturnValue({"xaxis.autorange": false});
+    mockOnRelayoutEvent.mockReturnValue({ "xaxis.autorange": false });
 
     fireEvent.click(mockZoomChange);
 
@@ -153,9 +156,9 @@ describe("Chart", () => {
 
   it("does not fire zoom changed on to other events", () => {
     const zoomChangedCallback = jest.fn();
-    render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback}/>);
+    render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback} />);
 
-    mockOnRelayoutEvent.mockReturnValue({"some_event": "value"});
+    mockOnRelayoutEvent.mockReturnValue({ someEvent: "value" });
 
     const mockZoomChange = screen.getByTestId("plot-zoom-change");
     fireEvent.click(mockZoomChange);
