@@ -15,7 +15,10 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     }
 
     if (event["xaxis.range[0]"] && event["xaxis.range[1]"]) {
-      onZoomChanged(event["xaxis.range[0]"].toString(), event["xaxis.range[1]"].toString());
+      onZoomChanged(
+        event["xaxis.range[0]"].toString().replace(/ /g, "T"),
+        event["xaxis.range[1]"].toString().replace(/ /g, "T"),
+      );
     } else if (event["xaxis.autorange"]) {
       const minDates = repoInfos.map((repoInfo) => repoInfo.stargazerData.timestamps[0]);
       const maxDates = repoInfos.map(
@@ -25,8 +28,8 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
       const minTimestamps = minDates.map((dateAsString) => new Date(dateAsString).getTime());
       const maxTimestamps = maxDates.map((dateAsString) => new Date(dateAsString).getTime());
       onZoomChanged(
-        minDates[minTimestamps.indexOf(Math.min(...minTimestamps))],
-        maxDates[maxTimestamps.indexOf(Math.max(...maxTimestamps))],
+        minDates[minTimestamps.indexOf(Math.min(...minTimestamps))].replace(/ /g, "T"),
+        maxDates[maxTimestamps.indexOf(Math.max(...maxTimestamps))].replace(/ /g, "T"),
       );
     }
   };
