@@ -9,9 +9,16 @@ import { useProgress } from "../shared/ProgressContext";
 import Chart from "./Chart";
 import StatsGrid from "./StatsGrid";
 
+type DateRange = {
+  min: string;
+  max: string;
+};
+
 export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [repoInfos, setRepoInfos] = React.useState<Array<RepoInfo>>([]);
+  const [statsDateRange, setStatsDateRange] = React.useState<DateRange | undefined>(undefined);
+
   const requestStopLoading = React.useRef<boolean>(false);
 
   const { showAlert } = useAlertDialog();
@@ -71,6 +78,10 @@ export default function MainContainer() {
     requestStopLoading.current = true;
   };
 
+  const handleChartZoomChange = React.useCallback((start: string, end: string) => {
+    setStatsDateRange({ min: start, max: end });
+  }, []);
+
   return (
     <Container>
       <Container sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
@@ -93,10 +104,10 @@ export default function MainContainer() {
           <Container
             sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}
           >
-            <Chart repoInfos={repoInfos} />
+            <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
           </Container>
           <Container>
-            <StatsGrid repoInfos={repoInfos}></StatsGrid>
+            <StatsGrid repoInfos={repoInfos} dateRange={statsDateRange}></StatsGrid>
           </Container>
         </Container>
       )}
