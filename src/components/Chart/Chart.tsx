@@ -1,11 +1,36 @@
+import React from "react";
 import Plot from "react-plotly.js";
 import RepoInfo from "../../utils/RepoInfo";
+import { PlotRelayoutEvent } from "plotly.js";
 
 interface ChartProps {
   repoInfos: Array<RepoInfo>;
+  onZoomChanged?: (start: string, end: string) => void;
 }
 
-export default function Chart({ repoInfos }: ChartProps) {
+function Chart({ repoInfos, onZoomChanged }: ChartProps) {
+  const handleChartEvent = (event: Readonly<PlotRelayoutEvent>) => {
+    if (!onZoomChanged) {
+      return;
+    }
+
+    if (event["xaxis.range[0]"] && event["xaxis.range[1]"]) {
+      onZoomChanged(event["xaxis.range[0]"].toString(), event["xaxis.range[1]"].toString());
+    } else if (event["xaxis.autorange"]) {
+      const minDates = repoInfos.map((repoInfo) => repoInfo.stargazerData.timestamps[0]);
+      const maxDates = repoInfos.map(
+        (repoInfo) =>
+          repoInfo.stargazerData.timestamps[repoInfo.stargazerData.timestamps.length - 1],
+      );
+      const minTimestamps = minDates.map((dateAsString) => new Date(dateAsString).getTime());
+      const maxTimestamps = maxDates.map((dateAsString) => new Date(dateAsString).getTime());
+      onZoomChanged(
+        minDates[minTimestamps.indexOf(Math.min(...minTimestamps))],
+        maxDates[maxTimestamps.indexOf(Math.max(...maxTimestamps))],
+      );
+    }
+  };
+
   return (
     <Plot
       data={repoInfos.map((repoInfo) => {
@@ -43,6 +68,9 @@ export default function Chart({ repoInfos }: ChartProps) {
           t: 10,
         },
       }}
+      onRelayout={handleChartEvent}
     />
   );
 }
+
+export default React.memo(Chart);
