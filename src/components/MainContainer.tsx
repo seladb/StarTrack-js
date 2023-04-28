@@ -8,6 +8,7 @@ import { useAlertDialog } from "../shared/AlertContext";
 import { useProgress } from "../shared/ProgressContext";
 import Chart from "./Chart";
 import StatsGrid from "./StatsGrid";
+import URLBox from "./URLBox";
 
 type DateRange = {
   min: string;
@@ -106,8 +107,11 @@ export default function MainContainer() {
           >
             <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
           </Container>
-          <Container>
+          <Container sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <StatsGrid repoInfos={repoInfos} dateRange={statsDateRange}></StatsGrid>
+          </Container>
+          <Container sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
+            <URLBox repoInfos={repoInfos}></URLBox>
           </Container>
         </Container>
       )}
