@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import URLBox from "./URLBox";
 
 const writeTextMock = jest.fn();
@@ -56,5 +56,8 @@ describe(URLBox, () => {
     fireEvent.click(copyButton);
 
     expect(writeTextMock).toHaveBeenCalledWith(expectedURL);
+    waitFor(() => {
+      expect("Copied").toBeInTheDocument();
+    });
   });
 });
