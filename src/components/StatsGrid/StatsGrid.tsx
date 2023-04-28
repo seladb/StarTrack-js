@@ -117,7 +117,7 @@ export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
   const gridHeight = 120 + repoInfos.length * 60;
 
   return (
-    <Container sx={{ height: gridHeight }}>
+    <Container>
       <h1>Repo Statistics</h1>
       <Box sx={{ marginBottom: "20px" }}>
         <FormControlLabel
@@ -141,6 +141,7 @@ export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
         columns={buildColumns(repoInfosWithStats[0].stats)}
         autoPageSize={true}
         sx={{
+          height: gridHeight,
           "& .MuiDataGrid-columnHeaderTitle": {
             whiteSpace: "break-spaces",
             lineHeight: "normal",

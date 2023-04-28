@@ -145,21 +145,20 @@ describe(StatsGrid, () => {
       },
     ];
 
+    const expectedHeight = 120 + 60 * repoInfos.length;
+
     expect(mockDataGrid).toHaveBeenCalledWith({
       autoPageSize: true,
       columns: expectedColumns,
       rows: expectedRows,
       sx: {
+        height: expectedHeight,
         "& .MuiDataGrid-columnHeaderTitle": {
           whiteSpace: "break-spaces",
           lineHeight: "normal",
           textAlign: "center",
         },
       },
-    });
-
-    expect(screen.getByTestId("datagrid").parentElement).toHaveStyle({
-      height: `${120 + 60 * repoInfos.length}px`,
     });
   });
 
