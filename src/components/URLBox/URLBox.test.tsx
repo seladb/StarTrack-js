@@ -1,25 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import URLBox from "./URLBox";
 
-const writeTextMock = jest.fn();
-
 describe(URLBox, () => {
-  const originalClipboard = { ...global.navigator.clipboard };
-
-  beforeEach(() => {
-    const mockClipboard = {
-      writeText: writeTextMock,
-    };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (global.navigator as any).clipboard = mockClipboard;
-  });
-
-  afterEach(() => {
-    jest.resetAllMocks();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (global.navigator as any).clipboard = originalClipboard;
-  });
-
   const repoInfos = [
     {
       username: "user1",
@@ -48,16 +30,36 @@ describe(URLBox, () => {
     expect(urlBox.value).toEqual("");
   });
 
-  it("copies the URL", () => {
-    render(<URLBox repoInfos={repoInfos} />);
+  describe("copy URL", () => {
+    const writeTextMock = jest.fn();
 
-    const copyButton = screen.getByRole("button");
+    const originalClipboard = { ...global.navigator.clipboard };
 
-    fireEvent.click(copyButton);
+    beforeEach(() => {
+      const mockClipboard = {
+        writeText: writeTextMock,
+      };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (global.navigator as any).clipboard = mockClipboard;
+    });
 
-    expect(writeTextMock).toHaveBeenCalledWith(expectedURL);
-    waitFor(() => {
-      expect("Copied").toBeInTheDocument();
+    afterEach(() => {
+      jest.resetAllMocks();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (global.navigator as any).clipboard = originalClipboard;
+    });
+
+    it("copies the URL", () => {
+      render(<URLBox repoInfos={repoInfos} />);
+
+      const copyButton = screen.getByRole("button");
+
+      fireEvent.click(copyButton);
+
+      expect(writeTextMock).toHaveBeenCalledWith(expectedURL);
+      waitFor(() => {
+        expect("Copied").toBeInTheDocument();
+      });
     });
   });
 });
