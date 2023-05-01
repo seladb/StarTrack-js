@@ -36,7 +36,7 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
   return (
     <Paper
       component="form"
-      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: "100%" }}
+      sx={{ display: "flex", alignItems: "center", width: "100%" }}
       elevation={3}
     >
       <LinkIcon sx={{ p: "10px" }} />

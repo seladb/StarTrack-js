@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Checkbox, Chip, Container, FormControlLabel } from "@mui/material";
+import { Box, Checkbox, Chip, FormControlLabel } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import RepoInfo from "../../utils/RepoInfo";
 import * as stargazerStats from "../../utils/StargazerStats";
@@ -117,7 +117,7 @@ export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
   const gridHeight = 120 + repoInfos.length * 60;
 
   return (
-    <Container>
+    <Box sx={{ paddingLeft: 0, paddingRight: 0 }}>
       <h1>Repo Statistics</h1>
       <Box sx={{ marginBottom: "20px" }}>
         <FormControlLabel
@@ -149,6 +149,6 @@ export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
           },
         }}
       />
-    </Container>
+    </Box>
   );
 }

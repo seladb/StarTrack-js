@@ -9,6 +9,7 @@ import { useProgress } from "../shared/ProgressContext";
 import Chart from "./Chart";
 import StatsGrid from "./StatsGrid";
 import URLBox from "./URLBox";
+import { Box } from "@mui/material";
 
 type DateRange = {
   min: string;
@@ -85,35 +86,33 @@ export default function MainContainer() {
 
   return (
     <Container>
-      <Container sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
+      <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
         <RepoDetailsInput
           loading={loading}
           onGoClick={handleLoadRepo}
           onCancelClick={handleCancelLoading}
         />
-      </Container>
+      </Box>
       {repoInfos.length > 0 && (
-        <Container>
-          <Container sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
+        <Box>
+          <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
             <RepoChipContainer
               reposDetails={repoInfos.map((repoInfo) => {
                 return { user: repoInfo.username, repo: repoInfo.repo, color: repoInfo.color.hex };
               })}
               onDelete={handleRemoveRepo}
             />
-          </Container>
-          <Container
-            sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}
-          >
+          </Box>
+          <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}>
             <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
-          </Container>
-          <Container sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
+          </Box>
+          <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <StatsGrid repoInfos={repoInfos} dateRange={statsDateRange}></StatsGrid>
-          </Container>
-          <Container sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
+          </Box>
+          <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <URLBox repoInfos={repoInfos}></URLBox>
-          </Container>
-        </Container>
+          </Box>
+        </Box>
       )}
     </Container>
   );
