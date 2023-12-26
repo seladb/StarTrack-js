@@ -5,16 +5,20 @@ import MainContainer from "./components/MainContainer";
 import TopNav from "./components/TopNav";
 import { AlertContextProvider } from "./shared/AlertContext";
 import { ProgressProvider } from "./shared/ProgressContext";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
     <div className="App">
-      <AlertContextProvider>
-        <TopNav />
-        <ProgressProvider>
-          <MainContainer />
-        </ProgressProvider>
-      </AlertContextProvider>
+      <div className="Content">
+        <AlertContextProvider>
+          <TopNav />
+          <ProgressProvider>
+            <MainContainer />
+          </ProgressProvider>
+        </AlertContextProvider>
+      </div>
+      <Footer />
     </div>
   );
 }

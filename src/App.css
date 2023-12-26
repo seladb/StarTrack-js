@@ -1,5 +1,8 @@
 .App {
   text-align: left;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -35,4 +38,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Content {
+  flex: 1 0 auto;
 }

@@ -2,9 +2,9 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Button, IconButton } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { starTrackGitHubRepo } from "../../utils/Constants";
 
 export default function ProjectOnGitHubBtn() {
-  const starTrackGitHubRepo = "https://github.com/seladb/startrack-js";
   const theme = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down(750));
 
