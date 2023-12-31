@@ -10,6 +10,7 @@ import Chart from "./Chart";
 import StatsGrid from "./StatsGrid";
 import URLBox from "./URLBox";
 import { Box } from "@mui/material";
+import Forecast from "./Forecast";
 
 type DateRange = {
   min: string;
@@ -105,6 +106,9 @@ export default function MainContainer() {
           </Box>
           <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}>
             <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
+          </Box>
+          <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
+            <Forecast></Forecast>
           </Box>
           <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <StatsGrid repoInfos={repoInfos} dateRange={statsDateRange}></StatsGrid>
