@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import Chart from "./Chart";
 import RepoInfo from "../../utils/RepoInfo";
 import { PlotParams } from "react-plotly.js";
+import { createMatchMedia } from "../../utils/test";
 
 const mockPlot = jest.fn();
 const mockOnRelayoutEvent = jest.fn();
@@ -164,5 +165,21 @@ describe("Chart", () => {
     fireEvent.click(mockZoomChange);
 
     expect(zoomChangedCallback).not.toHaveBeenCalled();
+  });
+
+  it("renders the correct height", () => {
+    window.matchMedia = createMatchMedia(300);
+
+    const { container } = render(<Chart repoInfos={repoInfos} />);
+
+    expect(container).toHaveStyle({ height: 240 });
+  });
+
+  it("renders the max height", () => {
+    window.matchMedia = createMatchMedia(1100);
+
+    const { container } = render(<Chart repoInfos={repoInfos} />);
+
+    expect(container).toHaveStyle({ height: 800 });
   });
 });
