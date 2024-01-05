@@ -78,36 +78,36 @@ describe(stargazerStats.calcForecast, () => {
     [2, 0, 2],
     [2, 2, 0],
   ])(
-    "returns null for invalid forecast props",
+    "throws exception for invalid forecast props",
     (daysBackwards: number, daysForward: number, numValues: number) => {
       const inputData: StarData = {
         timestamps: calculateTimestampsFromDaysList(curDate, [-1]),
         starCounts: [1],
       };
 
-      expect(
+      expect(() => {
         stargazerStats.calcForecast(inputData, {
           daysBackwards: daysBackwards,
           daysForward: daysForward,
           numValues: numValues,
-        }),
-      ).toBeNull();
+        });
+      }).toThrow(stargazerStats.InvalidForecastProps);
     },
   );
 
-  it("returns null if data doesn't match forecast props", () => {
+  it("throws exception if data doesn't match forecast props", () => {
     const inputData: StarData = {
       timestamps: calculateTimestampsFromDaysList(curDate, [-100]),
       starCounts: [1],
     };
 
-    expect(
+    expect(() => {
       stargazerStats.calcForecast(inputData, {
-        daysBackwards: -99,
+        daysBackwards: 99,
         daysForward: 10,
         numValues: 10,
-      }),
-    ).toBeNull();
+      });
+    }).toThrow(stargazerStats.NotEnoughDataError);
   });
 
   it("calculates forecast data, props cover the full data", () => {

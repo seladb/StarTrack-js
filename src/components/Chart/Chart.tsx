@@ -49,18 +49,38 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
   return (
     <Box ref={plotRef}>
       <Plot
-        data={repoInfos.map((repoInfo) => {
-          return {
-            x: repoInfo.stargazerData.timestamps,
-            y: repoInfo.stargazerData.starCounts,
-            name: `${repoInfo.username}/${repoInfo.repo}`,
-            hovertemplate: `%{x|%d %b %Y}<br>${repoInfo.username}/${repoInfo.repo}: <b>%{y}</b><extra></extra>`,
-            showlegend: repoInfos.length > 1,
-            line: {
-              color: repoInfo.color.hex,
-              width: 5,
+        data={repoInfos.flatMap(({ stargazerData, username, repo, color, forecast }) => {
+          const series = [
+            {
+              x: stargazerData.timestamps,
+              y: stargazerData.starCounts,
+              name: `${username}/${repo}`,
+              hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo}: <b>%{y}</b><extra></extra>`,
+              showlegend: repoInfos.length > 1 || forecast !== undefined,
+              line: {
+                color: color.hex,
+                width: 5,
+                dash: "solid",
+              },
             },
-          };
+          ];
+
+          if (forecast) {
+            series.push({
+              x: forecast.timestamps,
+              y: forecast.starCounts,
+              name: `${username}/${repo} (forecast)`,
+              hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo} (forecast): <b>%{y}</b><extra></extra>`,
+              showlegend: true,
+              line: {
+                color: color.hex,
+                width: 5,
+                dash: "dot",
+              },
+            });
+          }
+
+          return series;
         })}
         style={{ width: "100%", height: "100%" }}
         useResizeHandler

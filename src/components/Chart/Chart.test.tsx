@@ -55,6 +55,7 @@ describe("Chart", () => {
             line: {
               color: "hexColor1",
               width: 5,
+              dash: "solid",
             },
           },
         ],
@@ -77,6 +78,7 @@ describe("Chart", () => {
             line: {
               color: "hexColor1",
               width: 5,
+              dash: "solid",
             },
           },
           {
@@ -88,6 +90,7 @@ describe("Chart", () => {
             line: {
               color: "hexColor2",
               width: 5,
+              dash: "solid",
             },
           },
         ],
@@ -181,5 +184,72 @@ describe("Chart", () => {
     const { container } = render(<Chart repoInfos={repoInfos} />);
 
     expect(container).toHaveStyle({ height: 800 });
+  });
+
+  it("shows forecast data", () => {
+    const repoInfosWithForecastData = repoInfos.map((repoInfo) => ({
+      ...repoInfo,
+      forecast: {
+        timestamps: ["ts5", "ts6"],
+        starCounts: [11, 12],
+      },
+    }));
+
+    render(<Chart repoInfos={repoInfosWithForecastData} />);
+
+    expect(mockPlot).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: [
+          {
+            x: ["ts1", "ts2"],
+            y: [1, 2],
+            name: "user1/repo1",
+            hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
+            showlegend: true,
+            line: {
+              color: "hexColor1",
+              width: 5,
+              dash: "solid",
+            },
+          },
+          {
+            x: ["ts5", "ts6"],
+            y: [11, 12],
+            name: "user1/repo1 (forecast)",
+            hovertemplate: "%{x|%d %b %Y}<br>user1/repo1 (forecast): <b>%{y}</b><extra></extra>",
+            showlegend: true,
+            line: {
+              color: "hexColor1",
+              width: 5,
+              dash: "dot",
+            },
+          },
+          {
+            x: ["ts3", "ts4"],
+            y: [3, 4],
+            name: "user2/repo2",
+            hovertemplate: "%{x|%d %b %Y}<br>user2/repo2: <b>%{y}</b><extra></extra>",
+            showlegend: true,
+            line: {
+              color: "hexColor2",
+              width: 5,
+              dash: "solid",
+            },
+          },
+          {
+            x: ["ts5", "ts6"],
+            y: [11, 12],
+            name: "user2/repo2 (forecast)",
+            hovertemplate: "%{x|%d %b %Y}<br>user2/repo2 (forecast): <b>%{y}</b><extra></extra>",
+            showlegend: true,
+            line: {
+              color: "hexColor2",
+              width: 5,
+              dash: "dot",
+            },
+          },
+        ],
+      }),
+    );
   });
 });

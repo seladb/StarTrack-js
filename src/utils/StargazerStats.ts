@@ -102,12 +102,15 @@ export interface ForecastProps {
   numValues: number;
 }
 
+export class InvalidForecastProps extends RangeError {}
+export class NotEnoughDataError extends RangeError {}
+
 export const calcForecast = (
   stargazerData: StarData,
   { daysBackwards, daysForward, numValues }: ForecastProps,
 ) => {
   if (daysBackwards < 1 || daysForward < 1 || numValues < 1) {
-    return null;
+    throw new InvalidForecastProps();
   }
 
   const minDate = new Date();
@@ -125,7 +128,7 @@ export const calcForecast = (
   });
 
   if (filteredTimestamps.length <= 1 || filteredStarCount.length <= 1) {
-    return null;
+    throw new NotEnoughDataError();
   }
 
   const leastSquaresFun = StargazerStats.calcLeastSquares(filteredTimestamps, filteredStarCount);

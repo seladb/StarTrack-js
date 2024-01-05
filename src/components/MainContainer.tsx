@@ -11,6 +11,7 @@ import StatsGrid from "./StatsGrid";
 import URLBox from "./URLBox";
 import { Box } from "@mui/material";
 import Forecast from "./Forecast";
+import { ForecastProps, NotEnoughDataError, calcForecast } from "../utils/StargazerStats";
 
 type DateRange = {
   min: string;
@@ -21,6 +22,9 @@ export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [repoInfos, setRepoInfos] = React.useState<Array<RepoInfo>>([]);
   const [statsDateRange, setStatsDateRange] = React.useState<DateRange | undefined>(undefined);
+  const [forecastProps, setForecastProps] = React.useState<ForecastProps | null | undefined>(
+    undefined,
+  );
 
   const requestStopLoading = React.useRef<boolean>(false);
 
@@ -66,6 +70,7 @@ export default function MainContainer() {
         repo,
         handleProgress,
         () => requestStopLoading.current,
+        forecastProps || undefined,
       );
 
       newRepoInfo && setRepoInfos([...repoInfos, newRepoInfo]);
@@ -84,6 +89,42 @@ export default function MainContainer() {
   const handleChartZoomChange = React.useCallback((start: string, end: string) => {
     setStatsDateRange({ min: start, max: end });
   }, []);
+
+  const handleForecastPropsChange = (forecastProps: ForecastProps | null) => {
+    setForecastProps(forecastProps);
+  };
+
+  React.useEffect(() => {
+    try {
+      const updatedRepoInfos = repoInfos.map((repoInfo) => ({
+        ...repoInfo,
+        forecast: forecastProps ? calcForecast(repoInfo.stargazerData, forecastProps) : undefined,
+      }));
+
+      setRepoInfos(updatedRepoInfos);
+    } catch (error) {
+      if (error instanceof NotEnoughDataError) {
+        showAlert(
+          `There were not enough stars in the last ${forecastProps?.daysBackwards} days to calculate the forecast`,
+        );
+      } else {
+        showAlert("Something went wrong, please try again");
+      }
+
+      const updatedRepoInfos = repoInfos.map((repoInfo) => ({
+        ...repoInfo,
+        forecast: undefined,
+      }));
+
+      setRepoInfos(updatedRepoInfos);
+    }
+  }, [forecastProps]);
+
+  React.useEffect(() => {
+    if (repoInfos.length === 0) {
+      setForecastProps(null);
+    }
+  }, [repoInfos]);
 
   return (
     <Container>
@@ -108,7 +149,7 @@ export default function MainContainer() {
             <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
           </Box>
           <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
-            <Forecast></Forecast>
+            <Forecast onForecastChange={handleForecastPropsChange}></Forecast>
           </Box>
           <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <StatsGrid repoInfos={repoInfos} dateRange={statsDateRange}></StatsGrid>
