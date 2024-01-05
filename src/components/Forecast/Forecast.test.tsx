@@ -1,4 +1,4 @@
-import { render, screen, act, fireEvent } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import Forecast from "./Forecast";
 import { ForecastInfo } from "./ForecastInfo";
 
@@ -99,7 +99,6 @@ describe(Forecast, () => {
 
     expect(onForecastChange).toHaveBeenCalledWith(expectedForecastProps);
     expect(mockForecastRow).toHaveBeenCalledWith(expect.objectContaining({ info: forecastInfo }));
-    expect(screen.getByTestId("HighlightOffIcon")).toBeInTheDocument();
   });
 
   it("does not change forecast props if dialog closes with cancel", () => {
@@ -109,7 +108,6 @@ describe(Forecast, () => {
 
     expect(onForecastChange).toHaveBeenCalledWith(null);
     expect(getLastCallArguments(mockForecastRow)[0]).toMatchObject({ info: null });
-    expect(screen.queryByTestId("HighlightOffIcon")).toBeNull();
   });
 
   it("clears forecast props", () => {
@@ -138,10 +136,7 @@ describe(Forecast, () => {
     expect(onForecastChange).toHaveBeenCalledWith(expectedForecastProps);
     expect(mockForecastRow).toHaveBeenCalledWith(expect.objectContaining({ info: forecastInfo }));
 
-    const clearButton = screen.getByTestId("HighlightOffIcon");
-    expect(clearButton).toBeInTheDocument();
-
-    fireEvent.click(clearButton);
+    act(() => getLastCallArguments(mockForecastRow)[0].onDelete());
 
     expect(getLastCallArguments(onForecastChange)[0]).toEqual(null);
     expect(getLastCallArguments(mockForecastRow)[0]).toMatchObject({ info: null });
