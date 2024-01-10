@@ -1,24 +1,20 @@
-import React from "react";
-// import logo from "./logo.svg"
-import "./App.css";
-import MainContainer from "./components/MainContainer";
-import TopNav from "./components/TopNav";
-import { AlertContextProvider } from "./shared/AlertContext";
-import { ProgressProvider } from "./shared/ProgressContext";
-import Footer from "./components/Footer";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import MainPage from "./routes/MainPage";
+import Preload from "./routes/Preload";
+import ErrorPage from "./routes/ErrorPage";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    errorElement: <ErrorPage />,
+    element: <MainPage />,
+  },
+  {
+    path: "/preload",
+    element: <Preload />,
+  },
+]);
 
 export default function App() {
-  return (
-    <div className="App">
-      <div className="Content">
-        <AlertContextProvider>
-          <TopNav />
-          <ProgressProvider>
-            <MainContainer />
-          </ProgressProvider>
-        </AlertContextProvider>
-      </div>
-      <Footer />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
