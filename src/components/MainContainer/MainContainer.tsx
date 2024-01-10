@@ -1,17 +1,17 @@
 import { Container } from "@mui/system";
 import React from "react";
-import RepoDetailsInput from "./RepoDetailsInput";
-import RepoChipContainer from "./RepoChips";
-import { loadStargazers } from "../utils/StargazerLoader";
-import RepoInfo from "../utils/RepoInfo";
-import { useAlertDialog } from "../shared/AlertContext";
-import { useProgress } from "../shared/ProgressContext";
-import Chart from "./Chart";
-import StatsGrid from "./StatsGrid";
-import URLBox from "./URLBox";
+import RepoDetailsInput from "../RepoDetailsInput";
+import RepoChipContainer from "../RepoChips";
+import { loadStargazers } from "../../utils/StargazerLoader";
+import RepoInfo from "../../utils/RepoInfo";
+import { useAlertDialog } from "../../shared/AlertContext";
+import { useProgress } from "../../shared/ProgressContext";
+import Chart from "../Chart";
+import StatsGrid from "../StatsGrid";
+import URLBox from "../URLBox";
 import { Box } from "@mui/material";
-import Forecast from "./Forecast";
-import { ForecastProps, NotEnoughDataError, calcForecast } from "../utils/StargazerStats";
+import Forecast from "../Forecast";
+import { ForecastProps, NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
 import { useLocation } from "react-router-dom";
 
 type DateRange = {
