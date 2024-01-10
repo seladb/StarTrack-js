@@ -53,7 +53,7 @@ describe(Preload, () => {
   const repo3 = "repo3";
   const repoInfo3 = "repoInfo3";
 
-  it("loads repos data", () => {
+  it("loads repos data", async () => {
     Object.defineProperty(window, "location", {
       value: {
         search: `?r=${username1},${repo1}&r=${username2},${repo2}`,
@@ -65,12 +65,12 @@ describe(Preload, () => {
     expect(screen.getByText("Loading repo data...")).toBeInTheDocument();
     expect(screen.getByText(`${username1} / ${repo1}`)).toBeInTheDocument();
 
-    act(() => getLastCallArguments(mockRepoLoader)[0].onLoadDone(repoInfo1));
+    await act(() => getLastCallArguments(mockRepoLoader)[0].onLoadDone(repoInfo1));
 
     expect(screen.getByText("Loading repo data...")).toBeInTheDocument();
     expect(screen.getByText(`${username2} / ${repo2}`)).toBeInTheDocument();
 
-    act(() => getLastCallArguments(mockRepoLoader)[0].onLoadDone(repoInfo2));
+    await act(() => getLastCallArguments(mockRepoLoader)[0].onLoadDone(repoInfo2));
 
     expect(mockNavigate).toHaveBeenCalledWith("/", { state: [repoInfo1, repoInfo2] });
   });
@@ -91,13 +91,13 @@ describe(Preload, () => {
 
     expect(screen.getByText(`${username1} / ${repo1}`)).toBeInTheDocument();
 
-    act(() => getLastCallArguments(mockRepoLoader)[0].onLoadError(errorMessage1));
+    await act(() => getLastCallArguments(mockRepoLoader)[0].onLoadError(errorMessage1));
 
     expect(screen.getByText(`${username2} / ${repo2}`)).toBeInTheDocument();
 
-    act(() => getLastCallArguments(mockRepoLoader)[0].onLoadError(errorMessage2));
+    await act(() => getLastCallArguments(mockRepoLoader)[0].onLoadError(errorMessage2));
 
-    act(() => getLastCallArguments(mockRepoLoader)[0].onLoadDone(repoInfo3));
+    await act(() => getLastCallArguments(mockRepoLoader)[0].onLoadDone(repoInfo3));
 
     expect(screen.getByText("Error loading repo data")).toBeInTheDocument();
 

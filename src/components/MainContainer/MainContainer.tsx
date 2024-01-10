@@ -130,7 +130,6 @@ export default function MainContainer() {
   }, [repoInfos]);
 
   React.useEffect(() => {
-    console.log(state);
     if (state) {
       setRepoInfos(state);
     }

@@ -86,27 +86,27 @@ describe(Forecast, () => {
         numValues: 1,
       },
     ],
-  ])("calculates forecast props correctly", (forecastInfo, expectedForecastProps) => {
+  ])("calculates forecast props correctly", async (forecastInfo, expectedForecastProps) => {
     jest.useFakeTimers().setSystemTime(new Date("2024-01-01"));
 
     render(<Forecast onForecastChange={onForecastChange} />);
 
-    act(() => getLastCallArguments(mockForecastForm)[0].onClose(forecastInfo));
+    await act(() => getLastCallArguments(mockForecastForm)[0].onClose(forecastInfo));
 
     expect(onForecastChange).toHaveBeenCalledWith(expectedForecastProps);
     expect(mockForecastRow).toHaveBeenCalledWith(expect.objectContaining({ info: forecastInfo }));
   });
 
-  it("does not change forecast props if dialog closes with cancel", () => {
+  it("does not change forecast props if dialog closes with cancel", async () => {
     render(<Forecast onForecastChange={onForecastChange} />);
 
-    act(() => getLastCallArguments(mockForecastForm)[0].onClose(null));
+    await act(() => getLastCallArguments(mockForecastForm)[0].onClose(null));
 
     expect(onForecastChange).toHaveBeenCalledWith(null);
     expect(getLastCallArguments(mockForecastRow)[0]).toMatchObject({ info: null });
   });
 
-  it("clears forecast props", () => {
+  it("clears forecast props", async () => {
     render(<Forecast onForecastChange={onForecastChange} />);
 
     const forecastInfo = {
@@ -127,12 +127,12 @@ describe(Forecast, () => {
       numValues: 50,
     };
 
-    act(() => getLastCallArguments(mockForecastForm)[0].onClose(forecastInfo));
+    await act(() => getLastCallArguments(mockForecastForm)[0].onClose(forecastInfo));
 
     expect(onForecastChange).toHaveBeenCalledWith(expectedForecastProps);
     expect(mockForecastRow).toHaveBeenCalledWith(expect.objectContaining({ info: forecastInfo }));
 
-    act(() => getLastCallArguments(mockForecastRow)[0].onDelete());
+    await act(() => getLastCallArguments(mockForecastRow)[0].onDelete());
 
     expect(getLastCallArguments(onForecastChange)[0]).toEqual(null);
     expect(getLastCallArguments(mockForecastRow)[0]).toMatchObject({ info: null });
