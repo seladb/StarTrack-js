@@ -1,11 +1,7 @@
 import { render, screen, act } from "@testing-library/react";
 import Forecast from "./Forecast";
 import { ForecastInfo } from "./ForecastInfo";
-
-const getLastCallArguments = (Component: jest.Mock) => {
-  const length = Component.mock.calls.length;
-  return Component.mock.calls[length - 1];
-};
+import { getLastCallArguments } from "../../utils/test";
 
 const mockForecastRow = jest.fn();
 

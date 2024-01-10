@@ -12,6 +12,7 @@ import URLBox from "./URLBox";
 import { Box } from "@mui/material";
 import Forecast from "./Forecast";
 import { ForecastProps, NotEnoughDataError, calcForecast } from "../utils/StargazerStats";
+import { useLocation } from "react-router-dom";
 
 type DateRange = {
   min: string;
@@ -31,6 +32,8 @@ export default function MainContainer() {
   const { showAlert } = useAlertDialog();
 
   const { startProgress, setProgress, endProgress } = useProgress();
+
+  const { state } = useLocation();
 
   const handleRemoveRepo = (user: string, repo: string) => {
     setRepoInfos(
@@ -125,6 +128,13 @@ export default function MainContainer() {
       setForecastProps(null);
     }
   }, [repoInfos]);
+
+  React.useEffect(() => {
+    console.log(state);
+    if (state) {
+      setRepoInfos(state);
+    }
+  }, state);
 
   return (
     <Container>

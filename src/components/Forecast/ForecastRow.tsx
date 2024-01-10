@@ -34,11 +34,7 @@ export default function ForecastRow({ info, onClick, onDelete }: ForecastRowProp
 
   return (
     <div className={classes.root}>
-      <Chip
-        label={content}
-        onClick={onClick}
-        onDelete={info ? onDelete : undefined}
-      />
+      <Chip label={content} onClick={onClick} onDelete={info ? onDelete : undefined} />
     </div>
   );
 }

@@ -10,3 +10,8 @@ export const createMatchMedia = (width: number) => (query: string) => ({
   removeEventListener: jest.fn(),
   dispatchEvent: jest.fn(),
 });
+
+export const getLastCallArguments = (Component: jest.Mock) => {
+  const length = Component.mock.calls.length;
+  return Component.mock.calls[length - 1];
+};
