@@ -40,6 +40,13 @@ interface RepoLoaderProps {
 export default function RepoLoader({ repoDataToLoad, onLoadDone, onLoadError }: RepoLoaderProps) {
   const { startProgress, setProgress, endProgress } = useProgress();
 
+  React.useEffect(() => {
+    if (repoDataToLoad) {
+      startProgress();
+      loadData();
+    } 
+  }, [repoDataToLoad]);
+
   const handleProgress = (value: number) => {
     setProgress(value);
   };
@@ -73,16 +80,6 @@ export default function RepoLoader({ repoDataToLoad, onLoadDone, onLoadError }: 
       endProgress();
     }
   };
-
-  React.useEffect(() => {
-    if (!repoDataToLoad) {
-      return;
-    }
-
-    startProgress();
-
-    loadData();
-  }, [repoDataToLoad]);
 
   return <></>;
 }

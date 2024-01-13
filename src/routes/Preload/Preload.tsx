@@ -5,11 +5,10 @@ import { ProgressProvider } from "../../shared/ProgressContext";
 import RepoLoader from "./RepoLoader";
 import { RepoMetadata } from "./PreloadTypes";
 import RepoInfo from "../../utils/RepoInfo";
-import { useTheme } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
 import { Button } from "@mui/material";
 
 export const parseUrlParams = (urlParams: string): RepoMetadata[] => {
-  console.log(`~~~~~~~~~ ${urlParams} ~~~~~~~~`);
   const reposMetadata = new URLSearchParams(urlParams)
     .getAll("r")
     .map((value) => {
@@ -26,8 +25,7 @@ export const parseUrlParams = (urlParams: string): RepoMetadata[] => {
   );
 };
 
-const useStyles = makeStyles(() => {
-  const theme = useTheme();
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     root: {
       display: "flex",
@@ -62,13 +60,20 @@ type RepoLoadError = {
 };
 
 export function Preload() {
-  const dataToLoad = parseUrlParams(location.search);
   const classes = useStyles();
   const navigate = useNavigate();
 
   const [currentlyLoadingIndex, setCurrentlyLoadingIndex] = React.useState<number>(0);
   const [repoDataLoaded, setRepoDataLoaded] = React.useState<RepoInfo[]>([]);
   const [repoLoadErrors, setRepoLoadErrors] = React.useState<RepoLoadError[]>([]);
+
+  React.useEffect(() => {
+    if (currentlyLoadingIndex >= dataToLoad.length && repoLoadErrors.length === 0) {
+      navigate("/", { state: repoDataLoaded });
+    }
+  }, [currentlyLoadingIndex]);
+
+  const dataToLoad = parseUrlParams(location.search);
 
   const getSubTitle = () => {
     return currentlyLoadingIndex < dataToLoad.length
@@ -77,6 +82,7 @@ export function Preload() {
       ? "Error loading repo data"
       : "Done!";
   };
+
   const handleLoadDone = (repoInfo: RepoInfo | null) => {
     if (repoInfo !== null) {
       setRepoDataLoaded([...repoDataLoaded, repoInfo]);
@@ -95,12 +101,6 @@ export function Preload() {
   const continueButtonClick = () => {
     navigate("/", { state: repoDataLoaded });
   };
-
-  React.useEffect(() => {
-    if (currentlyLoadingIndex >= dataToLoad.length && repoLoadErrors.length === 0) {
-      navigate("/", { state: repoDataLoaded });
-    }
-  }, [currentlyLoadingIndex]);
 
   return (
     <div className={classes.root}>
