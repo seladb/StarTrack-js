@@ -70,6 +70,8 @@ describe("Progress context", () => {
   });
 
   it("throws an error if ProgressProvider doesn't exist", () => {
+    // prevent `render` from logging the error to console
+    jest.spyOn(console, "error").mockImplementation(jest.fn());
     expect(() => render(<TestComponent />)).toThrow(
       "useProgress must be used within an ProgressProvider",
     );

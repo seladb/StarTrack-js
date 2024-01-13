@@ -34,6 +34,8 @@ describe("Alert context", () => {
   });
 
   it("throws an error if AlertContextProvider doesn't exist", () => {
+    // prevent `render` from logging the error to console
+    jest.spyOn(console, "error").mockImplementation(jest.fn());
     expect(() => render(<TestComponent />)).toThrow(
       "useAlertDialog must be used within an AlertContextProvider",
     );
