@@ -127,12 +127,12 @@ export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
         />
         {syncStatsToDisplayedDateRange && dateRange && (
           <>
-            <p style={{ marginTop: 5 }}>
+            <div style={{ marginTop: 5 }}>
               <b>Date range:</b>{" "}
               <Chip label={new Date(dateRange.min).toLocaleDateString()} variant="outlined"></Chip>{" "}
               -{" "}
               <Chip label={new Date(dateRange.max).toLocaleDateString()} variant="outlined"></Chip>
-            </p>
+            </div>
           </>
         )}
       </Box>
