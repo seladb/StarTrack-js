@@ -23,5 +23,5 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <RouterProvider router={router} />;
     </ThemeProvider>
-  )
+  );
 }

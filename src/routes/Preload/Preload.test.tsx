@@ -60,9 +60,9 @@ describe(Preload, () => {
     render(
       <ThemeProvider theme={theme}>
         <Preload />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
-  }
+  };
 
   it("loads repos data", async () => {
     Object.defineProperty(window, "location", {

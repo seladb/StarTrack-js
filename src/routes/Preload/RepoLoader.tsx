@@ -44,7 +44,7 @@ export default function RepoLoader({ repoDataToLoad, onLoadDone, onLoadError }: 
     if (repoDataToLoad) {
       startProgress();
       loadData();
-    } 
+    }
   }, [repoDataToLoad]);
 
   const handleProgress = (value: number) => {
