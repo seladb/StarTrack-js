@@ -183,9 +183,9 @@ export const loadStargazers = async (
 
     handleProgress(0);
 
-    const page = await loadStarGazerPage(user, repo, 1);
-    const numOfPages = getLastStargazerPage(page.headers.link);
-    if (numOfPages > maxSupportedPagesWithoutAccessToken && !isLoggedIn()) {
+    const page = await GitHubUtils.loadStarGazerPage(user, repo, 1);
+    const numOfPages = GitHubUtils.getLastStargazerPage(page.headers.link);
+    if (numOfPages > maxSupportedPagesWithoutAccessToken && !GitHubUtils.isLoggedIn()) {
       throw Error(
         "Cannot load a repo with more than " +
           100 * maxSupportedPagesWithoutAccessToken +
@@ -194,7 +194,7 @@ export const loadStargazers = async (
       );
     }
 
-    starCount = addStarData(starData, starCount, page.data);
+    starCount = GitHubUtils.addStarData(starData, starCount, page.data);
 
     handleProgress((1 / numOfPages) * 100);
     let pageNum = 2;
@@ -205,10 +205,12 @@ export const loadStargazers = async (
 
       const currentBatchSize = Math.min(pageNum + batchSize, numOfPages + 1) - pageNum;
       const pages = await Promise.all(
-        range(currentBatchSize, pageNum).map((num) => loadStarGazerPage(user, repo, num)),
+        range(currentBatchSize, pageNum).map((num) =>
+          GitHubUtils.loadStarGazerPage(user, repo, num),
+        ),
       );
       for (let i = 0; i < currentBatchSize; i++) {
-        starCount = addStarData(starData, starCount, pages[i].data);
+        starCount = GitHubUtils.addStarData(starData, starCount, pages[i].data);
       }
 
       pageNum += currentBatchSize;
@@ -227,10 +229,11 @@ export const loadStargazers = async (
       case 404: {
         throw Error(`Repo ${user}/${repo} Not found`);
       }
+      case 429:
       case 403: {
         throw Error(
           "API rate limit exceeded!" +
-            (isLoggedIn()
+            (GitHubUtils.isLoggedIn()
               ? ""
               : // eslint-disable-next-line quotes
                 ' Please click "GitHub Authentication" and provide GitHub access token to increase rate limit'),
@@ -241,7 +244,7 @@ export const loadStargazers = async (
           "Couldn't fetch stargazers data, error code " +
             error.response.status +
             " returned" +
-            error.response.data?.message,
+            (error.response.data?.message ? `. Error: ${error.response.data.message}` : ""),
         );
       }
     }
