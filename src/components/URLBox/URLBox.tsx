@@ -16,17 +16,23 @@ interface URLBoxProps {
 }
 
 export default function URLBox({ repoInfos }: URLBoxProps) {
-  const [showTooltip, setShowTooltip] = React.useState(false);
+  const [showTooltip, setShowTooltip] = React.useState<boolean>(false);
+  const [url, setUrl] = React.useState<string>("");
 
-  const url =
-    repoInfos.length === 0
+  React.useEffect(() => {
+    setUrl(calcUrl());
+  }, [repoInfos]);
+
+  const calcUrl = () => {
+    return repoInfos.length === 0
       ? ""
       : baseUrl +
-        repoInfos
-          .map((repoInfo) =>
-            repoUrlParam.replace("{user}", repoInfo.username).replace("{repo}", repoInfo.repo),
-          )
-          .join("&");
+          repoInfos
+            .map((repoInfo) =>
+              repoUrlParam.replace("{user}", repoInfo.username).replace("{repo}", repoInfo.repo),
+            )
+            .join("&");
+  };
 
   const copyToClipboard = async () => {
     await global.navigator.clipboard.writeText(url);
@@ -40,7 +46,7 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
       elevation={3}
     >
       <LinkIcon sx={{ p: "10px" }} />
-      <InputBase fullWidth sx={{ m: 1 }} disabled value={url} defaultValue={url} />
+      <InputBase fullWidth sx={{ m: 1 }} disabled value={url} />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Tooltip title="Copied" open={showTooltip} onClose={() => setShowTooltip(false)}>
         <IconButton
