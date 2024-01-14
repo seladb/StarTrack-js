@@ -69,34 +69,32 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
       <DialogTitle>GitHub Authentication</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          <p>
-            GitHub API{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://developer.github.com/v3/#rate-limiting"
-            >
-              rate limiter
-            </a>{" "}
-            makes it impossible to collect stargazer data on repos with more than 3000 stars without
-            GitHub authentication.
-          </p>
-          <p>
-            If you&apos;d like to view stargazer data for this repo, please provide your GitHub auth
-            details.
-          </p>
-          <p>
-            Please note these credentials aren&apos;t stored in any server. This application is
-            based on pure javascript so the credentials are only used to send authenticated requests
-            to GitHub API.
-          </p>
-          <p>
-            You can generate an access token{" "}
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens">
-              here
-            </a>
-            .
-          </p>
+          GitHub API{" "}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://developer.github.com/v3/#rate-limiting"
+          >
+            rate limiter
+          </a>{" "}
+          makes it impossible to collect stargazer data on repos with more than 3000 stars without
+          GitHub authentication.
+        </DialogContentText>
+        <DialogContentText>
+          If you&apos;d like to view stargazer data for this repo, please provide your GitHub auth
+          details.
+        </DialogContentText>
+        <DialogContentText>
+          Please note these credentials aren&apos;t stored in any server. This application is based
+          on pure javascript so the credentials are only used to send authenticated requests to
+          GitHub API.
+        </DialogContentText>
+        <DialogContentText>
+          You can generate an access token{" "}
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens">
+            here
+          </a>
+          .
         </DialogContentText>
         <TextField
           autoFocus
