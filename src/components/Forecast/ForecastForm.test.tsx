@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import ForecastForm from "./ForecastForm";
 import { ForecastInfo, TimeUnit } from "./ForecastInfo";
 
@@ -122,11 +122,11 @@ describe(ForecastForm, () => {
     fireEvent.change(forwardUnitTextBox, { target: { value: "years" } });
     fireEvent.change(pointCountTextBox, { target: { value: "123" } });
 
-    fireEvent.click(cancelBtn);
-
-    await waitFor(() => {
-      expect(onClose).toBeCalledWith(null);
+    await act(async () => {
+      fireEvent.click(cancelBtn);
     });
+
+    expect(onClose).toBeCalledWith(null);
   });
 
   it("checks backward count text box validations", async () => {
