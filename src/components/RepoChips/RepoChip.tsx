@@ -1,4 +1,5 @@
 import { Chip, darken } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import * as GitHubUtils from "../../utils/GitHubUtils";
 
 interface RepoChipProps {
@@ -9,6 +10,7 @@ interface RepoChipProps {
 }
 
 export default function RepoChip({ user, repo, color, onDelete }: RepoChipProps) {
+  const theme = useTheme();
   const handleClick = () => {
     const url = GitHubUtils.getRepoUrl(user, repo);
     window.open(url, "_blank", "noreferrer");
@@ -18,7 +20,7 @@ export default function RepoChip({ user, repo, color, onDelete }: RepoChipProps)
     onDelete && onDelete(user, repo);
   };
 
-  const fontColor = "#ffffff";
+  const fontColor = theme.palette.common.white;
   const hoverColor = darken(fontColor, 0.07);
 
   return (

@@ -1,5 +1,5 @@
-import { Box } from "@mui/system";
 import RepoChip from "./RepoChip";
+import { Box, Stack } from "@mui/material";
 
 interface RepoChipContainerProps {
   reposDetails: Array<{
@@ -16,14 +16,21 @@ export default function RepoChipContainer({ reposDetails, onDelete }: RepoChipCo
   };
 
   return (
-    <Box>
+    <Stack
+      direction="row"
+      spacing={2}
+      useFlexGap
+      flexWrap="wrap"
+      alignContent="center"
+      justifyContent="center"
+    >
       {reposDetails.map(({ user, repo, color }) => {
         return (
-          <Box key={`${user}/${repo}`} sx={{ display: "inline-flex", margin: "0.4em" }}>
+          <Box key={`${user}/${repo}`}>
             <RepoChip user={user} repo={repo} color={color} onDelete={handleDelete} />
           </Box>
         );
       })}
-    </Box>
+    </Stack>
   );
 }
