@@ -1,3 +1,5 @@
+import { useTheme } from "@mui/material/styles";
+import { makeStyles, createStyles } from "@mui/styles";
 import LinearProgress from "@mui/material/LinearProgress";
 import React, { createContext, useContext } from "react";
 
@@ -14,9 +16,27 @@ interface ProgressProviderProps {
   children: React.ReactNode;
 }
 
+export const useProgressBarStyles = makeStyles(() =>
+  createStyles({
+    progressBar: {
+      // Disable the transition animation from 100 to 0 inside the progress bar
+      // eslint-disable-next-line quotes
+      '&[aria-valuenow="0"]': {
+        "& > $progressBarInner": {
+          transition: "none",
+        },
+      },
+    },
+    progressBarInner: {},
+  }),
+);
+
 const ProgressProvider: React.FC<ProgressProviderProps> = ({ children }) => {
   const [show, setShow] = React.useState<boolean>(false);
   const [curProgress, setCurProgress] = React.useState<number>(0);
+
+  const classes = useProgressBarStyles();
+  const theme = useTheme();
 
   const startProgress = () => {
     setShow(true);
@@ -39,7 +59,18 @@ const ProgressProvider: React.FC<ProgressProviderProps> = ({ children }) => {
 
   return (
     <ProgressContext.Provider value={{ startProgress, advanceProgress, setProgress, endProgress }}>
-      {show && <LinearProgress color="success" variant="determinate" value={curProgress} />}
+      <LinearProgress
+        color="secondary"
+        variant="determinate"
+        value={curProgress}
+        className={classes.progressBar}
+        classes={{ bar: classes.progressBarInner }}
+        sx={{
+          opacity: show ? 1 : 0,
+          backgroundColor: theme.palette.background.default,
+          height: 10,
+        }}
+      />
       {children}
     </ProgressContext.Provider>
   );

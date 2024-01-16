@@ -39,12 +39,14 @@ describe("Progress context", () => {
       </ProgressProvider>,
     );
 
-    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+    const progressBar = screen.getByRole("progressbar");
+
+    expect(progressBar).toHaveStyle({ opacity: 0 });
 
     const startButton = screen.getByTestId("Start");
     fireEvent.click(startButton);
 
-    const progressBar = screen.getByRole("progressbar");
+    expect(progressBar).toHaveStyle({ opacity: 1 });
 
     expect(progressBar.getAttribute("aria-valuenow")).toStrictEqual("0");
 
@@ -66,7 +68,7 @@ describe("Progress context", () => {
     const endButton = screen.getByTestId("End");
     fireEvent.click(endButton);
 
-    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+    expect(progressBar).toHaveStyle({ opacity: 0 });
   });
 
   it("throws an error if ProgressProvider doesn't exist", () => {
