@@ -2,8 +2,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainPage from "./routes/MainPage";
 import Preload from "./routes/Preload";
 import ErrorPage from "./routes/ErrorPage";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import StarTrackTheme from "./shared/Theme";
+import { CssBaseline } from "@mui/material";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +19,11 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  const theme = createTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />;
+    <ThemeProvider theme={StarTrackTheme}>
+      <CssBaseline>
+        <RouterProvider router={router} />;
+      </CssBaseline>
     </ThemeProvider>
   );
 }
