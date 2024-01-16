@@ -1,4 +1,4 @@
-import { Button, FormGroup, styled, TextField, TextFieldProps, Tooltip } from "@mui/material";
+import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import React, { KeyboardEvent } from "react";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
@@ -7,6 +7,7 @@ import RepoDetailsInputProps from "./RepoDetailsInputProps";
 import { InputGroupText } from "../../shared/InputGroupText";
 import SaveIcon from "@mui/icons-material/Save";
 import { parseGitHubUrl } from "../../utils/GitHubUtils";
+import StarTrackTooltip from "../../shared/Tooltip";
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
   flex: "1 1",
@@ -45,9 +46,9 @@ export default function RepoDetailsInputDesktop({
 
   return (
     <FormGroup sx={{ flexDirection: "row", maxWidth: "800px", margin: "auto" }}>
-      <Tooltip title='Tip: you can paste any GitHub URL or string in the format of "username/repo"'>
+      <StarTrackTooltip title='Tip: you can paste any GitHub URL or string in the format of "username/repo"'>
         <InputGroupText>Repo details</InputGroupText>
-      </Tooltip>
+      </StarTrackTooltip>
       <StyledTextField
         variant="outlined"
         size="small"

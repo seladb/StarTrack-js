@@ -1,9 +1,10 @@
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton } from "@mui/material";
 import KeyIcon from "@mui/icons-material/Key";
 import { StorageType } from "../../utils/GitHubUtils";
 import { useState } from "react";
+import StarTrackTooltip from "../../shared/Tooltip";
 
 interface GitHubTokenProps {
   accessToken: string;
@@ -18,20 +19,20 @@ export default function GitHubToken({ accessToken, storageType }: GitHubTokenPro
 
   return smallScreen ? (
     <IconButton color="inherit" onClick={() => setTooltipIsOpen(!tooltipIsOpen)}>
-      <Tooltip
+      <StarTrackTooltip
         open={tooltipIsOpen}
         title={`Access token '${accessTokenShort}' stored in ${storageType}`}
         arrow
       >
         <KeyIcon />
-      </Tooltip>
+      </StarTrackTooltip>
     </IconButton>
   ) : (
     <>
       <KeyIcon sx={{ m: 1 }} />
-      <Tooltip title={`Access token stored in ${storageType}`} arrow>
+      <StarTrackTooltip title={`Access token stored in ${storageType}`} arrow>
         <p>{accessTokenShort}</p>
-      </Tooltip>
+      </StarTrackTooltip>
     </>
   );
 }

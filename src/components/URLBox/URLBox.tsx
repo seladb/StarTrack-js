@@ -1,4 +1,5 @@
-import { Divider, IconButton, InputBase, Paper, Tooltip } from "@mui/material";
+import { Divider, IconButton, InputBase, Paper } from "@mui/material";
+import StarTrackTooltip from "../../shared/Tooltip";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LinkIcon from "@mui/icons-material/Link";
 import React from "react";
@@ -48,7 +49,7 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
       <LinkIcon sx={{ p: "10px" }} />
       <InputBase fullWidth sx={{ m: 1 }} disabled value={url} />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Tooltip title="Copied" open={showTooltip} onClose={() => setShowTooltip(false)}>
+      <StarTrackTooltip title="Copied" open={showTooltip} onClose={() => setShowTooltip(false)}>
         <IconButton
           color="primary"
           sx={{ p: "10px" }}
@@ -57,7 +58,7 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
         >
           <ContentCopyIcon />
         </IconButton>
-      </Tooltip>
+      </StarTrackTooltip>
     </Paper>
   );
 }
