@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme: Theme) => {
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: theme.breakpoints.values.md,
+      width: theme.breakpoints.values.sm,
+      maxWidth: "100%",
     },
     image: {
       inset: 0,
