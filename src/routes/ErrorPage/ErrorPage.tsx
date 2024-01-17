@@ -1,28 +1,21 @@
-import { makeStyles, createStyles } from "@mui/styles";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { useTheme } from "@mui/material/styles";
+import { Button, Typography, Box, Grid } from "@mui/material";
+import { Illustration } from "./Illustration";
+import { createStyles, makeStyles } from "@mui/styles";
+import { Link } from "react-router-dom";
+import { Theme } from "@mui/material/styles";
 
-const useStyles = makeStyles(() => {
-  const theme = useTheme();
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
+    imageContainer: {
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: theme.breakpoints.values.md,
     },
-    paper: {
-      padding: theme.spacing(3),
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      maxWidth: 400,
-    },
-    errorMessage: {
-      marginBottom: theme.spacing(2),
-      marginTop: theme.spacing(2),
+    image: {
+      inset: 0,
+      opacity: 0.03,
     },
   });
 });
@@ -31,18 +24,32 @@ export default function ErrorPage() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Paper elevation={3} className={classes.paper}>
-        <Typography variant="h4" color="error" className={classes.errorMessage}>
-          Oops! Something went wrong.
-        </Typography>
-        <Typography variant="body1">
-          Sorry, but an unexpected error occurred. Please try again later.
-        </Typography>
-        <Button variant="contained" color="primary" href="/">
-          Go to Home
-        </Button>
-      </Paper>
-    </div>
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Box className={classes.imageContainer}>
+        <Illustration className={classes.image} />
+      </Box>
+      <Box maxWidth="sm">
+        <Grid container rowSpacing={5}>
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" sx={{ fontWeight: 600 }}>
+              Nothing to see here
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography align="center">
+              The page you are trying to open does not exist. You may have mistyped the address, or
+              the page has been moved to another URL.
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Box textAlign="center">
+              <Button LinkComponent={Link} href="/" variant="contained">
+                Take me back to home page
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 }
