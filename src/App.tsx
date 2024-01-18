@@ -22,7 +22,7 @@ export default function App() {
   return (
     <ThemeProvider theme={StarTrackTheme}>
       <CssBaseline>
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </CssBaseline>
     </ThemeProvider>
   );

@@ -1,8 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Chart from "./Chart";
 import RepoInfo from "../../utils/RepoInfo";
 import { PlotParams } from "react-plotly.js";
-import { createMatchMedia } from "../../utils/test";
+import { getLastCallArguments } from "../../utils/test";
 
 const mockPlot = jest.fn();
 const mockOnRelayoutEvent = jest.fn();
@@ -51,7 +51,6 @@ describe("Chart", () => {
             y: [1, 2],
             name: "user1/repo1",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
-            showlegend: false,
             line: {
               color: "hexColor1",
               width: 5,
@@ -74,7 +73,6 @@ describe("Chart", () => {
             y: [1, 2],
             name: "user1/repo1",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
-            showlegend: true,
             line: {
               color: "hexColor1",
               width: 5,
@@ -86,7 +84,6 @@ describe("Chart", () => {
             y: [3, 4],
             name: "user2/repo2",
             hovertemplate: "%{x|%d %b %Y}<br>user2/repo2: <b>%{y}</b><extra></extra>",
-            showlegend: true,
             line: {
               color: "hexColor2",
               width: 5,
@@ -170,20 +167,69 @@ describe("Chart", () => {
     expect(zoomChangedCallback).not.toHaveBeenCalled();
   });
 
-  it("renders the correct height", () => {
-    window.matchMedia = createMatchMedia(300);
-
+  it("renders height correctly when screen size changes", async () => {
     const { container } = render(<Chart repoInfos={repoInfos} />);
 
-    expect(container).toHaveStyle({ height: 240 });
-  });
+    const mockedPartialGetBoundingClientRect = {
+      height: 0,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      x: 0,
+      y: 0,
+      toJSON: jest.fn(),
+    };
+    jest
+      .spyOn(container.children[0], "getBoundingClientRect")
+      .mockReturnValueOnce({
+        ...mockedPartialGetBoundingClientRect,
+        width: 300,
+      })
+      .mockReturnValueOnce({
+        ...mockedPartialGetBoundingClientRect,
+        width: 950,
+      })
+      .mockReturnValueOnce({
+        ...mockedPartialGetBoundingClientRect,
+        width: 1500,
+      });
 
-  it("renders the max height", () => {
-    window.matchMedia = createMatchMedia(1100);
+    fireEvent(window, new Event("resize"));
 
-    const { container } = render(<Chart repoInfos={repoInfos} />);
+    await waitFor(() => {
+      expect(getLastCallArguments(mockPlot)[0]).toEqual(
+        expect.objectContaining({
+          layout: expect.objectContaining({
+            height: 240,
+          }),
+        }),
+      );
+    });
 
-    expect(container).toHaveStyle({ height: 800 });
+    fireEvent(window, new Event("resize"));
+
+    await waitFor(() => {
+      expect(getLastCallArguments(mockPlot)[0]).toEqual(
+        expect.objectContaining({
+          layout: expect.objectContaining({
+            height: 760,
+          }),
+        }),
+      );
+    });
+
+    fireEvent(window, new Event("resize"));
+
+    await waitFor(() => {
+      expect(getLastCallArguments(mockPlot)[0]).toEqual(
+        expect.objectContaining({
+          layout: expect.objectContaining({
+            height: 800,
+          }),
+        }),
+      );
+    });
   });
 
   it("shows forecast data", () => {
@@ -205,7 +251,6 @@ describe("Chart", () => {
             y: [1, 2],
             name: "user1/repo1",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
-            showlegend: true,
             line: {
               color: "hexColor1",
               width: 5,
@@ -217,7 +262,6 @@ describe("Chart", () => {
             y: [11, 12],
             name: "user1/repo1 (forecast)",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1 (forecast): <b>%{y}</b><extra></extra>",
-            showlegend: true,
             line: {
               color: "hexColor1",
               width: 5,
@@ -229,7 +273,6 @@ describe("Chart", () => {
             y: [3, 4],
             name: "user2/repo2",
             hovertemplate: "%{x|%d %b %Y}<br>user2/repo2: <b>%{y}</b><extra></extra>",
-            showlegend: true,
             line: {
               color: "hexColor2",
               width: 5,
@@ -241,7 +284,6 @@ describe("Chart", () => {
             y: [11, 12],
             name: "user2/repo2 (forecast)",
             hovertemplate: "%{x|%d %b %Y}<br>user2/repo2 (forecast): <b>%{y}</b><extra></extra>",
-            showlegend: true,
             line: {
               color: "hexColor2",
               width: 5,

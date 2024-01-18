@@ -3,6 +3,7 @@ import Plot from "react-plotly.js";
 import RepoInfo from "../../utils/RepoInfo";
 import { PlotRelayoutEvent } from "plotly.js";
 import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 interface ChartProps {
   repoInfos: Array<RepoInfo>;
@@ -10,6 +11,29 @@ interface ChartProps {
 }
 
 function Chart({ repoInfos, onZoomChanged }: ChartProps) {
+  const theme = useTheme();
+
+  const [chartHeight, setChartHeight] = React.useState<number>(800);
+  const plotRef = React.useRef<HTMLDivElement>();
+
+  React.useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleResize = () => {
+    if (!plotRef.current) {
+      return;
+    }
+
+    const { width } = plotRef.current.getBoundingClientRect();
+    setChartHeight(Math.min(width * 0.8, 800));
+  };
+
   const handleChartEvent = (event: Readonly<PlotRelayoutEvent>) => {
     if (!onZoomChanged) {
       return;
@@ -35,17 +59,6 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     }
   };
 
-  const [chartHeight, setChartHeight] = React.useState<number>(0);
-  const plotRef = React.useRef<HTMLDivElement>();
-
-  React.useEffect(() => {
-    if (!plotRef.current) {
-      return;
-    }
-    const { width } = plotRef.current.getBoundingClientRect();
-    setChartHeight(Math.min(width * 0.8, 800));
-  }, []);
-
   return (
     <Box ref={plotRef}>
       <Plot
@@ -56,7 +69,6 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
               y: stargazerData.starCounts,
               name: `${username}/${repo}`,
               hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo}: <b>%{y}</b><extra></extra>`,
-              showlegend: repoInfos.length > 1 || forecast !== undefined,
               line: {
                 color: color.hex,
                 width: 5,
@@ -71,7 +83,6 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
               y: forecast.starCounts,
               name: `${username}/${repo} (forecast)`,
               hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo} (forecast): <b>%{y}</b><extra></extra>`,
-              showlegend: true,
               line: {
                 color: color.hex,
                 width: 5,
@@ -85,6 +96,16 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
         style={{ width: "100%", height: "100%" }}
         useResizeHandler
         layout={{
+          font: {
+            family: theme.typography.fontFamily,
+            size: theme.typography.fontSize,
+          },
+          hoverlabel: {
+            font: {
+              family: theme.typography.fontFamily,
+            },
+          },
+          showlegend: repoInfos.length > 1 || repoInfos[0].forecast !== undefined,
           modebar: {
             remove: ["zoomIn2d", "zoomOut2d"],
           },
@@ -101,7 +122,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
             l: 50,
             r: 5,
             t: 10,
-            b: 0,
+            b: 15,
           },
           height: chartHeight,
         }}
