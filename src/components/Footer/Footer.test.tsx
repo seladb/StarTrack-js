@@ -11,7 +11,7 @@ describe(Footer, () => {
   it("renders the footer", () => {
     render(<Footer />);
     expect(screen.getByText(`@${starTrackGitHubMaintainer}`)).toBeInTheDocument();
-    expect(screen.getByText(`${new Date().getFullYear()}. Give us a`)).toBeInTheDocument();
+    expect(screen.getByText(`${new Date().getFullYear()}`)).toBeInTheDocument();
     expect(screen.getByTestId("GitHubIcon").parentElement).toHaveAttribute(
       "href",
       starTrackGitHubRepo,
