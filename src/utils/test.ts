@@ -15,3 +15,7 @@ export const getLastCallArguments = (Component: jest.Mock) => {
   const length = Component.mock.calls.length;
   return Component.mock.calls[length - 1];
 };
+
+export const expectMuiMenuVisibility = (menu: HTMLElement, expectVisible: boolean) => {
+  expect(menu.children[0]).toHaveStyle({ opacity: expectVisible ? 1 : 0 });
+};
