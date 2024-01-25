@@ -1,3 +1,3 @@
-import GitHubAuthContainer from "./GitHubAuthContainer";
+import GitHubAuth from "./GitHubAuth";
 
-export default GitHubAuthContainer;
+export { GitHubAuth };
