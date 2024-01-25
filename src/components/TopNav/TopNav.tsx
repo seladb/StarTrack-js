@@ -1,4 +1,4 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, IconButton, Stack, Toolbar, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import packageJson from "../../../package.json";
 import { GitHubAuth } from "../GitHubAuth";
@@ -18,18 +18,20 @@ export default function TopNav() {
           }}
           className="d-inline-block align-top"
         />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, m: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           StarTrack v{packageJson.version}
         </Typography>
-        <GitHubAuth />
-        <IconButton
-          rel="noopener noreferrer"
-          href={starTrackGitHubRepo}
-          target="_blank"
-          color="inherit"
-        >
-          <GitHubIcon />
-        </IconButton>
+        <Stack direction="row" spacing={1}>
+          <GitHubAuth />
+          <IconButton
+            rel="noopener noreferrer"
+            href={starTrackGitHubRepo}
+            target="_blank"
+            color="inherit"
+          >
+            <GitHubIcon />
+          </IconButton>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

@@ -18,7 +18,7 @@ export default function GitHubAuthBtn({ text, Icon, onClick }: GitHubAuthBtnProp
       <Icon />
     </IconButton>
   ) : (
-    <Button sx={{ m: 1 }} color="inherit" variant="outlined" startIcon={<Icon />} onClick={onClick}>
+    <Button color="inherit" variant="outlined" startIcon={<Icon />} onClick={onClick}>
       {text}
     </Button>
   );
