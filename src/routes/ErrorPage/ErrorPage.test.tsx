@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ErrorPage from "./ErrorPage";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createMemoryRouter } from "react-router-dom";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/styles";
 
@@ -11,6 +11,7 @@ describe(ErrorPage, () => {
     const routes = [
       {
         path: "/",
+        element: <Outlet />,
         errorElement: <ErrorPage />,
       },
     ];
@@ -19,6 +20,9 @@ describe(ErrorPage, () => {
       initialEntries: ["/error"],
       initialIndex: 1,
     });
+
+    // prevent `render` from logging a warning to console about "No routes matched location "/error""
+    jest.spyOn(console, "warn").mockImplementationOnce(jest.fn());
 
     render(
       <ThemeProvider theme={theme}>
