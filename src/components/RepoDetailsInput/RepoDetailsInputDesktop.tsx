@@ -1,17 +1,60 @@
-import { Button, FormGroup, styled, TextField, TextFieldProps } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import React, { KeyboardEvent } from "react";
+import { Button, TextField, TextFieldProps, Box, BoxProps, Stack } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import { cancelBtnWidth, CancelButton } from "../../shared/CancelButton";
 import RepoDetailsInputProps from "./RepoDetailsInputProps";
-import { InputGroupText } from "../../shared/InputGroupText";
 import SaveIcon from "@mui/icons-material/Save";
 import { parseGitHubUrl } from "../../utils/GitHubUtils";
 import StarTrackTooltip from "../../shared/Tooltip";
 
-const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
-  flex: "1 1",
-}));
+interface RepoInputLabelProps extends BoxProps {
+  prepend?: boolean;
+}
+
+const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(function RepoInputLabel(
+  props,
+  ref,
+) {
+  return (
+    <Box
+      ref={ref}
+      component="div"
+      sx={{
+        backgroundColor: (theme) => theme.palette.grey[200],
+        borderColor: (theme) => `${theme.palette.grey[400]} !important`,
+        fontSize: (theme) => theme.typography.fontSize,
+        border: "1px solid",
+        display: "flex",
+        alignItems: "center",
+        paddingRight: 2,
+        paddingLeft: 2,
+        ...(props.prepend && {
+          borderTopLeftRadius: 4,
+          borderBottomLeftRadius: 4,
+        }),
+      }}
+      {...props}
+    >
+      {props.children}
+    </Box>
+  );
+});
+
+function RepoInputTextField(props: TextFieldProps) {
+  return (
+    <TextField
+      size="small"
+      sx={{
+        flex: "1 1",
+        "& fieldset": {
+          borderRadius: 0,
+        },
+      }}
+      {...props}
+    />
+  );
+}
 
 export default function RepoDetailsInputDesktop({
   loading,
@@ -45,13 +88,11 @@ export default function RepoDetailsInputDesktop({
   const goBtnWidth = 155 - (loading ? cancelBtnWidth : 0);
 
   return (
-    <FormGroup sx={{ flexDirection: "row", maxWidth: "800px", margin: "auto" }}>
+    <Stack direction="row" sx={{ maxWidth: 800 }}>
       <StarTrackTooltip title='Tip: you can paste any GitHub URL or string in the format of "username/repo"'>
-        <InputGroupText>Repo details</InputGroupText>
+        <RepoInputLabel prepend>Repo details</RepoInputLabel>
       </StarTrackTooltip>
-      <StyledTextField
-        variant="outlined"
-        size="small"
+      <RepoInputTextField
         placeholder="Username"
         value={username}
         onChange={(e) => {
@@ -60,10 +101,8 @@ export default function RepoDetailsInputDesktop({
         onPaste={handlePaste}
         onKeyDown={handleKeyDown}
       />
-      <InputGroupText>/</InputGroupText>
-      <StyledTextField
-        variant="outlined"
-        size="small"
+      <RepoInputLabel>/</RepoInputLabel>
+      <RepoInputTextField
         placeholder="Repo name"
         value={repo}
         onChange={(e) => {
@@ -95,6 +134,6 @@ export default function RepoDetailsInputDesktop({
           Go!
         </Button>
       )}
-    </FormGroup>
+    </Stack>
   );
 }

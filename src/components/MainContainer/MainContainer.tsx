@@ -137,7 +137,9 @@ export default function MainContainer() {
 
   return (
     <Container>
-      <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
+      <Box
+        sx={{ marginTop: "3rem", marginBottom: "3rem", display: "flex", justifyContent: "center" }}
+      >
         <RepoDetailsInput
           loading={loading}
           onGoClick={handleLoadRepo}
