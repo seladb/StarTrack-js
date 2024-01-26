@@ -1,14 +1,9 @@
-import { Container, Stack, styled, TextField, TextFieldProps } from "@mui/material";
+import { Container, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import RepoDetailsInputProps from "./RepoDetailsInputProps";
 import LoadingButton from "./LoadingButton";
 import { parseGitHubUrl } from "../../utils/GitHubUtils";
-
-const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
-  marginTop: "2px",
-  marginBottom: "2px",
-}));
 
 export default function RepoDetailsInputMobile({
   loading,
@@ -38,11 +33,14 @@ export default function RepoDetailsInputMobile({
 
   return (
     <Container maxWidth={false} disableGutters>
-      <Stack>
-        <Typography variant="body1" sx={{ margin: "auto", fontWeight: "bold" }}>
+      <Stack spacing={1}>
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: "bold", display: "flex", justifyContent: "center" }}
+        >
           Repo Details
         </Typography>
-        <StyledTextField
+        <TextField
           value={username}
           size="small"
           placeholder="Username"
@@ -51,7 +49,7 @@ export default function RepoDetailsInputMobile({
           }}
           onPaste={handlePaste}
         />
-        <StyledTextField
+        <TextField
           value={repo}
           size="small"
           placeholder="Repo name"
