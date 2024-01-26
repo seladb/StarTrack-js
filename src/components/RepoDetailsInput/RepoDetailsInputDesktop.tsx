@@ -1,16 +1,16 @@
 import React, { KeyboardEvent } from "react";
-import { Button, TextField, TextFieldProps, Box, BoxProps, Stack } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
-import { cancelBtnWidth, CancelButton } from "../../shared/CancelButton";
+import { TextField, TextFieldProps, Box, BoxProps, Stack } from "@mui/material";
+import LoadingButton from "./LoadingButton";
 import RepoDetailsInputProps from "./RepoDetailsInputProps";
-import SaveIcon from "@mui/icons-material/Save";
 import { parseGitHubUrl } from "../../utils/GitHubUtils";
 import StarTrackTooltip from "../../shared/Tooltip";
 
 interface RepoInputLabelProps extends BoxProps {
   prepend?: boolean;
 }
+
+const componentMaxWidth = 800;
+const goButtonWidth = 155;
 
 const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(function RepoInputLabel(
   props,
@@ -64,8 +64,12 @@ export default function RepoDetailsInputDesktop({
   const [username, setUsername] = React.useState<string>("");
   const [repo, setRepo] = React.useState<string>("");
 
-  const handleClick = () => {
+  const handleGoClick = () => {
     onGoClick(username.trim(), repo.trim());
+  };
+
+  const handleCancelClick = () => {
+    onCancelClick();
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLElement>) => {
@@ -85,10 +89,8 @@ export default function RepoDetailsInputDesktop({
     }
   };
 
-  const goBtnWidth = 155 - (loading ? cancelBtnWidth : 0);
-
   return (
-    <Stack direction="row" sx={{ maxWidth: 800 }}>
+    <Stack direction="row" sx={{ maxWidth: componentMaxWidth }}>
       <StarTrackTooltip title='Tip: you can paste any GitHub URL or string in the format of "username/repo"'>
         <RepoInputLabel prepend>Repo details</RepoInputLabel>
       </StarTrackTooltip>
@@ -111,29 +113,12 @@ export default function RepoDetailsInputDesktop({
         onPaste={handlePaste}
         onKeyDown={handleKeyDown}
       />
-      {loading ? (
-        <>
-          <LoadingButton
-            loading
-            loadingPosition="start"
-            startIcon={<SaveIcon />}
-            variant="contained"
-            sx={{ width: goBtnWidth }}
-          >
-            Loading...
-          </LoadingButton>
-          <CancelButton
-            variant="contained"
-            size="small"
-            onClick={onCancelClick}
-            startIcon={<StopCircleIcon />}
-          />
-        </>
-      ) : (
-        <Button variant="contained" size="small" sx={{ width: goBtnWidth }} onClick={handleClick}>
-          Go!
-        </Button>
-      )}
+      <LoadingButton
+        sx={{ width: goButtonWidth }}
+        loading={loading}
+        onGoClick={handleGoClick}
+        onCancelClick={handleCancelClick}
+      />
     </Stack>
   );
 }

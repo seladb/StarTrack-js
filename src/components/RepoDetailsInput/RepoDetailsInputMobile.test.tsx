@@ -8,7 +8,7 @@ const username = "user";
 const repo = "repo";
 
 describe(RepoDetailsInputMobile, () => {
-  it("Renders correctly on non-loading state and fires an event on Go click", () => {
+  it("render correctly on non-loading state and fires an event on Go click", () => {
     render(
       <RepoDetailsInputMobile
         loading={false}
@@ -28,7 +28,7 @@ describe(RepoDetailsInputMobile, () => {
     expect(cancelClickHandler).not.toBeCalled();
   });
 
-  it("Renders correctly in loading state and fires an event on Cancel click", () => {
+  it("render correctly in loading state and fires an event on Cancel click", () => {
     render(
       <RepoDetailsInputMobile
         loading={true}
@@ -51,7 +51,7 @@ describe(RepoDetailsInputMobile, () => {
     expect(cancelClickHandler).toBeCalled();
   });
 
-  it("Trims the username and repo", () => {
+  it("trim the username and repo", () => {
     render(
       <RepoDetailsInputMobile
         loading={false}
@@ -76,7 +76,7 @@ describe(RepoDetailsInputMobile, () => {
     ["username", "https://google.com", "", ""],
     ["repo", "https://google.com", "", ""],
   ])(
-    "Parses pasted GitHub URL",
+    "parse pasted GitHub URL",
     (whereToPaste, pasted, expectedValueInUserBox, expectedValueInRepoBox) => {
       render(
         <RepoDetailsInputMobile

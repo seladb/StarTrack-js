@@ -1,19 +1,8 @@
-import {
-  Container,
-  Button,
-  FormGroup,
-  Stack,
-  styled,
-  TextField,
-  TextFieldProps,
-} from "@mui/material";
+import { Container, Stack, styled, TextField, TextFieldProps } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { CancelButton } from "../../shared/CancelButton";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
 import RepoDetailsInputProps from "./RepoDetailsInputProps";
-import { LoadingButton } from "@mui/lab";
-import SaveIcon from "@mui/icons-material/Save";
+import LoadingButton from "./LoadingButton";
 import { parseGitHubUrl } from "../../utils/GitHubUtils";
 
 const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
@@ -29,8 +18,12 @@ export default function RepoDetailsInputMobile({
   const [username, setUsername] = React.useState<string>("");
   const [repo, setRepo] = React.useState<string>("");
 
-  const handleClick = () => {
+  const handleGoClick = () => {
     onGoClick(username.trim(), repo.trim());
+  };
+
+  const handleCancelClick = () => {
+    onCancelClick();
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLElement>) => {
@@ -67,28 +60,11 @@ export default function RepoDetailsInputMobile({
           }}
           onPaste={handlePaste}
         />
-        {loading ? (
-          <FormGroup sx={{ marginTop: "5px", flexDirection: "row" }}>
-            <LoadingButton
-              loading
-              loadingPosition="start"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              sx={{ flex: 1 }}
-            >
-              Loading...
-            </LoadingButton>
-            <CancelButton
-              variant="contained"
-              onClick={onCancelClick}
-              startIcon={<StopCircleIcon />}
-            ></CancelButton>
-          </FormGroup>
-        ) : (
-          <Button variant="contained" onClick={handleClick} sx={{ marginTop: "5px" }}>
-            Go!
-          </Button>
-        )}
+        <LoadingButton
+          loading={loading}
+          onGoClick={handleGoClick}
+          onCancelClick={handleCancelClick}
+        />
       </Stack>
     </Container>
   );

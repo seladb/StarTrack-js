@@ -9,7 +9,7 @@ const username = "user";
 const repo = "repo";
 
 describe(RepoDetailsInputDesktop, () => {
-  it("Renders correctly on non-loading state and fires an event on Go click", () => {
+  it("render correctly on non-loading state and fires an event on Go click", () => {
     render(
       <RepoDetailsInputDesktop
         loading={false}
@@ -30,7 +30,7 @@ describe(RepoDetailsInputDesktop, () => {
   });
 
   it.each(["repoTextBox", "usernameTextBox"])(
-    "Renders correctly on non-loading state and fires an event on Enter key",
+    "render correctly on non-loading state and fires an event on Enter key",
     (textbox) => {
       render(
         <RepoDetailsInputDesktop
@@ -55,7 +55,7 @@ describe(RepoDetailsInputDesktop, () => {
     },
   );
 
-  it("Renders correctly in loading state and fires an event on Cancel click", () => {
+  it("render correctly in loading state and fires an event on Cancel click", () => {
     render(
       <RepoDetailsInputDesktop
         loading={true}
@@ -78,7 +78,7 @@ describe(RepoDetailsInputDesktop, () => {
     expect(cancelClickHandler).toBeCalled();
   });
 
-  it("Trims the username and repo", () => {
+  it("trim the username and repo", () => {
     render(
       <RepoDetailsInputDesktop
         loading={false}
@@ -97,7 +97,7 @@ describe(RepoDetailsInputDesktop, () => {
     expect(goClickHandler).toBeCalledWith(username, repo);
   });
 
-  it("Renders a tooltip when hovering on repo details", async () => {
+  it("render a tooltip when hovering on repo details", async () => {
     render(
       <RepoDetailsInputDesktop
         loading={false}
@@ -119,7 +119,7 @@ describe(RepoDetailsInputDesktop, () => {
     ["username", "https://google.com", "", ""],
     ["repo", "https://google.com", "", ""],
   ])(
-    "Parses pasted GitHub URL",
+    "parse pasted GitHub URL",
     (whereToPaste, pasted, expectedValueInUserBox, expectedValueInRepoBox) => {
       render(
         <RepoDetailsInputDesktop
