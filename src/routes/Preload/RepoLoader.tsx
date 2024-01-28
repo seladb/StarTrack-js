@@ -75,7 +75,8 @@ export default function RepoLoader({ repoDataToLoad, onLoadDone, onLoadError }: 
 
       onLoadDone(repoInfo);
     } catch (error) {
-      onLoadError(String(error));
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      onLoadError(errorMessage);
     } finally {
       endProgress();
     }

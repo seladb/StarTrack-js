@@ -227,7 +227,7 @@ export const loadStargazers = async (
     }
     switch (error.response.status) {
       case 404: {
-        throw Error(`Repo ${user}/${repo} Not found`);
+        throw Error("Repo not found");
       }
       case 429:
       case 403: {

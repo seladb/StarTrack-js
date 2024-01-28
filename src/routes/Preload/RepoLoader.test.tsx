@@ -72,9 +72,9 @@ describe(RepoLoader, () => {
     });
   });
 
-  it("load repo data error", async () => {
+  it.each([[new Error("error")], ["error"]])("load repo data error", async (error) => {
     jest.spyOn(StargazerLoader, "loadStargazers").mockImplementation(() => {
-      return Promise.reject(new Error("error"));
+      return Promise.reject(error);
     });
 
     render(
@@ -91,7 +91,7 @@ describe(RepoLoader, () => {
       expect(mockEndProgress).toHaveBeenCalled();
 
       expect(handleLoadDone).not.toHaveBeenCalled();
-      expect(handleLoadError).toHaveBeenCalledWith("Error: error");
+      expect(handleLoadError).toHaveBeenCalledWith("error");
     });
   });
 

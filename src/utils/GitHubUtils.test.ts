@@ -431,7 +431,7 @@ describe(utils.loadStargazers, () => {
       .mockRejectedValueOnce(createAxiosError(createAxiosResponse(404, "Not Found")));
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
-      `Repo ${username}/${repo} Not found`,
+      "Repo not found",
     );
   });
 
