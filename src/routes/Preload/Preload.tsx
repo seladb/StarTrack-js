@@ -1,12 +1,12 @@
 import React from "react";
-import { createStyles, makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { ProgressProvider } from "../../shared/ProgressContext";
 import RepoLoader from "./RepoLoader";
 import { RepoMetadata } from "./PreloadTypes";
 import RepoInfo from "../../utils/RepoInfo";
-import { Theme } from "@mui/material/styles";
-import { Button } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { Alert, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { grey, red } from "@mui/material/colors";
 
 export const parseUrlParams = (urlParams: string): RepoMetadata[] => {
   const reposMetadata = new URLSearchParams(urlParams)
@@ -25,42 +25,13 @@ export const parseUrlParams = (urlParams: string): RepoMetadata[] => {
   );
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
-    },
-    contentArea: {
-      textAlign: "center",
-      margin: "2rem",
-    },
-    subTitle: {
-      margin: 0,
-    },
-    progress: {
-      margin: "1rem",
-    },
-    errorContainer: {
-      textAlign: "left",
-      color: theme.palette.error.main,
-    },
-    buttonContainer: {
-      textAlign: "center",
-    },
-  });
-});
-
 type RepoLoadError = {
   repoMetadata: RepoMetadata;
   error: string;
 };
 
 export function Preload() {
-  const classes = useStyles();
+  const theme = useTheme();
   const navigate = useNavigate();
 
   const [currentlyLoadingIndex, setCurrentlyLoadingIndex] = React.useState<number>(0);
@@ -103,42 +74,62 @@ export function Preload() {
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.contentArea}>
-        <h1>Loading repo data...</h1>
-        <h3 className={classes.subTitle}>{getSubTitle()}</h3>
-        <div className={classes.progress}>
-          <ProgressProvider>
-            <RepoLoader
-              repoDataToLoad={
-                currentlyLoadingIndex < dataToLoad.length ? dataToLoad[currentlyLoadingIndex] : null
-              }
-              onLoadDone={handleLoadDone}
-              onLoadError={handleLoadError}
-            />
-          </ProgressProvider>
-        </div>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ minHeight: "100vh" }}
+    >
+      <Stack
+        spacing={2}
+        minWidth={theme.breakpoints.values.sm}
+        sx={{
+          maxWidth: "sm",
+          textAlign: "center",
+          p: 2,
+          border: 1,
+          borderRadius: 4,
+          borderWidth: 2,
+          borderColor: grey[300],
+        }}
+      >
+        <Typography variant="h4">Loading repo data...</Typography>
+        <Typography variant="h6">{getSubTitle()}</Typography>
+        <ProgressProvider>
+          <RepoLoader
+            repoDataToLoad={
+              currentlyLoadingIndex < dataToLoad.length ? dataToLoad[currentlyLoadingIndex] : null
+            }
+            onLoadDone={handleLoadDone}
+            onLoadError={handleLoadError}
+          />
+        </ProgressProvider>
         {repoLoadErrors.length > 0 && (
-          <div className={classes.errorContainer}>
-            {repoLoadErrors.map((repoLoadError, i) => {
-              return (
-                <h4 key={i}>
-                  <strong>
+          <>
+            <Alert
+              icon={false}
+              severity="error"
+              sx={{ textAlign: "left", border: 1, borderRadius: 4, borderColor: red[500] }}
+            >
+              {repoLoadErrors.map((repoLoadError, i) => {
+                return (
+                  <Typography key={i}>
                     Error loading {repoLoadError.repoMetadata.username}/
-                    {repoLoadError.repoMetadata.repo}:
-                  </strong>{" "}
-                  {repoLoadError.error}
-                </h4>
-              );
-            })}
-            <div className={classes.buttonContainer}>
+                    {repoLoadError.repoMetadata.repo}: {repoLoadError.error}
+                  </Typography>
+                );
+              })}
+            </Alert>
+            <Container>
               <Button variant="contained" onClick={continueButtonClick}>
                 Continue
               </Button>
-            </div>
-          </div>
+            </Container>
+          </>
         )}
-      </div>
-    </div>
+      </Stack>
+    </Grid>
   );
 }
