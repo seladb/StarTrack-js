@@ -1,5 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
-import StatsGridMobile from "./StatsGridMobile";
+import StatsGridSmallScreen from "./StatsGridSmallScreen";
 
 const mockRepoChip = jest.fn();
 
@@ -11,7 +11,7 @@ jest.mock("./RepoChip", () => ({
   },
 }));
 
-describe(StatsGridMobile, () => {
+describe(StatsGridSmallScreen, () => {
   const statInfos = [
     {
       username: "user1",
@@ -34,7 +34,7 @@ describe(StatsGridMobile, () => {
   ];
 
   it.each([[statInfos], [statInfos.slice(0, 1)]])("render tables", (statInfosInput) => {
-    render(<StatsGridMobile statInfos={statInfosInput} />);
+    render(<StatsGridSmallScreen statInfos={statInfosInput} />);
     const tables = screen.getAllByRole("table");
     statInfosInput.forEach((statInfo, index) => {
       const table = tables[index];

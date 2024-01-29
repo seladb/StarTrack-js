@@ -12,7 +12,7 @@ import StatsGridProps from "./StatsGridProps";
 import { slugify } from "../../utils/StringUtils";
 import RepoChip from "./RepoChip";
 
-export default function StatsGridMobile({ statInfos }: StatsGridProps) {
+export default function StatsGridSmallScreen({ statInfos }: StatsGridProps) {
   return (
     <Stack spacing={2}>
       {statInfos.map((statInfo) => {
