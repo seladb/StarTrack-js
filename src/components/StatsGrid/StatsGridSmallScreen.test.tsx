@@ -35,6 +35,7 @@ describe(StatsGridSmallScreen, () => {
 
   it.each([[statInfos], [statInfos.slice(0, 1)]])("render tables", (statInfosInput) => {
     render(<StatsGridSmallScreen statInfos={statInfosInput} />);
+
     const tables = screen.getAllByRole("table");
     statInfosInput.forEach((statInfo, index) => {
       const table = tables[index];
