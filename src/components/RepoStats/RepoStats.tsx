@@ -45,11 +45,13 @@ export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
   const StatsGridComponent = smallScreen ? StatsGridSmallScreen : StatsGridLargeScreen;
 
   return (
-    <Box>
-      <h1>Repo Statistics</h1>
-      <Stack spacing={2}>
+    <Stack spacing={3}>
+      <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        Repo Statistics
+      </Typography>
+      <Box>
         <FormControlLabel
-          control={<Checkbox sx={{ paddingLeft: 0 }} disableRipple />}
+          control={<Checkbox />}
           label="Sync stats to chart zoom level"
           onChange={handleCheckBoxChange}
         />
@@ -59,8 +61,8 @@ export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
             {new Date(dateRange.max).toLocaleDateString()}
           </Typography>
         )}
-        <StatsGridComponent statInfos={repoInfosWithStats} />
-      </Stack>
-    </Box>
+      </Box>
+      <StatsGridComponent statInfos={repoInfosWithStats} />
+    </Stack>
   );
 }

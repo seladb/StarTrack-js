@@ -9,7 +9,7 @@ import { useProgress } from "../../shared/ProgressContext";
 import Chart from "../Chart";
 import RepoStats from "../RepoStats";
 import URLBox from "../URLBox";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Forecast from "../Forecast";
 import { ForecastProps, NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
 import { useLocation } from "react-router-dom";
@@ -136,40 +136,30 @@ export default function MainContainer() {
   }, state);
 
   return (
-    <Container>
-      <Box
-        sx={{ marginTop: "3rem", marginBottom: "3rem", display: "flex", justifyContent: "center" }}
-      >
-        <RepoDetailsInput
-          loading={loading}
-          onGoClick={handleLoadRepo}
-          onCancelClick={handleCancelLoading}
-        />
-      </Box>
-      {repoInfos.length > 0 && (
-        <Box>
-          <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center" }}>
+    <Container sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
+      <Stack spacing={6}>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <RepoDetailsInput
+            loading={loading}
+            onGoClick={handleLoadRepo}
+            onCancelClick={handleCancelLoading}
+          />
+        </Box>
+        {repoInfos.length > 0 && (
+          <>
             <RepoChipContainer
               reposDetails={repoInfos.map((repoInfo) => {
                 return { user: repoInfo.username, repo: repoInfo.repo, color: repoInfo.color.hex };
               })}
               onDelete={handleRemoveRepo}
             />
-          </Box>
-          <Box sx={{ marginTop: "3rem", marginBottom: "3rem", textAlign: "center", padding: "0" }}>
             <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
-          </Box>
-          <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <Forecast onForecastChange={handleForecastPropsChange}></Forecast>
-          </Box>
-          <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <RepoStats repoInfos={repoInfos} dateRange={statsDateRange} />
-          </Box>
-          <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <URLBox repoInfos={repoInfos}></URLBox>
-          </Box>
-        </Box>
-      )}
+          </>
+        )}
+      </Stack>
     </Container>
   );
 }

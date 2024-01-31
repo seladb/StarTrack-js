@@ -39,7 +39,7 @@ jest.mock("../RepoDetailsInput", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoDetailsInput(props);
-    return <>RepoDetailsInput</>;
+    return <div data-testid="RepoDetailsInput" />;
   },
 }));
 
@@ -49,7 +49,7 @@ jest.mock("../RepoChips", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoChipContainer(props);
-    return <>RepoChipContainer</>;
+    return <div data-testid="RepoChipContainer" />;
   },
 }));
 
@@ -59,7 +59,7 @@ jest.mock("../Chart", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockChart(props);
-    return <>Chart</>;
+    return <div data-testid="Chart" />;
   },
 }));
 
@@ -69,7 +69,7 @@ jest.mock("../Forecast", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockForecast(props);
-    return <>Forecast</>;
+    return <div data-testid="Forecast" />;
   },
 }));
 
@@ -79,7 +79,7 @@ jest.mock("../RepoStats", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoStats(props);
-    return <>RepoStats</>;
+    return <div data-testid="RepoStats" />;
   },
 }));
 
@@ -89,7 +89,7 @@ jest.mock("../URLBox", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockURLBox(props);
-    return <>URLBox</>;
+    return <div data-testid="URLBox" />;
   },
 }));
 
@@ -279,11 +279,11 @@ describe(MainContainer, () => {
 
     await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
 
-    expect(screen.getByText("Chart")).toBeInTheDocument();
+    expect(screen.getByTestId("Chart")).toBeInTheDocument();
 
     await act(() => getLastCallArguments(mockRepoChipContainer)[0].onDelete(username, repo));
 
-    expect(screen.queryByText("Chart")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("Chart")).not.toBeInTheDocument();
   });
 
   it("handle chart zoom change", async () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import ForecastForm from "./ForecastForm";
 import { ForecastInfo } from "./ForecastInfo";
 import ForecastRow from "./ForecastRow";
@@ -49,8 +49,10 @@ export default function Forecast({ onForecastChange }: ForecastProps) {
   }, [forecastInfo]);
 
   return (
-    <Box>
-      <h1>Forecast</h1>
+    <Stack spacing={3}>
+      <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        Forecast
+      </Typography>
       <ForecastRow
         info={forecastInfo}
         onClick={() => setForecastFormOpen(true)}
@@ -61,6 +63,6 @@ export default function Forecast({ onForecastChange }: ForecastProps) {
         onClose={handleForecastFormClosed}
         initialValues={forecastInfo}
       />
-    </Box>
+    </Stack>
   );
 }
