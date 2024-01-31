@@ -1,6 +1,5 @@
 import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { Button, IconButton, SvgIconTypeMap } from "@mui/material";
+import { Button, IconButton, SvgIconTypeMap, useMediaQuery } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface GitHubAuthBtnProps {
