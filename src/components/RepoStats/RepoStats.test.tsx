@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import * as StargazerStats from "../../utils/StargazerStats";
 import RepoInfo from "../../utils/RepoInfo";
-import StatsGrid from "./StatsGrid";
+import RepoStats from "./RepoStats";
 import { createMatchMedia } from "../../utils/test";
 
 const mockStatsGridLargeScreen = jest.fn();
@@ -22,7 +22,7 @@ jest.mock("./StatsGridSmallScreen", () => ({
   },
 }));
 
-describe(StatsGrid, () => {
+describe(RepoStats, () => {
   const repoInfos: Array<RepoInfo> = [
     {
       username: "user1",
@@ -71,7 +71,7 @@ describe(StatsGrid, () => {
 
     window.matchMedia = createMatchMedia(200);
 
-    render(<StatsGrid repoInfos={repoInfos} />);
+    render(<RepoStats repoInfos={repoInfos} />);
 
     expect(mockStatsGridSmallScreen).toHaveBeenCalledWith({ statInfos: expectedStatsInfos });
     expect(mockStatsGridLargeScreen).not.toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe(StatsGrid, () => {
 
     window.matchMedia = createMatchMedia(1000);
 
-    render(<StatsGrid repoInfos={repoInfos} />);
+    render(<RepoStats repoInfos={repoInfos} />);
 
     expect(mockStatsGridSmallScreen).not.toHaveBeenCalled();
     expect(mockStatsGridLargeScreen).toHaveBeenCalledWith({ statInfos: expectedStatsInfos });
@@ -100,7 +100,7 @@ describe(StatsGrid, () => {
       max: maxDate.toISOString(),
     };
 
-    render(<StatsGrid repoInfos={repoInfos} dateRange={dateRange} />);
+    render(<RepoStats repoInfos={repoInfos} dateRange={dateRange} />);
 
     expect(mockCalcStats.mock.calls).toEqual([
       [repoInfos[0].stargazerData, undefined],
@@ -129,7 +129,7 @@ describe(StatsGrid, () => {
   it("renders correctly when date range is undefined", () => {
     const mockCalcStats = jest.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
-    render(<StatsGrid repoInfos={repoInfos} dateRange={undefined} />);
+    render(<RepoStats repoInfos={repoInfos} dateRange={undefined} />);
 
     mockCalcStats.mockReset();
     mockCalcStats.mockReturnValue(stats);

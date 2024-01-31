@@ -11,7 +11,7 @@ type DateRange = {
   max: string;
 };
 
-interface StatsGridProps {
+interface RepoStatsProps {
   repoInfos: Array<RepoInfo>;
   dateRange?: DateRange;
 }
@@ -22,7 +22,7 @@ interface RepoInfoWithStats extends RepoInfo {
   stats: StatsData;
 }
 
-export default function StatsGrid({ repoInfos, dateRange }: StatsGridProps) {
+export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
   const [syncStatsToDisplayedDateRange, setSyncStatsToDisplayedDateRange] =
     React.useState<boolean>(false);
 

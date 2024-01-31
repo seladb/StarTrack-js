@@ -7,7 +7,7 @@ import RepoInfo from "../../utils/RepoInfo";
 import { useAlertDialog } from "../../shared/AlertContext";
 import { useProgress } from "../../shared/ProgressContext";
 import Chart from "../Chart";
-import StatsGrid from "../StatsGrid";
+import RepoStats from "../RepoStats";
 import URLBox from "../URLBox";
 import { Box } from "@mui/material";
 import Forecast from "../Forecast";
@@ -163,7 +163,7 @@ export default function MainContainer() {
             <Forecast onForecastChange={handleForecastPropsChange}></Forecast>
           </Box>
           <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
-            <StatsGrid repoInfos={repoInfos} dateRange={statsDateRange}></StatsGrid>
+            <RepoStats repoInfos={repoInfos} dateRange={statsDateRange} />
           </Box>
           <Box sx={{ marginTop: "3rem", marginBottom: "3rem" }}>
             <URLBox repoInfos={repoInfos}></URLBox>

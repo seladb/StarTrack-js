@@ -73,13 +73,13 @@ jest.mock("../Forecast", () => ({
   },
 }));
 
-const mockStatsGrid = jest.fn();
+const mockRepoStats = jest.fn();
 
-jest.mock("../StatsGrid", () => ({
+jest.mock("../RepoStats", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
-    mockStatsGrid(props);
-    return <>StatsGrid</>;
+    mockRepoStats(props);
+    return <>RepoStats</>;
   },
 }));
 
@@ -135,7 +135,7 @@ describe(MainContainer, () => {
     expect(mockRepoChipContainer).not.toHaveBeenCalled();
     expect(mockChart).not.toHaveBeenCalled();
     expect(mockForecast).not.toHaveBeenCalled();
-    expect(mockStatsGrid).not.toHaveBeenCalled();
+    expect(mockRepoStats).not.toHaveBeenCalled();
     expect(mockURLBox).not.toHaveBeenCalled();
   };
 
@@ -196,7 +196,7 @@ describe(MainContainer, () => {
 
     expect(mockForecast).toHaveBeenCalled();
 
-    expect(mockStatsGrid).toHaveBeenCalledWith({
+    expect(mockRepoStats).toHaveBeenCalledWith({
       repoInfos: expectedRepoInfos,
       dateRange: undefined,
     });
@@ -233,7 +233,7 @@ describe(MainContainer, () => {
     expect(mockRepoChipContainer).toHaveBeenCalledTimes(1);
     expect(mockChart).toHaveBeenCalledTimes(1);
     expect(mockForecast).toHaveBeenCalledTimes(1);
-    expect(mockStatsGrid).toHaveBeenCalledTimes(1);
+    expect(mockRepoStats).toHaveBeenCalledTimes(1);
     expect(mockURLBox).toHaveBeenCalledTimes(1);
   });
 
@@ -259,7 +259,7 @@ describe(MainContainer, () => {
 
     expect(mockForecast).toHaveBeenCalled();
 
-    expect(mockStatsGrid).toHaveBeenCalledWith({
+    expect(mockRepoStats).toHaveBeenCalledWith({
       repoInfos: [repoInfo],
       dateRange: undefined,
     });
@@ -295,7 +295,7 @@ describe(MainContainer, () => {
 
     await act(() => getLastCallArguments(mockChart)[0].onZoomChanged("fromDate", "toDate"));
 
-    expect(getLastCallArguments(mockStatsGrid)[0]).toEqual(
+    expect(getLastCallArguments(mockRepoStats)[0]).toEqual(
       expect.objectContaining({ dateRange: { min: "fromDate", max: "toDate" } }),
     );
   });
