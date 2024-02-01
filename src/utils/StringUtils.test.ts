@@ -1,3 +1,5 @@
+// cSpell:ignore capitalletters, specialchars
+
 import { slugify } from "./StringUtils";
 
 describe(slugify, () => {

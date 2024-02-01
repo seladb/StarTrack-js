@@ -1,0 +1,11 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "dictionaries": ["startrack-js"],
+  "dictionaryDefinitions": [
+    {
+      "name": "startrack-js",
+      "path": "./dictionary.txt"
+    }
+  ]
+}

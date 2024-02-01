@@ -1,3 +1,5 @@
+// cspell: ignore aren
+
 import {
   Button,
   Dialog,

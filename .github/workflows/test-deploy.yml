@@ -23,6 +23,8 @@ jobs:
         run: yarn run format:check
       - name: Lint
         run: yarn run lint
+      - name: Spell check
+        run: yarn run spellcheck
       - name: Test build
         run: yarn run build
       - name: Run tests
