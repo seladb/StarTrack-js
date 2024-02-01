@@ -1,7 +1,7 @@
 import React from "react";
 import Plot from "react-plotly.js";
 import RepoInfo from "../../utils/RepoInfo";
-import { PlotRelayoutEvent } from "plotly.js";
+import Plotly, { ModeBarButton, PlotRelayoutEvent } from "plotly.js";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
@@ -14,6 +14,8 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
   const theme = useTheme();
 
   const [chartHeight, setChartHeight] = React.useState<number>(800);
+  const [yaxisType, setYaxisType] = React.useState<Plotly.AxisType>("linear");
+
   const plotRef = React.useRef<HTMLDivElement>();
 
   React.useEffect(() => {
@@ -59,6 +61,28 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     }
   };
 
+  const LogButton: ModeBarButton = {
+    name: "log-scale",
+    title: "Use logarithmic scale",
+    icon: {
+      width: 512,
+      height: 512,
+      path: "M480 32c0-11.1-5.7-21.4-15.2-27.2s-21.2-6.4-31.1-1.4l-32 16c-15.8 7.9-22.2 27.1-14.3 42.9C393 73.5 404.3 80 416 80v80c-17.7 0-32 14.3-32 32s14.3 32 32 32h32 32c17.7 0 32-14.3 32-32s-14.3-32-32-32V32zM32 64C14.3 64 0 78.3 0 96s14.3 32 32 32H47.3l89.6 128L47.3 384H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H64c10.4 0 20.2-5.1 26.2-13.6L176 311.8l85.8 122.6c6 8.6 15.8 13.6 26.2 13.6h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H304.7L215.1 256l89.6-128H320c17.7 0 32-14.3 32-32s-14.3-32-32-32H288c-10.4 0-20.2 5.1-26.2 13.6L176 200.2 90.2 77.6C84.2 69.1 74.4 64 64 64H32z",
+    },
+    click: () => setYaxisType("log"),
+  };
+
+  const LinearButton: ModeBarButton = {
+    name: "linear-scale",
+    title: "Use linear scale",
+    icon: {
+      width: 512,
+      height: 512,
+      path: "M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z",
+    },
+    click: () => setYaxisType("linear"),
+  };
+
   return (
     <Box ref={plotRef}>
       <Plot
@@ -95,6 +119,9 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
         })}
         style={{ width: "100%", height: "100%" }}
         useResizeHandler
+        config={{
+          modeBarButtonsToAdd: [yaxisType === "linear" ? LogButton : LinearButton],
+        }}
         layout={{
           font: {
             family: theme.typography.fontFamily,
@@ -114,6 +141,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
           },
           yaxis: {
             fixedrange: true,
+            type: yaxisType,
           },
           legend: {
             orientation: "h",

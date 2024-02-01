@@ -3,6 +3,7 @@ import Chart from "./Chart";
 import RepoInfo from "../../utils/RepoInfo";
 import { PlotParams } from "react-plotly.js";
 import { getLastCallArguments } from "../../utils/test";
+import { ModeBarButton, PlotlyHTMLElement } from "plotly.js";
 
 const mockPlot = jest.fn();
 const mockOnRelayoutEvent = jest.fn();
@@ -14,7 +15,21 @@ jest.mock("react-plotly.js", () => ({
     const onZoomChanged = () => {
       props.onRelayout && props.onRelayout(mockOnRelayoutEvent());
     };
-    return <button data-testid="plot-zoom-change" onClick={onZoomChanged}></button>;
+
+    const onChangeScale = () => {
+      props.config?.modeBarButtonsToAdd &&
+        (props.config?.modeBarButtonsToAdd[0] as ModeBarButton).click(
+          jest.fn() as unknown as PlotlyHTMLElement,
+          jest.fn() as unknown as MouseEvent,
+        );
+    };
+
+    return (
+      <div>
+        <button data-testid="plot-zoom-change" onClick={onZoomChanged}></button>;
+        <button data-testid="plot-change-scale" onClick={onChangeScale}></button>;
+      </div>
+    );
   },
 }));
 
@@ -40,7 +55,7 @@ describe("Chart", () => {
     },
   ];
 
-  it("renders a plotly chart with single repo", () => {
+  it("render a plotly chart with single repo", () => {
     render(<Chart repoInfos={repoInfos.filter((_, index) => index === 0)} />);
 
     expect(mockPlot).toHaveBeenCalledWith(
@@ -62,7 +77,7 @@ describe("Chart", () => {
     );
   });
 
-  it("renders a plotly chart with multiple repos", () => {
+  it("render a plotly chart with multiple repos", () => {
     render(<Chart repoInfos={repoInfos} />);
 
     expect(mockPlot).toHaveBeenCalledWith(
@@ -95,7 +110,7 @@ describe("Chart", () => {
     );
   });
 
-  it("fires event on zoom change", () => {
+  it("fire event on zoom change", () => {
     const zoomChangedCallback = jest.fn();
     render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback} />);
 
@@ -112,7 +127,7 @@ describe("Chart", () => {
     expect(zoomChangedCallback).toHaveBeenCalledWith(zoomMinTS, zoomMaxTS);
   });
 
-  it("fires zoom changed on autorange event", () => {
+  it("fire zoom changed on autorange event", () => {
     const minDate = new Date("01/01/2015");
     const maxDate = new Date("02/01/2023");
     const repoInfos2: Array<RepoInfo> = [
@@ -155,7 +170,7 @@ describe("Chart", () => {
     expect(zoomChangedCallback).not.toHaveBeenCalled();
   });
 
-  it("does not fire zoom changed on to other events", () => {
+  it("do not fire zoom changed on to other events", () => {
     const zoomChangedCallback = jest.fn();
     render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback} />);
 
@@ -167,7 +182,7 @@ describe("Chart", () => {
     expect(zoomChangedCallback).not.toHaveBeenCalled();
   });
 
-  it("renders height correctly when screen size changes", async () => {
+  it("render height correctly when screen size changes", async () => {
     const { container } = render(<Chart repoInfos={repoInfos} />);
 
     const mockedPartialGetBoundingClientRect = {
@@ -232,7 +247,7 @@ describe("Chart", () => {
     });
   });
 
-  it("shows forecast data", () => {
+  it("show forecast data", () => {
     const repoInfosWithForecastData = repoInfos.map((repoInfo) => ({
       ...repoInfo,
       forecast: {
@@ -291,6 +306,69 @@ describe("Chart", () => {
             },
           },
         ],
+      }),
+    );
+  });
+
+  it("switch scale", () => {
+    render(<Chart repoInfos={repoInfos} />);
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        config: {
+          modeBarButtonsToAdd: [
+            expect.objectContaining({
+              name: "log-scale",
+              title: "Use logarithmic scale",
+            }),
+          ],
+        },
+        layout: expect.objectContaining({
+          yaxis: expect.objectContaining({
+            type: "linear",
+          }),
+        }),
+      }),
+    );
+
+    const mockChangeScale = screen.getByTestId("plot-change-scale");
+    fireEvent.click(mockChangeScale);
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        config: {
+          modeBarButtonsToAdd: [
+            expect.objectContaining({
+              name: "linear-scale",
+              title: "Use linear scale",
+            }),
+          ],
+        },
+        layout: expect.objectContaining({
+          yaxis: expect.objectContaining({
+            type: "log",
+          }),
+        }),
+      }),
+    );
+
+    fireEvent.click(mockChangeScale);
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        config: {
+          modeBarButtonsToAdd: [
+            expect.objectContaining({
+              name: "log-scale",
+              title: "Use logarithmic scale",
+            }),
+          ],
+        },
+        layout: expect.objectContaining({
+          yaxis: expect.objectContaining({
+            type: "linear",
+          }),
+        }),
       }),
     );
   });
