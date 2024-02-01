@@ -50,8 +50,8 @@ export function Preload() {
     return currentlyLoadingIndex < dataToLoad.length
       ? `${dataToLoad[currentlyLoadingIndex].username} / ${dataToLoad[currentlyLoadingIndex].repo}`
       : repoLoadErrors.length > 0
-      ? "Error loading repo data"
-      : "Done!";
+        ? "Error loading repo data"
+        : "Done!";
   };
 
   const handleLoadDone = (repoInfo: RepoInfo | null) => {

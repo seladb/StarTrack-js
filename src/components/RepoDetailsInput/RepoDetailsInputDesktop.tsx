@@ -12,36 +12,35 @@ interface RepoInputLabelProps extends BoxProps {
 const componentMaxWidth = 800;
 const goButtonWidth = 155;
 
-const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(function RepoInputLabel(
-  props,
-  ref,
-) {
-  const { prepend, children, ...otherProps } = props;
+const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(
+  function RepoInputLabel(props, ref) {
+    const { prepend, children, ...otherProps } = props;
 
-  return (
-    <Box
-      ref={ref}
-      component="div"
-      sx={{
-        backgroundColor: (theme) => theme.palette.grey[200],
-        borderColor: (theme) => `${theme.palette.grey[400]} !important`,
-        fontSize: (theme) => theme.typography.fontSize,
-        border: "1px solid",
-        display: "flex",
-        alignItems: "center",
-        paddingRight: 2,
-        paddingLeft: 2,
-        ...(prepend && {
-          borderTopLeftRadius: 4,
-          borderBottomLeftRadius: 4,
-        }),
-      }}
-      {...otherProps}
-    >
-      {children}
-    </Box>
-  );
-});
+    return (
+      <Box
+        ref={ref}
+        component="div"
+        sx={{
+          backgroundColor: (theme) => theme.palette.grey[200],
+          borderColor: (theme) => `${theme.palette.grey[400]} !important`,
+          fontSize: (theme) => theme.typography.fontSize,
+          border: "1px solid",
+          display: "flex",
+          alignItems: "center",
+          paddingRight: 2,
+          paddingLeft: 2,
+          ...(prepend && {
+            borderTopLeftRadius: 4,
+            borderBottomLeftRadius: 4,
+          }),
+        }}
+        {...otherProps}
+      >
+        {children}
+      </Box>
+    );
+  },
+);
 
 function RepoInputTextField(props: TextFieldProps) {
   return (

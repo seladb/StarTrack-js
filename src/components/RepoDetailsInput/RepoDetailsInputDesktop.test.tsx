@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RepoDetailsInputDesktop from "./RepoDetailsInputDesktop";
 
@@ -31,7 +31,7 @@ describe(RepoDetailsInputDesktop, () => {
 
   it.each(["repoTextBox", "usernameTextBox"])(
     "render correctly on non-loading state and fires an event on Enter key",
-    (textbox) => {
+    async (textbox) => {
       render(
         <RepoDetailsInputDesktop
           loading={false}
@@ -50,7 +50,10 @@ describe(RepoDetailsInputDesktop, () => {
         userEvent.type(usernameTextBox, "{Enter}");
       }
 
-      expect(goClickHandler).toBeCalledWith(username, repo);
+      await waitFor(() => {
+        expect(goClickHandler).toBeCalledWith(username, repo);
+      });
+
       expect(cancelClickHandler).not.toBeCalled();
     },
   );
