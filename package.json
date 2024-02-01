@@ -39,7 +39,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext js,jsx,ts,tsx src/",
     "lint:fix": "eslint --ext js,jsx,ts,tsx --fix src/",
-    "format": "prettier --write . --config ./.prettierrc"
+    "format": "prettier --write . --config ./.prettierrc",
+    "format:check": "prettier --check . --config ./.prettierrc",
+    "spellcheck": "cspell **/*.{ts,tsx}"
   },
   "jest": {
     "transformIgnorePatterns": [
@@ -69,6 +71,7 @@
     "@types/react-plotly.js": "^2.6.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
+    "cspell": "^8.3.2",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",

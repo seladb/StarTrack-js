@@ -7,7 +7,7 @@ const stargazersURL =
 const validateAccessTokenURL = "https://api.github.com/user";
 const repoUrlTemplate = "https://github.com/{user}/{repo}";
 
-export const storageKey = "statrack_js_access_token";
+export const storageKey = "startrack_js_access_token";
 
 const maxSupportedPagesWithoutAccessToken = 30;
 
