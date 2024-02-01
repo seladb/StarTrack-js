@@ -16,6 +16,8 @@ const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(function 
   props,
   ref,
 ) {
+  const { prepend, children, ...otherProps } = props;
+
   return (
     <Box
       ref={ref}
@@ -29,14 +31,14 @@ const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(function 
         alignItems: "center",
         paddingRight: 2,
         paddingLeft: 2,
-        ...(props.prepend && {
+        ...(prepend && {
           borderTopLeftRadius: 4,
           borderBottomLeftRadius: 4,
         }),
       }}
-      {...props}
+      {...otherProps}
     >
-      {props.children}
+      {children}
     </Box>
   );
 });
