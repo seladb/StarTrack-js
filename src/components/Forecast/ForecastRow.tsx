@@ -12,11 +12,11 @@ export default function ForecastRow({ info, onClick, onDelete }: ForecastRowProp
   const timeBackward = info && `${info.timeBackward.count} ${info.timeBackward.unit}`;
 
   const content = info ? (
-    <div>
+    <Box>
       <strong>{timeForward}</strong> forecast based on the last <strong>{timeBackward}</strong>
-    </div>
+    </Box>
   ) : (
-    <div>Do not show forecast</div>
+    <Box>Do not show forecast</Box>
   );
 
   return (
