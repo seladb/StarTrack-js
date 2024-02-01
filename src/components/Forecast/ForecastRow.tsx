@@ -1,16 +1,5 @@
-import { Chip } from "@mui/material";
-import { makeStyles, createStyles } from "@mui/styles";
+import { Box, Chip } from "@mui/material";
 import { ForecastInfo } from "./ForecastInfo";
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      "& .MuiChip-root": {
-        borderRadius: 1,
-      },
-    },
-  }),
-);
 
 interface ForecastRowProps {
   info: ForecastInfo | null;
@@ -19,8 +8,6 @@ interface ForecastRowProps {
 }
 
 export default function ForecastRow({ info, onClick, onDelete }: ForecastRowProps) {
-  const classes = useStyles();
-
   const timeForward = info && `${info.timeForward.count} ${info.timeForward.unit}`;
   const timeBackward = info && `${info.timeBackward.count} ${info.timeBackward.unit}`;
 
@@ -33,8 +20,15 @@ export default function ForecastRow({ info, onClick, onDelete }: ForecastRowProp
   );
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        "& .MuiChip-root": {
+          borderRadius: 1,
+        },
+        width: "100%",
+      }}
+    >
       <Chip label={content} onClick={onClick} onDelete={info ? onDelete : undefined} />
-    </div>
+    </Box>
   );
 }
