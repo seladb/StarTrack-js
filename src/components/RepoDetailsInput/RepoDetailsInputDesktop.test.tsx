@@ -25,8 +25,8 @@ describe(RepoDetailsInputDesktop, () => {
     const goBtn = screen.getByRole("button");
     fireEvent.click(goBtn);
 
-    expect(goClickHandler).toBeCalledWith(username, repo);
-    expect(cancelClickHandler).not.toBeCalled();
+    expect(goClickHandler).toHaveBeenCalledWith(username, repo);
+    expect(cancelClickHandler).not.toHaveBeenCalled();
   });
 
   it.each(["repoTextBox", "usernameTextBox"])(
@@ -51,12 +51,32 @@ describe(RepoDetailsInputDesktop, () => {
       }
 
       await waitFor(() => {
-        expect(goClickHandler).toBeCalledWith(username, repo);
+        expect(goClickHandler).toHaveBeenCalledWith(username, repo);
       });
 
-      expect(cancelClickHandler).not.toBeCalled();
+      expect(cancelClickHandler).not.toHaveBeenCalled();
     },
   );
+
+  it("move to repo text box when '/' is pressed", async () => {
+    render(
+      <RepoDetailsInputDesktop
+        loading={false}
+        onGoClick={goClickHandler}
+        onCancelClick={cancelClickHandler}
+      />,
+    );
+
+    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+
+    expect(repoTextBox).not.toHaveFocus();
+
+    userEvent.type(usernameTextBox, "user/");
+
+    waitFor(() => {
+      expect(repoTextBox).toHaveFocus();
+    });
+  });
 
   it("render correctly in loading state and fires an event on Cancel click", () => {
     render(
@@ -77,8 +97,8 @@ describe(RepoDetailsInputDesktop, () => {
 
     fireEvent.click(cancelBtn);
 
-    expect(goClickHandler).not.toBeCalled();
-    expect(cancelClickHandler).toBeCalled();
+    expect(goClickHandler).not.toHaveBeenCalled();
+    expect(cancelClickHandler).toHaveBeenCalled();
   });
 
   it("trim the username and repo", () => {
@@ -97,7 +117,7 @@ describe(RepoDetailsInputDesktop, () => {
     const goBtn = screen.getByRole("button");
     fireEvent.click(goBtn);
 
-    expect(goClickHandler).toBeCalledWith(username, repo);
+    expect(goClickHandler).toHaveBeenCalledWith(username, repo);
   });
 
   it("render a tooltip when hovering on repo details", async () => {

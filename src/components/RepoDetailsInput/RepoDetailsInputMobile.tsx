@@ -13,6 +13,8 @@ export default function RepoDetailsInputMobile({
   const [username, setUsername] = React.useState<string>("");
   const [repo, setRepo] = React.useState<string>("");
 
+  const repoInputRef = React.useRef<HTMLInputElement>();
+
   const handleGoClick = () => {
     onGoClick(username.trim(), repo.trim());
   };
@@ -29,6 +31,18 @@ export default function RepoDetailsInputMobile({
     event.preventDefault();
     setUsername(url[0]);
     setRepo(url[1]);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      onGoClick(username.trim(), repo.trim());
+      event.preventDefault();
+    }
+
+    if (event.key === "/") {
+      repoInputRef.current && repoInputRef.current.focus();
+      event.preventDefault();
+    }
   };
 
   return (
@@ -48,6 +62,7 @@ export default function RepoDetailsInputMobile({
             setUsername(e.target.value);
           }}
           onPaste={handlePaste}
+          onKeyDown={handleKeyDown}
         />
         <TextField
           value={repo}
@@ -56,7 +71,9 @@ export default function RepoDetailsInputMobile({
           onChange={(e) => {
             setRepo(e.target.value);
           }}
+          onKeyDown={handleKeyDown}
           onPaste={handlePaste}
+          inputRef={repoInputRef}
         />
         <LoadingButton
           loading={loading}

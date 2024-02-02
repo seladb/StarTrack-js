@@ -65,6 +65,8 @@ export default function RepoDetailsInputDesktop({
   const [username, setUsername] = React.useState<string>("");
   const [repo, setRepo] = React.useState<string>("");
 
+  const repoInputRef = React.useRef<HTMLInputElement>();
+
   const handleGoClick = () => {
     onGoClick(username.trim(), repo.trim());
   };
@@ -86,6 +88,11 @@ export default function RepoDetailsInputDesktop({
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       onGoClick(username.trim(), repo.trim());
+      event.preventDefault();
+    }
+
+    if (event.key === "/") {
+      repoInputRef.current && repoInputRef.current.focus();
       event.preventDefault();
     }
   };
@@ -113,6 +120,7 @@ export default function RepoDetailsInputDesktop({
         }}
         onPaste={handlePaste}
         onKeyDown={handleKeyDown}
+        inputRef={repoInputRef}
       />
       <LoadingButton
         sx={{ width: goButtonWidth }}

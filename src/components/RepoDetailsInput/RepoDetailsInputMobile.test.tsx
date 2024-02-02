@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import RepoDetailsInputMobile from "./RepoDetailsInputMobile";
 
 const goClickHandler = jest.fn();
@@ -24,8 +25,57 @@ describe(RepoDetailsInputMobile, () => {
     const goBtn = screen.getByRole("button");
     fireEvent.click(goBtn);
 
-    expect(goClickHandler).toBeCalledWith(username, repo);
-    expect(cancelClickHandler).not.toBeCalled();
+    expect(goClickHandler).toHaveBeenCalledWith(username, repo);
+    expect(cancelClickHandler).not.toHaveBeenCalled();
+  });
+
+  it.each(["repoTextBox", "usernameTextBox"])(
+    "render correctly on non-loading state and fires an event on Enter key",
+    async (textbox) => {
+      render(
+        <RepoDetailsInputMobile
+          loading={false}
+          onGoClick={goClickHandler}
+          onCancelClick={cancelClickHandler}
+        />,
+      );
+
+      const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+      fireEvent.change(usernameTextBox, { target: { value: username } });
+      fireEvent.change(repoTextBox, { target: { value: repo } });
+
+      if (textbox == "repoTextBox") {
+        userEvent.type(repoTextBox, "{Enter}");
+      } else {
+        userEvent.type(usernameTextBox, "{Enter}");
+      }
+
+      await waitFor(() => {
+        expect(goClickHandler).toHaveBeenCalledWith(username, repo);
+      });
+
+      expect(cancelClickHandler).not.toHaveBeenCalled();
+    },
+  );
+
+  it("move to repo text box when '/' is pressed", async () => {
+    render(
+      <RepoDetailsInputMobile
+        loading={false}
+        onGoClick={goClickHandler}
+        onCancelClick={cancelClickHandler}
+      />,
+    );
+
+    const [usernameTextBox, repoTextBox] = screen.getAllByRole("textbox");
+
+    expect(repoTextBox).not.toHaveFocus();
+
+    userEvent.type(usernameTextBox, "user/");
+
+    waitFor(() => {
+      expect(repoTextBox).toHaveFocus();
+    });
   });
 
   it("render correctly in loading state and fires an event on Cancel click", () => {
@@ -47,8 +97,8 @@ describe(RepoDetailsInputMobile, () => {
 
     fireEvent.click(cancelBtn);
 
-    expect(goClickHandler).not.toBeCalled();
-    expect(cancelClickHandler).toBeCalled();
+    expect(goClickHandler).not.toHaveBeenCalled();
+    expect(cancelClickHandler).toHaveBeenCalled();
   });
 
   it("trim the username and repo", () => {
@@ -67,7 +117,7 @@ describe(RepoDetailsInputMobile, () => {
     const goBtn = screen.getByRole("button");
     fireEvent.click(goBtn);
 
-    expect(goClickHandler).toBeCalledWith(username, repo);
+    expect(goClickHandler).toHaveBeenCalledWith(username, repo);
   });
 
   it.each([
