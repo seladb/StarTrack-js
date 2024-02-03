@@ -38,10 +38,14 @@ jest.mock("./RepoLoader", () => ({
 }));
 
 const mockNavigate = jest.fn();
+const mockLocation = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
+  useLocation: () => {
+    return mockLocation() ?? { search: "" };
+  },
 }));
 
 describe(Preload, () => {
@@ -65,11 +69,7 @@ describe(Preload, () => {
   };
 
   it("loads repos data", async () => {
-    Object.defineProperty(window, "location", {
-      value: {
-        search: `?r=${username1},${repo1}&r=${username2},${repo2}`,
-      },
-    });
+    mockLocation.mockReturnValue({ search: `?r=${username1},${repo1}&r=${username2},${repo2}` });
 
     setup();
 
@@ -90,10 +90,8 @@ describe(Preload, () => {
     const errorMessage1 = "some error occurred1";
     const errorMessage2 = "some error occurred2";
 
-    Object.defineProperty(window, "location", {
-      value: {
-        search: `?r=${username1},${repo1}&r=${username2},${repo2}&r=${username3},${repo3}`,
-      },
+    mockLocation.mockReturnValue({
+      search: `?r=${username1},${repo1}&r=${username2},${repo2}&r=${username3},${repo3}`,
     });
 
     setup();

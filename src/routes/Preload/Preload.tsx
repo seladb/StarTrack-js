@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ProgressProvider } from "../../shared/ProgressContext";
 import RepoLoader from "./RepoLoader";
 import { RepoMetadata } from "./PreloadTypes";
@@ -44,7 +44,8 @@ export function Preload() {
     }
   }, [currentlyLoadingIndex]);
 
-  const dataToLoad = parseUrlParams(location.search);
+  const { search } = useLocation();
+  const dataToLoad = parseUrlParams(search);
 
   const getSubTitle = () => {
     return currentlyLoadingIndex < dataToLoad.length
