@@ -5,7 +5,6 @@ import LinkIcon from "@mui/icons-material/Link";
 import React from "react";
 
 const repoUrlParam = "r={user},{repo}";
-const baseUrl = `${window.location.origin}${window.location.pathname}#/preload?`;
 
 type RepoDetails = {
   username: string;
@@ -19,6 +18,8 @@ interface URLBoxProps {
 export default function URLBox({ repoInfos }: URLBoxProps) {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false);
   const [url, setUrl] = React.useState<string>("");
+
+  const baseUrl = `${window.location.href}preload?`;
 
   React.useEffect(() => {
     setUrl(calcUrl());

@@ -13,7 +13,7 @@ describe(URLBox, () => {
     },
   ];
 
-  const expectedURL = `${window.location.origin}${window.location.pathname}#/preload?r=user1,repo1&r=user2,repo2`;
+  const expectedURL = `${window.location.href}preload?r=user1,repo1&r=user2,repo2`;
 
   it("shows the correct URL", () => {
     render(<URLBox repoInfos={repoInfos} />);
