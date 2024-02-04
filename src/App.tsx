@@ -1,5 +1,5 @@
 import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import MainPage from "./routes/MainPage";
 import Preload from "./routes/Preload";
 import ErrorPage from "./routes/ErrorPage";
@@ -7,7 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import StarTrackTheme from "./shared/Theme";
 import { CssBaseline } from "@mui/material";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     errorElement: <ErrorPage />,
