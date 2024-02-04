@@ -1,3 +1,4 @@
+import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainPage from "./routes/MainPage";
 import Preload from "./routes/Preload";
@@ -19,6 +20,12 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  React.useEffect(() => {
+    if (!window.location.hash) {
+      window.location.href = `${window.location.origin}/#/`;
+    }
+  }, []);
+
   return (
     <ThemeProvider theme={StarTrackTheme}>
       <CssBaseline>
