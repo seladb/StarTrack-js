@@ -1,21 +1,18 @@
-name: Test deployment
+name: Build and test
 
 on:
-  pull_request:
-    branches: [master]
   push:
-    branches-ignore:
-      - master
+    branches: ["master"]
+  pull_request:
 
 jobs:
-  test-deploy:
+  build-and-test:
     name: Test deployment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
           cache: yarn
       - name: Install packages
         run: yarn install

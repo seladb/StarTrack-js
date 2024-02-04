@@ -1,37 +1,40 @@
-# name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
-# on:
-#   push:
-#     branches: [master]
+on:
+  push:
+    tags:
+      - "*"
 
-# jobs:
-#   deploy:
-#     name: Deploy to GitHub Pages
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - uses: actions/setup-node@v2
-#         with:
-#           node-version: 17.2.0
-#           cache: npm
-#       - name: Install packages
-#         run: npm ci
-#       - name: Format
-#         run: npm run format
-#       - name: Lint
-#         run: npm run lint
-#       - name: Build website
-#         run: npm run build
-
-#       - name: Deploy to GitHub Pages
-#         uses: peaceiris/actions-gh-pages@v3
-#         with:
-#           github_token: ${{ secrets.DEPLOY_ACCESS_TOKEN }}
-#           # Build output to publish to the `gh-pages` branch:
-#           publish_dir: ./build
-#           # Assign commit authorship to the official GH-Actions bot for deploys to `gh-pages` branch:
-#           # https://github.com/actions/checkout/issues/13#issuecomment-724415212
-#           # The GH actions bot is used by default if you didn't specify the two fields.
-#           # You can swap them out with your own user credentials.
-#           user_name: github-actions[bot]
-#           user_email: 41898282+github-actions[bot]@users.noreply.github.com
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: yarn
+      - name: Install packages
+        run: yarn install
+      - name: Format
+        run: yarn run format:check
+      - name: Lint
+        run: yarn run lint
+      - name: Spell check
+        run: yarn run spellcheck
+      - name: Run tests
+        run: yarn test
+      - name: Test build
+        run: yarn run build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Build output to publish to the `gh-pages` branch:
+          publish_dir: ./build
+          # Assign commit authorship to the official GH-Actions bot for deploys to `gh-pages` branch:
+          # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+          # The GH actions bot is used by default if you didn't specify the two fields.
+          # You can swap them out with your own user credentials.
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
