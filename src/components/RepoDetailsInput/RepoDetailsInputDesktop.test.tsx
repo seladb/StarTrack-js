@@ -71,11 +71,9 @@ describe(RepoDetailsInputDesktop, () => {
 
     expect(repoTextBox).not.toHaveFocus();
 
-    userEvent.type(usernameTextBox, "user/");
+    await userEvent.type(usernameTextBox, `${username}/`);
 
-    waitFor(() => {
-      expect(repoTextBox).toHaveFocus();
-    });
+    expect(repoTextBox).toHaveFocus();
   });
 
   it("render correctly in loading state and fires an event on Cancel click", () => {

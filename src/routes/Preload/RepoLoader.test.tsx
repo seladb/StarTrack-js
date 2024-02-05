@@ -72,6 +72,20 @@ describe(RepoLoader, () => {
     });
   });
 
+  it("no repo data", () => {
+    const mockLoadStargazers = jest.spyOn(StargazerLoader, "loadStargazers");
+
+    render(
+      <RepoLoader
+        repoDataToLoad={null}
+        onLoadDone={handleLoadDone}
+        onLoadError={handleLoadError}
+      />,
+    );
+
+    expect(mockLoadStargazers).not.toHaveBeenCalled();
+  });
+
   it.each([[new Error("error")], ["error"]])("load repo data error", async (error) => {
     jest.spyOn(StargazerLoader, "loadStargazers").mockImplementation(() => {
       return Promise.reject(error);
