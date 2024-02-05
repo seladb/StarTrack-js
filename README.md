@@ -17,22 +17,31 @@ Try it now: https://seladb.github.io/StarTrack-js/
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 
-## What's new in version 2.4?
+## What's new in version 3.0.0?
+
+- A complete rewrite of the code-base using Typescript
+- Uses Material UI instead of React Bootstrap
+- The chart component was replaced to [Plotly.js](https://plotly.com/javascript/) which better supports large amounts of data
+- Better user experience for GitHub authentication
+- Better user experience for choosing forecast
+- Complete test coverage of all components
+
+## What's new in version 2.4.0?
 
 - Added an option to display a forecast based on the existing stargazer data. The forecast is calculated using [Linear Least Squares](https://en.wikipedia.org/wiki/Linear_least_squares) regression
 - Change between username and repo name text boxes using the `/` key (thanks @zaldih !)
 
-## What's new in version 2.3?
+## What's new in version 2.3.0?
 
 - Parallel load of stargazer data which significantly improves the overall loading time (thanks @gsaraf !)
 - Display chart data in log scale (thanks @passcod !)
 
-## What's new in version 2.2?
+## What's new in version 2.2.0?
 
 - Added support for smaller screen sizes (mobile devices)
 - Small improvements in overall layout
 
-## What's new in version 2.1?
+## What's new in version 2.1.0?
 
 - Added a checkbox to sync the stats with the current chart view displayed. This is useful for viewing stats on specific dates
 - You can now paste a GitHub link instead of typing the username and repo name, and they will be parsed automatically
@@ -40,7 +49,7 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Preloading screen: fix decreasing transition in progress bar when loading the next repo
 - All React components were replaced from class to function components and are using React Hooks
 
-## What's new in version 2.0?
+## What's new in version 2.0.0?
 
 - A complete rewrite using React and modern frontend technologies
 - Significant UI improvements (basically everything looks much better now :-) )
@@ -59,24 +68,23 @@ Try it now: https://seladb.github.io/StarTrack-js/
 
 This project is built on [React](https://reactjs.org/) and deployed on [GitHub Pages](https://pages.github.com/). It doesn't have a backend so all of the data is stored locally on the browser and nothing is passed to any server (other than GitHub API to fetch the stargazer data).
 
-It uses the following npm packages:
+It uses the following `yarn` packages:
 
-- [React Bootstrap](https://react-bootstrap.github.io/) for the UI elements
-- [ApexCharts](https://apexcharts.com/docs/react-charts/) for displaying charts
+- [Material UI](https://mui.com/material-ui/) for the UI components
+- [Plotly.js](https://plotly.com/javascript/) for displaying charts
 - [Axios](https://github.com/axios/axios) for fetching data from GitHub API
-- [React Router](https://reacttraining.com/react-router/) for having a separate view for preloading stargazer data
-- [Font Awesome](https://fontawesome.com/how-to-use/on-the-web/using-with/react) for cool icons
-- [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
+- [React Router](https://reactrouter.com/) for handling client side routing
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) as the testing framework
+- [Formik](https://formik.org/) for building forms
 - [React Google Analytics Module](https://github.com/react-ga/react-ga)
-- [parse-github-url](https://github.com/jonschlinkert/parse-github-url) to find GitHub URLs that are being pasted to the repo details text boxes
+- [Moment.js](https://momentjs.com/) for manipulating date time
 - [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
-- [least-squares](https://github.com/jprichardson/least-squares) for calculating the forecast
+- [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
 
 Dev packages:
 
 - [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
-- [husky](https://github.com/typicode/husky), [lint-staged](https://github.com/okonet/lint-staged) and [pretty-quick](https://github.com/azz/pretty-quick) for pre-commit hooks
-- [gh-pages](https://github.com/tschaub/gh-pages) for GitHub Pages deployment
+- [CSpell](https://cspell.org/) for spell check
 
 GitHub pages deployment status: [![GitHub Pages](https://github.com/seladb/StarTrack-js/actions/workflows/deploy.yml/badge.svg)](https://github.com/seladb/StarTrack-js/actions/workflows/deploy.yml)
 
@@ -84,5 +92,5 @@ To run it locally follow these steps:
 
 - Clone this repo: `git clone https://github.com/seladb/StarTrack-js.git`
 - Enter the repo directory: `cd StarTrack-js`
-- Install the node modules required for this app: `npm install`
-- Run it locally: `npm start`
+- Install the node modules required for this app: `yarn install`
+- Run it locally: `yarn run start`
