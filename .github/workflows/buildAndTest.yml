@@ -26,3 +26,7 @@ jobs:
         run: yarn run build
       - name: Run tests
         run: yarn test
+      - name: Run coverage
+        run: yarn run coverage
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
