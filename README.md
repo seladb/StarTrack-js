@@ -1,4 +1,10 @@
+<div align="center">
 <img src="public/logo.png" width="550" />
+
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/seladb/StarTrack-js/buildAndTest.yml?branch=typescript&label=Actions&logo=github&style=flat)](https://github.com/seladb/StarTrack-js/actions?query=workflow:%22Build%20and%20Test%22)
+[![Coverage Status](https://coveralls.io/repos/github/seladb/StarTrack-js/badge.svg?branch=typescript)](https://coveralls.io/github/seladb/StarTrack-js?branch=typescript)
+
+</div>
 
 GitHub Star History and Stats - based on JavaScript only, no server side!
 
@@ -85,8 +91,6 @@ Dev packages:
 
 - [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
 - [CSpell](https://cspell.org/) for spell check
-
-GitHub pages deployment status: [![GitHub Pages](https://github.com/seladb/StarTrack-js/actions/workflows/deploy.yml/badge.svg)](https://github.com/seladb/StarTrack-js/actions/workflows/deploy.yml)
 
 To run it locally follow these steps:
 
