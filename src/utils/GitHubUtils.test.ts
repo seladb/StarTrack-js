@@ -55,11 +55,11 @@ class StorageMock implements Storage {
 }
 
 describe(utils.getStorage, () => {
-  it("Get from session storage if no token is stored", () => {
+  it("get from session storage if no token is stored", () => {
     expect(utils.getStorage()).toStrictEqual(window.sessionStorage);
   });
 
-  it("Get from session storage if token is stored in both", () => {
+  it("get from session storage if token is stored in both", () => {
     jest.spyOn(window.localStorage, "getItem");
     window.localStorage.getItem = () => {
       return "localStorage";
@@ -73,19 +73,29 @@ describe(utils.getStorage, () => {
     expect(utils.getStorage()).toStrictEqual(window.sessionStorage);
   });
 
-  it("Get from local storage if token is stored in localStorage", () => {
-    jest.spyOn(window.localStorage, "getItem");
-    window.localStorage.getItem = () => {
-      return "localStorage";
-    };
+  it.each([window.localStorage, window.sessionStorage])("get from the right storage", (storage) => {
+    try {
+      storage.setItem(utils.storageKey, "storage");
 
-    expect(utils.getStorage()).toStrictEqual(window.localStorage);
+      expect(utils.getStorage()).toStrictEqual(storage);
+    } finally {
+      storage.setItem(utils.storageKey, "");
+    }
   });
 });
 
 describe(utils.getStorageType, () => {
-  it("Get sessionStorage type", () => {
-    expect(utils.getStorageType()).toStrictEqual(utils.StorageType.SessionStorage);
+  it.each([
+    [window.localStorage, utils.StorageType.LocalStorage],
+    [window.sessionStorage, utils.StorageType.SessionStorage],
+  ])("get storage type", (storage, expectedStorageType) => {
+    try {
+      storage.setItem(utils.storageKey, "storage");
+
+      expect(utils.getStorageType()).toStrictEqual(expectedStorageType);
+    } finally {
+      storage.setItem(utils.storageKey, "");
+    }
   });
 });
 
