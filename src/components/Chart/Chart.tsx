@@ -134,7 +134,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
           },
           showlegend: repoInfos.length > 1 || repoInfos[0].forecast !== undefined,
           modebar: {
-            remove: ["zoomIn2d", "zoomOut2d"],
+            remove: ["zoomIn2d"],
           },
           xaxis: {
             type: "date",
