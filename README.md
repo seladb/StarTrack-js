@@ -10,7 +10,9 @@ GitHub Star History and Stats - based on JavaScript only, no server side!
 
 Try it now: https://seladb.github.io/StarTrack-js/
 
+<div align="center">
 <img src="public/StarTrackDemo.gif" width="900" />
+</div>
 
 ## Main features
 
@@ -25,11 +27,12 @@ Try it now: https://seladb.github.io/StarTrack-js/
 
 ## What's new in version 3.0.0?
 
-- A complete rewrite of the code-base using Typescript
-- Uses Material UI instead of React Bootstrap
-- The chart component was replaced to [Plotly.js](https://plotly.com/javascript/) which better supports large amounts of data
-- Better user experience for GitHub authentication
-- Better user experience for choosing forecast
+- A complete rewrite of the codebase using Typescript and modern React
+- Migrated from React Bootstrap to Material UI for a more consistent and polished look
+- Upgraded the chart component to [Plotly.js](https://plotly.com/javascript/) for better rendering of large datasets and an improved user experience
+- Enhanced the GitHub authentication process to provide a smoother and more user-friendly experience
+- Improved the forecast selection process to make it easier for users to choose a desired forecast
+- When syncing between the repo stats and the chart, displays the date range of the chart
 - Complete test coverage of all components
 
 ## What's new in version 2.4.0?
