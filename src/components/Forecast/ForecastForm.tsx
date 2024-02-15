@@ -156,7 +156,11 @@ export default function ForecastForm({ open, onClose, initialValues }: ForecastF
             <Grid item xs={12}>
               <DialogContentText>
                 The forecast is based on{" "}
-                <a href="https://en.wikipedia.org/wiki/Linear_least_squares">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://en.wikipedia.org/wiki/Linear_least_squares"
+                >
                   Linear Least Squares
                 </a>{" "}
                 which creates a regression line from the existing stargazer data and extends this

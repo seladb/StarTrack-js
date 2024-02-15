@@ -99,7 +99,7 @@ export default function RepoDetailsInputDesktop({
 
   return (
     <Stack direction="row" sx={{ maxWidth: componentMaxWidth }}>
-      <StarTrackTooltip title='Tip: you can paste any GitHub URL or string in the format of "username/repo"'>
+      <StarTrackTooltip title="Tip: you can paste any GitHub URL">
         <RepoInputLabel prepend>Repo details</RepoInputLabel>
       </StarTrackTooltip>
       <RepoInputTextField
