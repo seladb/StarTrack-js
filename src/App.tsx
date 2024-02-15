@@ -26,7 +26,9 @@ const router = createHashRouter([
 export default function App() {
   React.useEffect(() => {
     if (!window.location.hash) {
-      window.location.href = `${window.location.origin}/#/`;
+      const url = window.location.href;
+      const urlWithTrailingSlash = url.endsWith("/") ? url : url + "/";
+      window.location.href = `${urlWithTrailingSlash}#/`;
     }
 
     ReactGA.pageview(window.location.pathname + window.location.search);
