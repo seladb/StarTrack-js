@@ -1,5 +1,6 @@
 {
   "name": "startrack-js",
+  "homepage": ".",
   "version": "3.0.0",
   "private": true,
   "dependencies": {
