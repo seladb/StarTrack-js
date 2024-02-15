@@ -2,7 +2,7 @@ name: Build and test
 
 on:
   push:
-    branches: ["master", "typescript"]
+    branches: ["master"]
   pull_request:
 
 jobs:
