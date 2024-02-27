@@ -24,7 +24,7 @@ export default function RepoDetailsInputMobile({
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLElement>) => {
-    const url = parseGitHubUrl(event.clipboardData.getData("Text"));
+    const url = parseGitHubUrl(event.clipboardData.getData("URL"));
     if (!url) {
       return;
     }
