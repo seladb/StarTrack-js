@@ -50,7 +50,7 @@
     "transformIgnorePatterns": [
       "node_modules/(?!axios|react-github-btn/.*)"
     ],
-    "coveragePathIgnorePatterns" : [
+    "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.tsx",
       "<rootDir>/src/reportWebVitals.ts"
     ]
