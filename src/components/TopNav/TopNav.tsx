@@ -1,12 +1,18 @@
-import { AppBar, Box, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, IconButton, Stack, Toolbar, Typography, useTheme } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import LightModeIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeIcon from "@mui/icons-material/DarkModeOutlined";
 import packageJson from "../../../package.json";
 import { GitHubAuth } from "../GitHubAuth";
 import { starTrackGitHubRepo } from "../../utils/Constants";
+import { useThemeActions } from "../../shared/ThemeProvider";
 
 export default function TopNav() {
+  const theme = useTheme();
+  const { switchColorMode } = useThemeActions();
+
   return (
-    <AppBar position="static">
+    <AppBar position="static" enableColorOnDark>
       <Toolbar>
         <Box
           component="img"
@@ -23,6 +29,13 @@ export default function TopNav() {
         </Typography>
         <Stack direction="row" spacing={1}>
           <GitHubAuth />
+          <IconButton onClick={switchColorMode}>
+            {theme.palette.mode === "light" ? (
+              <LightModeIcon sx={{ color: theme.palette.common.white }} />
+            ) : (
+              <DarkModeIcon color="inherit" />
+            )}
+          </IconButton>
           <IconButton
             rel="noopener noreferrer"
             href={starTrackGitHubRepo}

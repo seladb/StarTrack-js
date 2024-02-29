@@ -4,9 +4,8 @@ import { RouterProvider, createHashRouter } from "react-router-dom";
 import MainPage from "./routes/MainPage";
 import Preload from "./routes/Preload";
 import ErrorPage from "./routes/ErrorPage";
-import { ThemeProvider } from "@mui/material/styles";
-import StarTrackTheme from "./shared/Theme";
 import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "./shared/ThemeProvider";
 
 const trackingID = "UA-104097715-1";
 ReactGA.initialize(trackingID);
@@ -35,7 +34,7 @@ export default function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={StarTrackTheme}>
+    <ThemeProvider>
       <CssBaseline>
         <RouterProvider router={router} />
       </CssBaseline>

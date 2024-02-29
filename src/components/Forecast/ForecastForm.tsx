@@ -169,10 +169,12 @@ export default function ForecastForm({ open, onClose, initialValues }: ForecastF
             </Grid>
           </Grid>
           <DialogActions>
-            <Button type="button" className="outline" onClick={handleClose}>
+            <Button type="button" className="outline" onClick={handleClose} variant="contained">
               Cancel
             </Button>
-            <Button type="submit">Ok</Button>
+            <Button type="submit" variant="contained">
+              Ok
+            </Button>
           </DialogActions>
         </form>
       </DialogContent>

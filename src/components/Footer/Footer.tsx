@@ -18,7 +18,7 @@ export default function Footer() {
     <Stack
       color={theme.palette.text.secondary}
       sx={{
-        backgroundColor: (theme) => theme.palette.grey[200],
+        backgroundColor: (theme) => theme.custom.additionalBackgroundColor,
       }}
       padding={1}
       display="flex"
@@ -30,7 +30,7 @@ export default function Footer() {
           <Typography variant="subtitle1">Created by</Typography>
           <GitHubButton
             href="https://github.com/seladb"
-            data-color-scheme="no-preference: light; light: light; dark: light;"
+            data-color-scheme={`no-preference: ${theme.palette.mode}; light: ${theme.palette.mode}; dark: ${theme.palette.mode};`}
             data-size="large"
             aria-label="Follow @seladb on GitHub"
           >
@@ -42,7 +42,7 @@ export default function Footer() {
           <Typography variant="subtitle1">Give us a </Typography>
           <GitHubButton
             href={starTrackGitHubRepo}
-            data-color-scheme="no-preference: light; light: light; dark: light;"
+            data-color-scheme={`no-preference: ${theme.palette.mode}; light: ${theme.palette.mode}; dark: ${theme.palette.mode};`}
             data-icon="octicon-star"
             data-size="large"
             aria-label="Star seladb/startrack-js on GitHub"

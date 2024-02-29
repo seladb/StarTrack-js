@@ -31,6 +31,7 @@ const TestComponent = () => {
     </div>
   );
 };
+
 describe("Progress context", () => {
   it("start, advance, set and end progress", () => {
     render(

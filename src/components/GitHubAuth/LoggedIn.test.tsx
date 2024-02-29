@@ -1,8 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import LoggedIn from "./LoggedIn";
 import { createMatchMedia, expectMuiMenuVisibility } from "../../utils/test";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material";
 import * as GitHubUtils from "../../utils/GitHubUtils";
 
 describe(LoggedIn, () => {
@@ -12,13 +10,7 @@ describe(LoggedIn, () => {
   const handleLogOut = jest.fn();
 
   const setup = () => {
-    const theme = createTheme();
-
-    render(
-      <ThemeProvider theme={theme}>
-        <LoggedIn accessToken={accessToken} onLogOut={handleLogOut} />
-      </ThemeProvider>,
-    );
+    render(<LoggedIn accessToken={accessToken} onLogOut={handleLogOut} />);
   };
 
   it("render on small screen", () => {

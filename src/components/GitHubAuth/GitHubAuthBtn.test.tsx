@@ -1,7 +1,5 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material";
 import { createMatchMedia } from "../../utils/test";
 import GitHubAuthBtn from "./GitHubAuthBtn";
 
@@ -11,38 +9,32 @@ describe(GitHubAuthBtn, () => {
   const onBtnClick = jest.fn();
 
   const setup = (onClick?: React.MouseEventHandler<HTMLButtonElement>) => {
-    const theme = createTheme();
-
-    render(
-      <ThemeProvider theme={theme}>
-        <GitHubAuthBtn text={text} Icon={Icon} onClick={onClick} />
-      </ThemeProvider>,
-    );
+    render(<GitHubAuthBtn text={text} Icon={Icon} onClick={onClick} />);
   };
 
-  it("Display on large screen", () => {
+  it("display on large screen", () => {
     window.matchMedia = createMatchMedia(1000);
 
     setup();
 
     expect(screen.getByText(text)).toBeInTheDocument();
-    expect(Icon).toBeCalled();
+    expect(Icon).toHaveBeenCalled();
   });
 
-  it("Display on small screen", () => {
+  it("display on small screen", () => {
     window.matchMedia = createMatchMedia(200);
 
     setup();
 
     expect(screen.queryByText(text)).not.toBeInTheDocument();
-    expect(Icon).toBeCalled();
+    expect(Icon).toHaveBeenCalled();
   });
 
-  it("Responds to a click event", () => {
+  it("respond to a click event", () => {
     setup(onBtnClick);
 
     const button = screen.getByRole("button");
     fireEvent.click(button);
-    expect(onBtnClick).toBeCalled();
+    expect(onBtnClick).toHaveBeenCalled();
   });
 });

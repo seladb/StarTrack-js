@@ -4,6 +4,7 @@ import RepoInfo from "../../utils/RepoInfo";
 import { PlotParams } from "react-plotly.js";
 import { getLastCallArguments } from "../../utils/test";
 import { ModeBarButton, PlotlyHTMLElement } from "plotly.js";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 const mockPlot = jest.fn();
 const mockOnRelayoutEvent = jest.fn();
@@ -368,6 +369,37 @@ describe("Chart", () => {
           yaxis: expect.objectContaining({
             type: "linear",
           }),
+        }),
+      }),
+    );
+  });
+
+  it("use theme in layout", () => {
+    const theme = createTheme();
+
+    render(
+      <ThemeProvider theme={theme}>
+        <Chart repoInfos={repoInfos} />
+      </ThemeProvider>,
+    );
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        layout: expect.objectContaining({
+          font: {
+            family: theme.typography.fontFamily,
+            size: theme.typography.fontSize,
+            color: theme.palette.text.primary,
+          },
+          // eslint-disable-next-line camelcase
+          plot_bgcolor: theme.palette.background.default,
+          // eslint-disable-next-line camelcase
+          paper_bgcolor: theme.palette.background.default,
+          hoverlabel: {
+            font: {
+              family: theme.typography.fontFamily,
+            },
+          },
         }),
       }),
     );

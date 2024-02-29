@@ -119,8 +119,10 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Close</Button>
-        <Button onClick={handleLoginClick} autoFocus>
+        <Button onClick={handleClose} variant="contained">
+          Close
+        </Button>
+        <Button onClick={handleLoginClick} variant="contained" autoFocus>
           Login
         </Button>
       </DialogActions>

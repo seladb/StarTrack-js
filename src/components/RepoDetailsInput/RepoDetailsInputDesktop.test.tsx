@@ -1,6 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RepoDetailsInputDesktop from "./RepoDetailsInputDesktop";
+import { renderWithTheme } from "../../utils/test";
 
 const goClickHandler = jest.fn();
 const cancelClickHandler = jest.fn();
@@ -10,7 +11,7 @@ const repo = "repo";
 
 describe(RepoDetailsInputDesktop, () => {
   it("render correctly on non-loading state and fires an event on Go click", () => {
-    render(
+    renderWithTheme(
       <RepoDetailsInputDesktop
         loading={false}
         onGoClick={goClickHandler}
@@ -32,7 +33,7 @@ describe(RepoDetailsInputDesktop, () => {
   it.each(["repoTextBox", "usernameTextBox"])(
     "render correctly on non-loading state and fires an event on Enter key",
     async (textbox) => {
-      render(
+      renderWithTheme(
         <RepoDetailsInputDesktop
           loading={false}
           onGoClick={goClickHandler}
@@ -59,7 +60,7 @@ describe(RepoDetailsInputDesktop, () => {
   );
 
   it("move to repo text box when '/' is pressed", async () => {
-    render(
+    renderWithTheme(
       <RepoDetailsInputDesktop
         loading={false}
         onGoClick={goClickHandler}
@@ -77,7 +78,7 @@ describe(RepoDetailsInputDesktop, () => {
   });
 
   it("render correctly in loading state and fires an event on Cancel click", () => {
-    render(
+    renderWithTheme(
       <RepoDetailsInputDesktop
         loading={true}
         onGoClick={goClickHandler}
@@ -100,7 +101,7 @@ describe(RepoDetailsInputDesktop, () => {
   });
 
   it("trim the username and repo", () => {
-    render(
+    renderWithTheme(
       <RepoDetailsInputDesktop
         loading={false}
         onGoClick={goClickHandler}
@@ -119,7 +120,7 @@ describe(RepoDetailsInputDesktop, () => {
   });
 
   it("render a tooltip when hovering on repo details", async () => {
-    render(
+    renderWithTheme(
       <RepoDetailsInputDesktop
         loading={false}
         onGoClick={goClickHandler}
@@ -142,7 +143,7 @@ describe(RepoDetailsInputDesktop, () => {
   ])(
     "parse pasted GitHub URL",
     (whereToPaste, pasted, expectedValueInUserBox, expectedValueInRepoBox) => {
-      render(
+      renderWithTheme(
         <RepoDetailsInputDesktop
           loading={false}
           onGoClick={goClickHandler}
