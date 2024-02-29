@@ -49,6 +49,10 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!axios|react-github-btn/.*)"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.tsx",
+      "<rootDir>/src/reportWebVitals.ts"
     ]
   },
   "eslintConfig": {
