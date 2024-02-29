@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import LoadingButton from "./LoadingButton";
+import { renderWithTheme } from "../../utils/test";
 
 describe(LoadingButton, () => {
   const mockHandleGoClick = jest.fn();
@@ -25,7 +26,7 @@ describe(LoadingButton, () => {
   });
 
   it("render when loading", () => {
-    render(
+    renderWithTheme(
       <LoadingButton
         loading={true}
         onGoClick={mockHandleGoClick}

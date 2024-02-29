@@ -1,26 +1,18 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import TopNav from "./TopNav";
 import packageJson from "../../../package.json";
 import { starTrackGitHubRepo } from "../../utils/Constants";
-import { ThemeProvider } from "../../shared/ThemeProvider";
+import { renderWithTheme } from "../../utils/test";
 
 describe(TopNav, () => {
   it("display correct version", () => {
-    render(
-      <ThemeProvider>
-        <TopNav />
-      </ThemeProvider>,
-    );
+    renderWithTheme(<TopNav />);
 
     expect(screen.getByText(`StarTrack v${packageJson.version}`)).toBeInTheDocument();
   });
 
   it("show GitHub link", () => {
-    render(
-      <ThemeProvider>
-        <TopNav />
-      </ThemeProvider>,
-    );
+    renderWithTheme(<TopNav />);
 
     expect(screen.getByTestId("GitHubIcon").parentElement).toHaveAttribute(
       "href",
@@ -29,21 +21,13 @@ describe(TopNav, () => {
   });
 
   it("show project icon", () => {
-    render(
-      <ThemeProvider>
-        <TopNav />
-      </ThemeProvider>,
-    );
+    renderWithTheme(<TopNav />);
 
     expect(screen.getByAltText("logo")).toHaveAttribute("src", "star-icon.png");
   });
 
   it("switch theme mode", () => {
-    render(
-      <ThemeProvider>
-        <TopNav />
-      </ThemeProvider>,
-    );
+    renderWithTheme(<TopNav />);
 
     expect(screen.queryByTestId("DarkModeOutlinedIcon")).not.toBeInTheDocument();
 

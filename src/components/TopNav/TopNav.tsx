@@ -12,7 +12,7 @@ export default function TopNav() {
   const { switchColorMode } = useThemeActions();
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" enableColorOnDark>
       <Toolbar>
         <Box
           component="img"

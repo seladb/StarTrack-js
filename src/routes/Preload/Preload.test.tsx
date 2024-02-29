@@ -1,8 +1,6 @@
 import { render, act, screen, fireEvent } from "@testing-library/react";
 import { parseUrlParams, Preload } from "./Preload";
 import { getLastCallArguments } from "../../utils/test";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material";
 
 describe("parseUrlParams", () => {
   it("filters only the relevant QS params", () => {
@@ -59,19 +57,10 @@ describe(Preload, () => {
   const repo3 = "repo3";
   const repoInfo3 = "repoInfo3";
 
-  const setup = () => {
-    const theme = createTheme();
-    render(
-      <ThemeProvider theme={theme}>
-        <Preload />
-      </ThemeProvider>,
-    );
-  };
-
   it("loads repos data", async () => {
     mockLocation.mockReturnValue({ search: `?r=${username1},${repo1}&r=${username2},${repo2}` });
 
-    setup();
+    render(<Preload />);
 
     expect(screen.getByText("Loading repo data...")).toBeInTheDocument();
     expect(screen.getByText(`${username1} / ${repo1}`)).toBeInTheDocument();
@@ -94,7 +83,7 @@ describe(Preload, () => {
       search: `?r=${username1},${repo1}&r=${username2},${repo2}&r=${username3},${repo3}`,
     });
 
-    setup();
+    render(<Preload />);
 
     expect(screen.getByText("Loading repo data...")).toBeInTheDocument();
 

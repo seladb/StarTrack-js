@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import Footer from "./Footer";
 import {
   starTrackGitHubMaintainer,
@@ -6,10 +6,11 @@ import {
   twitter,
   email,
 } from "../../utils/Constants";
+import { renderWithTheme } from "../../utils/test";
 
 describe(Footer, () => {
-  it("renders the footer", () => {
-    render(<Footer />);
+  it("render the footer", () => {
+    renderWithTheme(<Footer />);
     expect(screen.getByText(`@${starTrackGitHubMaintainer}`)).toBeInTheDocument();
     expect(screen.getByText(`${new Date().getFullYear()}`)).toBeInTheDocument();
     expect(screen.getByTestId("GitHubIcon").parentElement).toHaveAttribute(

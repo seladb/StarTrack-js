@@ -4,21 +4,18 @@ import MuiLoadingButton, {
 import { Button, ButtonProps, Stack, styled, SxProps, Theme } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import { red } from "@mui/material/colors";
 
-const cancelBtnBackgroundColor = red[500];
-const cancelBtnHoverBackgroundColor = red[700];
 const cancelBtnMinWidth = 40;
 
-const CancelButton = styled(Button)<ButtonProps>(() => ({
+const CancelButton = styled(Button)<ButtonProps>(({ theme }) => ({
   minWidth: cancelBtnMinWidth,
-  backgroundColor: cancelBtnBackgroundColor,
+  backgroundColor: theme.custom.stopButton.backgroundColor,
   borderTopLeftRadius: 0,
   borderBottomLeftRadius: 0,
   boxShadow: "none",
   "& .MuiButton-startIcon": { margin: 0 },
   "&:hover": {
-    backgroundColor: cancelBtnHoverBackgroundColor,
+    backgroundColor: theme.custom.stopButton.hoverBackgroundColor,
   },
 }));
 

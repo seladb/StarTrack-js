@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RepoDetailsInputMobile from "./RepoDetailsInputMobile";
+import { renderWithTheme } from "../../utils/test";
 
 const goClickHandler = jest.fn();
 const cancelClickHandler = jest.fn();
@@ -77,7 +78,7 @@ describe(RepoDetailsInputMobile, () => {
   });
 
   it("render correctly in loading state and fires an event on Cancel click", () => {
-    render(
+    renderWithTheme(
       <RepoDetailsInputMobile
         loading={true}
         onGoClick={goClickHandler}

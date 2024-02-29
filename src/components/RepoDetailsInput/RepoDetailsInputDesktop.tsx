@@ -21,8 +21,8 @@ const RepoInputLabel = React.forwardRef<BoxProps, RepoInputLabelProps>(
         ref={ref}
         component="div"
         sx={{
-          backgroundColor: (theme) => theme.palette.grey[200],
-          borderColor: (theme) => `${theme.palette.grey[400]} !important`,
+          backgroundColor: (theme) => theme.custom.additionalBackgroundColor,
+          borderColor: (theme) => `${theme.custom.borderColor} !important`,
           fontSize: (theme) => theme.typography.fontSize,
           border: "1px solid",
           display: "flex",
