@@ -2,7 +2,7 @@
 <img src="public/logo.png" width="550" />
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/seladb/StarTrack-js/buildAndTest.yml?branch=typescript&label=Actions&logo=github&style=flat)](https://github.com/seladb/StarTrack-js/actions?query=workflow:%22Build%20and%20Test%22)
-[![Coverage Status](https://coveralls.io/repos/github/seladb/StarTrack-js/badge.svg?branch=typescript)](https://coveralls.io/github/seladb/StarTrack-js?branch=typescript)
+[![Coverage Status](https://coveralls.io/repos/github/seladb/StarTrack-js/badge.svg?branch=master)](https://coveralls.io/github/seladb/StarTrack-js?branch=master)
 
 </div>
 
