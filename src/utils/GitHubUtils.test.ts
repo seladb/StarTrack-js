@@ -144,6 +144,17 @@ describe(utils.removeAccessToken, () => {
   });
 });
 
+describe(utils.isLoggedIn, () => {
+  it.each([
+    ["access-token", true],
+    [null, false],
+  ])("return is logged in", (getAccessTokenResponse, expectedResult) => {
+    jest.spyOn(utils, "getAccessToken").mockReturnValueOnce(getAccessTokenResponse);
+
+    expect(utils.isLoggedIn()).toEqual(expectedResult);
+  });
+});
+
 describe(utils.prepareRequestHeaders, () => {
   it("Returns the correct headers with access token", () => {
     expect(utils.prepareRequestHeaders("accessToken")).toStrictEqual({
@@ -188,8 +199,8 @@ describe(utils.validateAndStoreAccessToken, () => {
     );
 
     expect(result).toBeTruthy();
-    expect(axios.get).toBeCalledWith("https://api.github.com/user", fakeHeaders);
-    expect(utils.setStorageType).toBeCalledWith(utils.StorageType.LocalStorage);
+    expect(axios.get).toHaveBeenCalledWith("https://api.github.com/user", fakeHeaders);
+    expect(utils.setStorageType).toHaveBeenCalledWith(utils.StorageType.LocalStorage);
   });
 
   it("Fails when access token is not valid", async () => {
@@ -201,8 +212,81 @@ describe(utils.validateAndStoreAccessToken, () => {
     );
 
     expect(result).toBeFalsy();
-    expect(axios.get).toBeCalledWith("https://api.github.com/user", fakeHeaders);
-    expect(utils.setStorageType).not.toBeCalled();
+    expect(axios.get).toHaveBeenCalledWith("https://api.github.com/user", fakeHeaders);
+    expect(utils.setStorageType).not.toHaveBeenCalled();
+  });
+});
+
+describe(utils.getRepoStargazerCount, () => {
+  beforeEach(() => {
+    jest.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
+    jest.spyOn(utils, "getAccessToken").mockReturnValue(null);
+  });
+
+  const createAxiosResponse = (responseCode: number, data?: unknown): AxiosResponse => {
+    return {
+      data: data || {},
+      status: responseCode,
+      statusText: "status",
+      headers: {},
+      config: {} as InternalAxiosRequestConfig,
+    };
+  };
+
+  const createAxiosError = (response: AxiosResponse) => {
+    return new AxiosError(undefined, undefined, undefined, undefined, response);
+  };
+
+  it("return star count", async () => {
+    const expectedCount = 1000;
+    jest.spyOn(axios, "get").mockImplementation(() =>
+      // eslint-disable-next-line camelcase
+      Promise.resolve(createAxiosResponse(200, { stargazers_count: expectedCount })),
+    );
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).resolves.toEqual(expectedCount);
+    expect(axios.get).toHaveBeenCalledWith("https://api.github.com/repos/user1/repo1", fakeHeaders);
+    expect(utils.getAccessToken).toHaveBeenCalled();
+  });
+
+  it("repo not found", async () => {
+    jest.spyOn(axios, "get").mockRejectedValueOnce(createAxiosError(createAxiosResponse(404)));
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow("Repo not found");
+  });
+
+  it("non http error", async () => {
+    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("some error"));
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow("some error");
+  });
+
+  it("http error", async () => {
+    jest
+      .spyOn(axios, "get")
+      .mockRejectedValueOnce(
+        createAxiosError(createAxiosResponse(500, { message: "server error" })),
+      );
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
+      "Couldn't get repo count, error code 500 returned. Error: server error",
+    );
+  });
+
+  it("http error no message", async () => {
+    jest.spyOn(axios, "get").mockRejectedValueOnce(createAxiosError(createAxiosResponse(500)));
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
+      "Couldn't get repo count, error code 500 returned",
+    );
+  });
+
+  it("error no response", async () => {
+    jest.spyOn(axios, "get").mockRejectedValueOnce(new AxiosError("something went wrong"));
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
+      /^something went wrong$/,
+    );
   });
 });
 
@@ -217,8 +301,8 @@ describe(utils.loadStarGazerPage, () => {
 
     await utils.loadStarGazerPage("user", "repo", 12);
 
-    expect(utils.prepareRequestHeaders).toBeCalledWith("accessToken");
-    expect(axios.get).toBeCalledWith(
+    expect(utils.prepareRequestHeaders).toHaveBeenCalledWith("accessToken");
+    expect(axios.get).toHaveBeenCalledWith(
       "https://api.github.com/repos/user/repo/stargazers?per_page=100&page=12",
       fakeHeaders,
     );

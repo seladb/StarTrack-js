@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import * as GitHubUtils from "./GitHubUtils";
 import StarData from "./StarData";
 
-const stargazersURL =
-  "https://api.github.com/repos/{user}/{repo}/stargazers?per_page=100&page={page}";
+const fetchStarsPerPage = 100;
+
+const stargazersURL = `https://api.github.com/repos/{user}/{repo}/stargazers?per_page=${fetchStarsPerPage}&page={page}`;
 const validateAccessTokenURL = "https://api.github.com/user";
 const repoUrlTemplate = "https://github.com/{user}/{repo}";
+const repoInfoURL = "https://api.github.com/repos/{user}/{repo}";
 
 export const storageKey = "startrack_js_access_token";
 
@@ -92,7 +94,7 @@ export const removeAccessToken = () => {
 };
 
 export const isLoggedIn = () => {
-  return getAccessToken() !== null;
+  return GitHubUtils.getAccessToken() !== null;
 };
 
 export const prepareRequestHeaders = (accessToken: string | null) => {
@@ -114,6 +116,36 @@ export const validateAndStoreAccessToken = async (
     return true;
   } catch {
     return false;
+  }
+};
+
+export const getRepoStargazerCount = async (user: string, repo: string) => {
+  try {
+    const accessToken = GitHubUtils.getAccessToken();
+    const repoInfo = await axios.get(
+      repoInfoURL.replace("{user}", user).replace("{repo}", repo),
+      GitHubUtils.prepareRequestHeaders(accessToken),
+    );
+
+    return repoInfo.data.stargazers_count as number;
+  } catch (error) {
+    if (!axios.isAxiosError(error)) {
+      throw error;
+    }
+    if (!error.response) {
+      throw error;
+    }
+
+    if (error.response.status === 404) {
+      throw Error("Repo not found");
+    }
+
+    throw Error(
+      "Couldn't get repo count, error code " +
+        error.response.status +
+        " returned" +
+        (error.response.data?.message ? `. Error: ${error.response.data.message}` : ""),
+    );
   }
 };
 
@@ -188,7 +220,7 @@ export const loadStargazers = async (
     if (numOfPages > maxSupportedPagesWithoutAccessToken && !GitHubUtils.isLoggedIn()) {
       throw Error(
         "Cannot load a repo with more than " +
-          100 * maxSupportedPagesWithoutAccessToken +
+          fetchStarsPerPage * maxSupportedPagesWithoutAccessToken +
           // eslint-disable-next-line quotes
           ' stars without GitHub access token. Please click "GitHub Authentication" and provide one',
       );

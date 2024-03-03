@@ -3,6 +3,7 @@ import MainContainer from "./MainContainer";
 import { getLastCallArguments } from "../../utils/test";
 import * as StargazerLoader from "../../utils/StargazerLoader";
 import * as StargazerStats from "../../utils/StargazerStats";
+import { getRepoStargazerCount } from "../../utils/GitHubUtils";
 
 const mockLocation = jest.fn();
 
@@ -93,8 +94,13 @@ jest.mock("../URLBox", () => ({
   },
 }));
 
+jest.mock("../../utils/GitHubUtils");
+
 describe(MainContainer, () => {
-  beforeEach(() => jest.resetAllMocks());
+  beforeEach(() => {
+    jest.resetAllMocks();
+    (getRepoStargazerCount as jest.Mock).mockImplementation(() => Promise.resolve(1));
+  });
 
   const username = "username";
   const repo = "repo";
@@ -109,7 +115,7 @@ describe(MainContainer, () => {
     timestamps: ["ts3", "ts4"],
   };
 
-  const setupLoadStargazer = () => {
+  const setupLoadStargazers = () => {
     jest.spyOn(StargazerLoader, "loadStargazers").mockImplementationOnce(
       (
         username: string,
@@ -163,7 +169,7 @@ describe(MainContainer, () => {
   });
 
   it("load a repo", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     render(<MainContainer />);
 
@@ -204,6 +210,35 @@ describe(MainContainer, () => {
     expect(mockURLBox).toHaveBeenCalledWith({ repoInfos: expectedRepoInfos });
   });
 
+  it("load a repo with too many stars", async () => {
+    (getRepoStargazerCount as jest.Mock).mockImplementation(() =>
+      Promise.resolve(stargazerData.starCounts.length + 100000),
+    );
+
+    setupLoadStargazers();
+
+    render(<MainContainer />);
+
+    await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
+
+    expect(mockShowAlert).toHaveBeenCalledWith(
+      `This repo has too many stars (100K), GitHub API only allows fetching the first ${stargazerData.starCounts.length} stars`,
+      "warning",
+    );
+  });
+
+  it("handle error fetching star count", async () => {
+    const errorMessage = "something went wrong";
+    (getRepoStargazerCount as jest.Mock).mockImplementation(() => Promise.reject(errorMessage));
+
+    render(<MainContainer />);
+
+    await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick("username", "repo"));
+
+    expect(mockShowAlert).toHaveBeenCalledWith(errorMessage);
+    expectDataWasNotLoaded();
+  });
+
   it("handle error loading repo data", async () => {
     const errorMessage = "something went wrong";
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -220,7 +255,7 @@ describe(MainContainer, () => {
   });
 
   it("handle repo already exists", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     render(<MainContainer />);
 
@@ -273,7 +308,7 @@ describe(MainContainer, () => {
   });
 
   it("remove a repo", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     render(<MainContainer />);
 
@@ -287,7 +322,7 @@ describe(MainContainer, () => {
   });
 
   it("handle chart zoom change", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     render(<MainContainer />);
 
@@ -301,7 +336,7 @@ describe(MainContainer, () => {
   });
 
   it("set and remove forecast", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     jest.spyOn(StargazerStats, "calcForecast").mockReturnValueOnce(forecastData);
 
@@ -331,7 +366,7 @@ describe(MainContainer, () => {
   });
 
   it("error calculating forecast", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     jest.spyOn(StargazerStats, "calcForecast").mockImplementationOnce(() => {
       throw new Error("some error");
@@ -359,7 +394,7 @@ describe(MainContainer, () => {
   });
 
   it("not enough data to calculate forecast", async () => {
-    setupLoadStargazer();
+    setupLoadStargazers();
 
     jest.spyOn(StargazerStats, "calcForecast").mockImplementationOnce(() => {
       throw new StargazerStats.NotEnoughDataError();
