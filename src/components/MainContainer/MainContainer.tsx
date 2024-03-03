@@ -13,6 +13,7 @@ import { Box, Stack } from "@mui/material";
 import Forecast from "../Forecast";
 import { ForecastProps, NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
 import { useLocation } from "react-router-dom";
+import { getRepoStargazerCount } from "../../utils/GitHubUtils";
 
 type DateRange = {
   min: string;
@@ -68,6 +69,8 @@ export default function MainContainer() {
     setLoading(true);
     requestStopLoading.current = false;
     try {
+      const stargazerCount = await getRepoStargazerCount(user, repo);
+
       const newRepoInfo = await loadStargazers(
         user,
         repo,
@@ -77,6 +80,19 @@ export default function MainContainer() {
       );
 
       newRepoInfo && setRepoInfos([...repoInfos, newRepoInfo]);
+
+      if (newRepoInfo && stargazerCount > newRepoInfo.stargazerData.starCounts.length) {
+        const stargazerCountShort = Intl.NumberFormat("en-US", { notation: "compact" }).format(
+          stargazerCount,
+        );
+        const repoInfoStarCountShort = Intl.NumberFormat("en-US", { notation: "compact" }).format(
+          newRepoInfo.stargazerData.starCounts.length,
+        );
+        showAlert(
+          `This repo has too many stars (${stargazerCountShort}), GitHub API only allows fetching the first ${repoInfoStarCountShort} stars`,
+          "warning",
+        );
+      }
     } catch (error) {
       showAlert(String(error));
     } finally {
