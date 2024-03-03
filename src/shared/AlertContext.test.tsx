@@ -1,19 +1,23 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { AlertContextProvider, useAlertDialog } from "./AlertContext";
-import { Button } from "@mui/material";
+import { AlertColor, Button } from "@mui/material";
 
-const TestComponent = () => {
+interface TestComponentProps {
+  alertType?: AlertColor;
+}
+
+const TestComponent = ({ alertType }: TestComponentProps) => {
   const { showAlert } = useAlertDialog();
 
   const handleClick = () => {
-    showAlert("Error occurred!");
+    showAlert("This is an alert message!", alertType);
   };
 
   return <Button onClick={handleClick}></Button>;
 };
 
 describe("Alert context", () => {
-  it("shows an alert", async () => {
+  it("show an alert", async () => {
     render(
       <AlertContextProvider>
         <TestComponent />
@@ -23,17 +27,32 @@ describe("Alert context", () => {
     const button = screen.getByRole("button");
     fireEvent.click(button);
 
-    expect(screen.getByText("Error occurred!")).toBeInTheDocument();
+    expect(screen.getByText("This is an alert message!")).toBeInTheDocument();
+    expect(screen.getByTestId("ErrorOutlineIcon")).toBeInTheDocument();
 
     const closeIcon = screen.getByTestId("CloseIcon");
     fireEvent.click(closeIcon);
 
     await waitFor(() => {
-      expect(screen.queryByText("Error occurred!")).not.toBeInTheDocument();
+      expect(screen.queryByText("This is an alert message!")).not.toBeInTheDocument();
     });
   });
 
-  it("throws an error if AlertContextProvider doesn't exist", () => {
+  it("show an alert of non error type", () => {
+    render(
+      <AlertContextProvider>
+        <TestComponent alertType="warning" />
+      </AlertContextProvider>,
+    );
+
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+
+    expect(screen.getByText("This is an alert message!")).toBeInTheDocument();
+    expect(screen.getByTestId("ReportProblemOutlinedIcon")).toBeInTheDocument();
+  });
+
+  it("throw an error if AlertContextProvider doesn't exist", () => {
     // prevent `render` from logging the error to console
     jest.spyOn(console, "error").mockImplementation(jest.fn());
     expect(() => render(<TestComponent />)).toThrow(
