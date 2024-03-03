@@ -94,7 +94,7 @@ export const removeAccessToken = () => {
 };
 
 export const isLoggedIn = () => {
-  return getAccessToken() !== null;
+  return GitHubUtils.getAccessToken() !== null;
 };
 
 export const prepareRequestHeaders = (accessToken: string | null) => {

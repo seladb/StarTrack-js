@@ -144,6 +144,17 @@ describe(utils.removeAccessToken, () => {
   });
 });
 
+describe(utils.isLoggedIn, () => {
+  it.each([
+    ["access-token", true],
+    [null, false],
+  ])("return is logged in", (getAccessTokenResponse, expectedResult) => {
+    jest.spyOn(utils, "getAccessToken").mockReturnValueOnce(getAccessTokenResponse);
+
+    expect(utils.isLoggedIn()).toEqual(expectedResult);
+  });
+});
+
 describe(utils.prepareRequestHeaders, () => {
   it("Returns the correct headers with access token", () => {
     expect(utils.prepareRequestHeaders("accessToken")).toStrictEqual({
@@ -267,6 +278,14 @@ describe(utils.getRepoStargazerCount, () => {
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
       "Couldn't get repo count, error code 500 returned",
+    );
+  });
+
+  it("error no response", async () => {
+    jest.spyOn(axios, "get").mockRejectedValueOnce(new AxiosError("something went wrong"));
+
+    await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
+      /^something went wrong$/,
     );
   });
 });
