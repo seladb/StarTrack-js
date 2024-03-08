@@ -89,6 +89,7 @@ It uses the following `yarn` packages:
 - [Moment.js](https://momentjs.com/) for manipulating date time
 - [react-responsive](https://github.com/contra/react-responsive) for adjusting the UI according to the screen size (desktop vs. mobile)
 - [react-github-btn](https://github.com/ntkme/react-github-btn) for displaying GitHub buttons
+- [client-zip](https://github.com/Touffy/client-zip) for downloading data that includes multiple files
 
 Dev packages:
 
