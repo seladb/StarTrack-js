@@ -412,12 +412,39 @@ describe(MainContainer, () => {
     await act(() => getLastCallArguments(mockForecast)[0].onForecastInfoChange(forecastInfo));
 
     expect(mockShowAlert).toHaveBeenCalledWith(
-      "There were not enough stars in the last 7 days to calculate the forecast",
+      "username/repo: there were not enough stars in the last 7 days to calculate the forecast",
     );
 
     waitFor(() => {
       expect(getLastCallArguments(mockChart)[0]).toEqual(
         expect.objectContaining({ forecast: undefined }),
+      );
+    });
+  });
+
+  it("try to load a repo with not enough data to calculate forecast", async () => {
+    const repoInfo = {
+      username: username,
+      repo: repo,
+      color: { hsl: `${username}#${repo}#hsl`, hex: `${username}#${repo}#hex` },
+      stargazerData: stargazerData,
+    };
+
+    mockLocation.mockReturnValue({ state: [repoInfo] });
+
+    jest
+      .spyOn(StargazerLoader, "loadStargazers")
+      .mockImplementationOnce(() => Promise.reject(new StargazerStats.NotEnoughDataError()));
+
+    render(<MainContainer />);
+
+    await act(() => getLastCallArguments(mockForecast)[0].onForecastInfoChange(forecastInfo));
+
+    await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick("username2", "repo2"));
+
+    await waitFor(() => {
+      expect(mockShowAlert).toHaveBeenCalledWith(
+        "username2/repo2: not enough stars in the last 7 days to calculate forecast. Please turn off forecast to display this repo's info",
       );
     });
   });
