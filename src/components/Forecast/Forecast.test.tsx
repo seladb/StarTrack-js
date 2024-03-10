@@ -53,6 +53,14 @@ describe(Forecast, () => {
     );
   });
 
+  it("open forecast form", () => {
+    setup();
+
+    act(() => getLastCallArguments(mockForecastRow)[0].onClick());
+
+    expect(mockForecastForm).toHaveBeenCalledWith(expect.objectContaining({ open: true }));
+  });
+
   it("does not change call onForecastInfoChange if dialog closes with cancel", async () => {
     setup();
 
