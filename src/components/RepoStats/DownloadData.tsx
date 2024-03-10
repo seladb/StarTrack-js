@@ -19,7 +19,11 @@ export default function DownloadData({ repoInfos }: DownloadDataProps) {
 
   const downloadJson = () => {
     const dataAsJson = exportRepoInfosToJson(repoInfos);
-    downloadFile(`${defaultFileName}.json`, JSON.stringify(dataAsJson), "application/json");
+    downloadFile(
+      `${defaultFileName}.json`,
+      JSON.stringify(dataAsJson, null, 2),
+      "application/json",
+    );
   };
 
   const downloadCsv = async () => {

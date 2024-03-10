@@ -20,7 +20,7 @@ const mockExportRepoInfosToCsv = jest.fn();
 jest.mock("../../utils/RepoInfoExporter", () => ({
   exportRepoInfosToJson: (repoInfos: Array<RepoInfo>) => {
     mockExportRepoInfosToJson(repoInfos);
-    return "jsonData";
+    return { key1: "value1", key2: "value2" };
   },
   exportRepoInfosToCsv: (repoInfos: Array<RepoInfo>) => {
     return mockExportRepoInfosToCsv(repoInfos);
@@ -67,7 +67,8 @@ describe(DownloadData, () => {
 
     expect(mockDownloadFile).toHaveBeenCalledWith(
       "StargazerData.json",
-      JSON.stringify("jsonData"),
+      // eslint-disable-next-line quotes
+      '{\n  "key1": "value1",\n  "key2": "value2"\n}',
       "application/json",
     );
     expect(mockZipAndDownloadFiles).not.toHaveBeenCalled();
