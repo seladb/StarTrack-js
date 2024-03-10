@@ -56,11 +56,13 @@ export default function ForecastForm({ open, onClose, initialValues }: ForecastF
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      onClose({
-        timeBackward: { count: values.backwardCount, unit: values.backwardUnit },
-        timeForward: { count: values.forwardCount, unit: values.forwardUnit },
-        pointCount: values.pointCount,
-      });
+      onClose(
+        new ForecastInfo(
+          { count: values.backwardCount, unit: values.backwardUnit },
+          { count: values.forwardCount, unit: values.forwardUnit },
+          values.pointCount,
+        ),
+      );
     },
   });
 
