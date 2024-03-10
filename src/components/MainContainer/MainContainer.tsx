@@ -10,7 +10,7 @@ import Chart from "../Chart";
 import RepoStats from "../RepoStats";
 import URLBox from "../URLBox";
 import { Box, Stack } from "@mui/material";
-import { NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
+import { ForecastProps, NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
 import { useLocation } from "react-router-dom";
 import { getRepoStargazerCount } from "../../utils/GitHubUtils";
 import { Forecast, ForecastInfo } from "../Forecast";
@@ -92,7 +92,11 @@ export default function MainContainer() {
         );
       }
     } catch (error) {
-      showAlert(String(error));
+      let errorMessage = String(error);
+      if (error instanceof NotEnoughDataError) {
+        errorMessage = `${user}/${repo}: not enough stars in the last ${forecastInfo?.toForecastProps().daysBackwards} days to calculate forecast. Please turn off forecast to display this repo's info`;
+      }
+      showAlert(errorMessage);
     } finally {
       setLoading(false);
       endProgress();
@@ -111,21 +115,33 @@ export default function MainContainer() {
     setForecastInfo(forecastInfo);
   };
 
+  const calcForecastAndThrowErrorIfNeeded = (repoInfo: RepoInfo, forecastProps: ForecastProps) => {
+    try {
+      return calcForecast(repoInfo.stargazerData, forecastProps);
+    } catch (error) {
+      if (error instanceof NotEnoughDataError) {
+        throw new NotEnoughDataError(
+          `${repoInfo.username}/${repoInfo.repo}: there were not enough stars in the last ${forecastProps.daysBackwards} days to calculate the forecast`,
+        );
+      } else {
+        throw error;
+      }
+    }
+  };
+
   React.useEffect(() => {
     try {
       const updatedRepoInfos = repoInfos.map((repoInfo) => ({
         ...repoInfo,
         forecast: forecastInfo
-          ? calcForecast(repoInfo.stargazerData, forecastInfo.toForecastProps())
+          ? calcForecastAndThrowErrorIfNeeded(repoInfo, forecastInfo.toForecastProps())
           : undefined,
       }));
 
       setRepoInfos(updatedRepoInfos);
     } catch (error) {
       if (error instanceof NotEnoughDataError) {
-        showAlert(
-          `There were not enough stars in the last ${forecastInfo?.toForecastProps().daysBackwards} days to calculate the forecast`,
-        );
+        showAlert(error.message);
       } else {
         showAlert("Something went wrong, please try again");
       }
