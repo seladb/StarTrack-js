@@ -22,6 +22,15 @@ jest.mock("./StatsGridSmallScreen", () => ({
   },
 }));
 
+const mockDownloadData = jest.fn();
+jest.mock("./DownloadData", () => ({
+  __esModule: true,
+  default: (props: unknown[]) => {
+    mockDownloadData(props);
+    return <div />;
+  },
+}));
+
 describe(RepoStats, () => {
   const repoInfos: Array<RepoInfo> = [
     {
@@ -143,5 +152,11 @@ describe(RepoStats, () => {
     ]);
 
     expect(screen.queryByText("Date range:")).not.toBeInTheDocument();
+  });
+
+  it("render download data", () => {
+    render(<RepoStats repoInfos={repoInfos} />);
+
+    expect(mockDownloadData).toHaveBeenCalledWith({ repoInfos: repoInfos });
   });
 });

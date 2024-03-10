@@ -5,6 +5,7 @@ import RepoInfo from "../../utils/RepoInfo";
 import * as stargazerStats from "../../utils/StargazerStats";
 import StatsGridLargeScreen from "./StatsGridLargeScreen";
 import StatsGridSmallScreen from "./StatsGridSmallScreen";
+import DownloadData from "./DownloadData";
 
 type DateRange = {
   min: string;
@@ -47,7 +48,7 @@ export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
   return (
     <Stack spacing={3}>
       <Typography variant="h4" sx={{ fontWeight: 600 }}>
-        Repo Statistics
+        Repo Data and Statistics
       </Typography>
       <Box>
         <FormControlLabel
@@ -63,6 +64,7 @@ export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
         )}
       </Box>
       <StatsGridComponent statInfos={repoInfosWithStats} />
+      <DownloadData repoInfos={repoInfos} />
     </Stack>
   );
 }
