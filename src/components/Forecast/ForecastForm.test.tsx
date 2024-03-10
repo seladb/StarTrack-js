@@ -44,17 +44,11 @@ describe(ForecastForm, () => {
   });
 
   it("renders the form with initial values", () => {
-    const initialValues = {
-      timeBackward: {
-        count: 10,
-        unit: "years" as TimeUnit,
-      },
-      timeForward: {
-        count: 10,
-        unit: "weeks" as TimeUnit,
-      },
-      pointCount: 150,
-    };
+    const initialValues = new ForecastInfo(
+      { count: 10, unit: "years" as TimeUnit },
+      { count: 10, unit: "weeks" as TimeUnit },
+      150,
+    );
 
     const {
       backwardCountTextBox,

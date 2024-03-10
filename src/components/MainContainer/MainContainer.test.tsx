@@ -4,6 +4,7 @@ import { getLastCallArguments } from "../../utils/test";
 import * as StargazerLoader from "../../utils/StargazerLoader";
 import * as StargazerStats from "../../utils/StargazerStats";
 import { getRepoStargazerCount } from "../../utils/GitHubUtils";
+import { ForecastInfo } from "../Forecast";
 
 const mockLocation = jest.fn();
 
@@ -68,7 +69,8 @@ const mockForecast = jest.fn();
 
 jest.mock("../Forecast", () => ({
   __esModule: true,
-  default: (props: unknown[]) => {
+  ...jest.requireActual("../Forecast"),
+  Forecast: (props: unknown[]) => {
     mockForecast(props);
     return <div data-testid="Forecast" />;
   },
@@ -114,6 +116,12 @@ describe(MainContainer, () => {
     starCounts: [5, 6],
     timestamps: ["ts3", "ts4"],
   };
+
+  const forecastInfo = new ForecastInfo(
+    { count: 1, unit: "weeks" },
+    { count: 1, unit: "weeks" },
+    50,
+  );
 
   const setupLoadStargazers = () => {
     jest.spyOn(StargazerLoader, "loadStargazers").mockImplementationOnce(
@@ -338,29 +346,32 @@ describe(MainContainer, () => {
   it("set and remove forecast", async () => {
     setupLoadStargazers();
 
-    jest.spyOn(StargazerStats, "calcForecast").mockReturnValueOnce(forecastData);
+    const mockCalcForecast = jest
+      .spyOn(StargazerStats, "calcForecast")
+      .mockReturnValueOnce(forecastData);
 
     render(<MainContainer />);
 
     await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
 
-    await act(() =>
-      getLastCallArguments(mockForecast)[0].onForecastChange({
-        daysBackwards: 100,
-        daysForward: 100,
-        numValues: 200,
-      }),
-    );
+    await act(() => getLastCallArguments(mockForecast)[0].onForecastInfoChange(forecastInfo));
 
-    waitFor(() => {
-      expect(mockChart).toHaveBeenCalledWith(expect.objectContaining({ forecast: forecastData }));
+    await waitFor(() => {
+      expect(mockCalcForecast).toHaveBeenCalledWith(stargazerData, forecastInfo.toForecastProps());
+      expect(getLastCallArguments(mockForecast)[0]).toEqual(
+        expect.objectContaining({ forecastInfo: forecastInfo }),
+      );
     });
 
-    await act(() => getLastCallArguments(mockForecast)[0].onForecastChange(null));
+    await act(() => getLastCallArguments(mockForecast)[0].onForecastInfoChange(null));
 
-    waitFor(() => {
+    expect(getLastCallArguments(mockForecast)[0]).toEqual(
+      expect.objectContaining({ forecastInfo: null }),
+    );
+
+    await waitFor(() => {
       expect(getLastCallArguments(mockChart)[0]).toEqual(
-        expect.objectContaining({ forecast: undefined }),
+        expect.not.objectContaining({ forecast: undefined }),
       );
     });
   });
@@ -376,13 +387,7 @@ describe(MainContainer, () => {
 
     await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
 
-    await act(() =>
-      getLastCallArguments(mockForecast)[0].onForecastChange({
-        daysBackwards: 100,
-        daysForward: 100,
-        numValues: 200,
-      }),
-    );
+    await act(() => getLastCallArguments(mockForecast)[0].onForecastInfoChange(forecastInfo));
 
     expect(mockShowAlert).toHaveBeenCalledWith("Something went wrong, please try again");
 
@@ -404,16 +409,10 @@ describe(MainContainer, () => {
 
     await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
 
-    await act(() =>
-      getLastCallArguments(mockForecast)[0].onForecastChange({
-        daysBackwards: 10,
-        daysForward: 100,
-        numValues: 200,
-      }),
-    );
+    await act(() => getLastCallArguments(mockForecast)[0].onForecastInfoChange(forecastInfo));
 
     expect(mockShowAlert).toHaveBeenCalledWith(
-      "There were not enough stars in the last 10 days to calculate the forecast",
+      "There were not enough stars in the last 7 days to calculate the forecast",
     );
 
     waitFor(() => {

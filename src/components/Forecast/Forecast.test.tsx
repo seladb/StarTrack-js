@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import Forecast from "./Forecast";
 import { ForecastInfo } from "./ForecastInfo";
 import { getLastCallArguments } from "../../utils/test";
@@ -29,113 +29,63 @@ jest.mock("./ForecastForm", () => ({
 }));
 
 describe(Forecast, () => {
-  const onForecastChange = jest.fn();
+  const onForecastInfoChange = jest.fn();
 
-  it.each([
-    [
-      {
-        timeBackward: {
-          count: 3,
-          unit: "weeks",
-        },
-        timeForward: {
-          count: 5,
-          unit: "weeks",
-        },
-        pointCount: 50,
-      },
-      {
-        daysBackwards: 21,
-        daysForward: 35,
-        numValues: 50,
-      },
-    ],
-    [
-      {
-        timeBackward: {
-          count: 5,
-          unit: "months",
-        },
-        timeForward: {
-          count: 10,
-          unit: "months",
-        },
-        pointCount: 100,
-      },
-      {
-        daysBackwards: 153,
-        daysForward: 305,
-        numValues: 100,
-      },
-    ],
-    [
-      {
-        timeBackward: {
-          count: 1,
-          unit: "years",
-        },
-        timeForward: {
-          count: 2,
-          unit: "years",
-        },
-        pointCount: 1,
-      },
-      {
-        daysBackwards: 365,
-        daysForward: 731,
-        numValues: 1,
-      },
-    ],
-  ])("calculates forecast props correctly", async (forecastInfo, expectedForecastProps) => {
-    jest.useFakeTimers().setSystemTime(new Date("2024-01-01"));
+  const setup = (forecastInfo?: ForecastInfo) => {
+    const info =
+      forecastInfo ||
+      new ForecastInfo({ unit: "weeks", count: 1 }, { unit: "months", count: 1 }, 10);
+    render(<Forecast forecastInfo={info} onForecastInfoChange={onForecastInfoChange} />);
+  };
 
-    render(<Forecast onForecastChange={onForecastChange} />);
+  it("render with forecast info", () => {
+    const forecastInfo = new ForecastInfo(
+      { count: 1, unit: "weeks" },
+      { count: 1, unit: "weeks" },
+      50,
+    );
 
-    await act(() => getLastCallArguments(mockForecastForm)[0].onClose(forecastInfo));
+    setup(forecastInfo);
 
-    expect(onForecastChange).toHaveBeenCalledWith(expectedForecastProps);
     expect(mockForecastRow).toHaveBeenCalledWith(expect.objectContaining({ info: forecastInfo }));
+    expect(mockForecastForm).toHaveBeenCalledWith(
+      expect.objectContaining({ initialValues: forecastInfo }),
+    );
   });
 
-  it("does not change forecast props if dialog closes with cancel", async () => {
-    render(<Forecast onForecastChange={onForecastChange} />);
+  it("does not change call onForecastInfoChange if dialog closes with cancel", async () => {
+    setup();
 
     await act(() => getLastCallArguments(mockForecastForm)[0].onClose(null));
 
-    expect(onForecastChange).toHaveBeenCalledWith(null);
-    expect(getLastCallArguments(mockForecastRow)[0]).toMatchObject({ info: null });
+    expect(onForecastInfoChange).not.toHaveBeenCalled();
   });
 
-  it("clears forecast props", async () => {
-    render(<Forecast onForecastChange={onForecastChange} />);
+  it("change forecast info in form", async () => {
+    setup();
 
-    const forecastInfo = {
-      timeBackward: {
-        count: 1,
-        unit: "weeks",
-      },
-      timeForward: {
-        count: 1,
-        unit: "weeks",
-      },
-      pointCount: 50,
-    };
-
-    const expectedForecastProps = {
-      daysBackwards: 7,
-      daysForward: 7,
-      numValues: 50,
-    };
+    const forecastInfo = new ForecastInfo(
+      { count: 1, unit: "weeks" },
+      { count: 1, unit: "weeks" },
+      50,
+    );
 
     await act(() => getLastCallArguments(mockForecastForm)[0].onClose(forecastInfo));
 
-    expect(onForecastChange).toHaveBeenCalledWith(expectedForecastProps);
-    expect(mockForecastRow).toHaveBeenCalledWith(expect.objectContaining({ info: forecastInfo }));
+    expect(onForecastInfoChange).toHaveBeenCalledWith(forecastInfo);
+  });
+
+  it("clear forecast info in row", async () => {
+    const forecastInfo = new ForecastInfo(
+      { count: 1, unit: "weeks" },
+      { count: 1, unit: "weeks" },
+      50,
+    );
+
+    setup(forecastInfo);
 
     await act(() => getLastCallArguments(mockForecastRow)[0].onDelete());
 
-    expect(getLastCallArguments(onForecastChange)[0]).toEqual(null);
-    expect(getLastCallArguments(mockForecastRow)[0]).toMatchObject({ info: null });
-    expect(screen.queryByTestId("HighlightOffIcon")).toBeNull();
+    expect(onForecastInfoChange).toHaveBeenCalledWith(null);
   });
 });

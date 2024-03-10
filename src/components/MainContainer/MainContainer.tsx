@@ -10,10 +10,10 @@ import Chart from "../Chart";
 import RepoStats from "../RepoStats";
 import URLBox from "../URLBox";
 import { Box, Stack } from "@mui/material";
-import Forecast from "../Forecast";
-import { ForecastProps, NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
+import { NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
 import { useLocation } from "react-router-dom";
 import { getRepoStargazerCount } from "../../utils/GitHubUtils";
+import { Forecast, ForecastInfo } from "../Forecast";
 
 type DateRange = {
   min: string;
@@ -24,9 +24,7 @@ export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [repoInfos, setRepoInfos] = React.useState<Array<RepoInfo>>([]);
   const [statsDateRange, setStatsDateRange] = React.useState<DateRange | undefined>(undefined);
-  const [forecastProps, setForecastProps] = React.useState<ForecastProps | null | undefined>(
-    undefined,
-  );
+  const [forecastInfo, setForecastInfo] = React.useState<ForecastInfo | null>(null);
 
   const requestStopLoading = React.useRef<boolean>(false);
 
@@ -76,7 +74,7 @@ export default function MainContainer() {
         repo,
         handleProgress,
         () => requestStopLoading.current,
-        forecastProps || undefined,
+        forecastInfo?.toForecastProps() || undefined,
       );
 
       newRepoInfo && setRepoInfos([...repoInfos, newRepoInfo]);
@@ -109,22 +107,24 @@ export default function MainContainer() {
     setStatsDateRange({ min: start, max: end });
   }, []);
 
-  const handleForecastPropsChange = (forecastProps: ForecastProps | null) => {
-    setForecastProps(forecastProps);
+  const handleForecastInfoChange = (forecastInfo: ForecastInfo | null) => {
+    setForecastInfo(forecastInfo);
   };
 
   React.useEffect(() => {
     try {
       const updatedRepoInfos = repoInfos.map((repoInfo) => ({
         ...repoInfo,
-        forecast: forecastProps ? calcForecast(repoInfo.stargazerData, forecastProps) : undefined,
+        forecast: forecastInfo
+          ? calcForecast(repoInfo.stargazerData, forecastInfo.toForecastProps())
+          : undefined,
       }));
 
       setRepoInfos(updatedRepoInfos);
     } catch (error) {
       if (error instanceof NotEnoughDataError) {
         showAlert(
-          `There were not enough stars in the last ${forecastProps?.daysBackwards} days to calculate the forecast`,
+          `There were not enough stars in the last ${forecastInfo?.toForecastProps().daysBackwards} days to calculate the forecast`,
         );
       } else {
         showAlert("Something went wrong, please try again");
@@ -136,12 +136,13 @@ export default function MainContainer() {
       }));
 
       setRepoInfos(updatedRepoInfos);
+      setForecastInfo(null);
     }
-  }, [forecastProps]);
+  }, [forecastInfo]);
 
   React.useEffect(() => {
     if (repoInfos.length === 0) {
-      setForecastProps(null);
+      setForecastInfo(null);
     }
   }, [repoInfos]);
 
@@ -170,7 +171,10 @@ export default function MainContainer() {
               onDelete={handleRemoveRepo}
             />
             <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
-            <Forecast onForecastChange={handleForecastPropsChange}></Forecast>
+            <Forecast
+              forecastInfo={forecastInfo}
+              onForecastInfoChange={handleForecastInfoChange}
+            ></Forecast>
             <RepoStats repoInfos={repoInfos} dateRange={statsDateRange} />
             <URLBox repoInfos={repoInfos}></URLBox>
           </>
