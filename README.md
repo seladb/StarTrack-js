@@ -24,6 +24,15 @@ Try it now: https://seladb.github.io/StarTrack-js/
   - By default they're stored in the browser's session storage
   - The user can choose to store them in the browser's local storage for longer persistence
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
+- Download stargazer data to either JSON or CSV file
+
+## What's new in version 3.1.0?
+
+- Enable the option to download stargazer data in JSON or CSV format
+- Introduce a warning notification for repositories with an excessive number of stars, indicating limitations imposed by the GitHub API when loading them all
+- Introduce dark mode
+- Implement better error handling for forecast calculations when recent data is unavailable
+- Resolve an issue related to pasting repository GitHub URLs in mobile browsers
 
 ## What's new in version 3.0.0?
 
