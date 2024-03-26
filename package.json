@@ -8,7 +8,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.7",
     "@mui/lab": "^5.0.0-alpha.163",
-    "@mui/material": "^5.15.7",
+    "@mui/material": "^5.15.14",
     "@mui/styles": "^5.15.7",
     "@mui/x-data-grid": "^6.19.2",
     "@testing-library/jest-dom": "^6.4.1",
