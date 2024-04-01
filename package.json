@@ -78,7 +78,7 @@
     "@types/css-mediaquery": "^0.1.4",
     "@types/react-plotly.js": "^2.6.3",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
-    "@typescript-eslint/parser": "^6.20.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "cspell": "^8.3.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
