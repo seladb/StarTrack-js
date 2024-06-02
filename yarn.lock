@@ -4440,10 +4440,10 @@ clear-module@^4.1.2:
     parent-module "^2.0.0"
     resolve-from "^5.0.0"
 
-client-zip@^2.4.4:
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/client-zip/-/client-zip-2.4.4.tgz#fcda10e26b9422ed9b22b4cd826a096831335066"
-  integrity sha512-Ixk40BUI7VvNDxW7SCze20GbCuC+gjP4tGkXUpo6/W96bOf96HSed6cOQVeUOIe74SJAG/dIrBr7AtR4xBVnsA==
+client-zip@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/client-zip/-/client-zip-2.4.5.tgz#c9b6190abca57b8b4d6dcfd21c3a1f4d4ab3bc68"
+  integrity sha512-4y4d5ZeTH/szIAMQeC8ju67pxtvj+3u20wMGwOFrZk+pegy3aSEA2JkwgC8XVDTXP/Iqn1gyqNQXmkyBp4KLEQ==
 
 cliui@^7.0.2:
   version "7.0.4"
