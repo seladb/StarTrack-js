@@ -20,6 +20,8 @@ type DateRange = {
   max: string;
 };
 
+export const allowStarCountAndStarDataMismatch = 5;
+
 export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [repoInfos, setRepoInfos] = React.useState<Array<RepoInfo>>([]);
@@ -79,7 +81,11 @@ export default function MainContainer() {
 
       newRepoInfo && setRepoInfos([...repoInfos, newRepoInfo]);
 
-      if (newRepoInfo && stargazerCount > newRepoInfo.stargazerData.starCounts.length) {
+      if (
+        newRepoInfo &&
+        stargazerCount - newRepoInfo.stargazerData.starCounts.length >
+          allowStarCountAndStarDataMismatch
+      ) {
         const stargazerCountShort = Intl.NumberFormat("en-US", { notation: "compact" }).format(
           stargazerCount,
         );
