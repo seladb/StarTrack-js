@@ -1,5 +1,5 @@
 import { render, screen, act, waitFor } from "@testing-library/react";
-import MainContainer from "./MainContainer";
+import MainContainer, { allowStarCountAndStarDataMismatch } from "./MainContainer";
 import { getLastCallArguments } from "../../utils/test";
 import * as StargazerLoader from "../../utils/StargazerLoader";
 import * as StargazerStats from "../../utils/StargazerStats";
@@ -233,6 +233,20 @@ describe(MainContainer, () => {
       `This repo has too many stars (100K), GitHub API only allows fetching the first ${stargazerData.starCounts.length} stars`,
       "warning",
     );
+  });
+
+  it("small mismatch between star count and star data", async () => {
+    (getRepoStargazerCount as jest.Mock).mockImplementation(() =>
+      Promise.resolve(stargazerData.starCounts.length + allowStarCountAndStarDataMismatch),
+    );
+
+    setupLoadStargazers();
+
+    render(<MainContainer />);
+
+    await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
+
+    expect(mockShowAlert).not.toHaveBeenCalled();
   });
 
   it("handle error fetching star count", async () => {
