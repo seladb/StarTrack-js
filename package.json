@@ -79,7 +79,7 @@
     "@types/react-plotly.js": "^2.6.3",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^7.16.1",
-    "cspell": "^8.14.4",
+    "cspell": "^8.15.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
