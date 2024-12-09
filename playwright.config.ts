@@ -1,3 +1,5 @@
+// cspell: ignore viewports
+
 import { defineConfig, devices } from "@playwright/test";
 
 /**

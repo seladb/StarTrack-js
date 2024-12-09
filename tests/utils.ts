@@ -1,3 +1,5 @@
+// cspell: ignore pickledb
+
 import { Page } from "@playwright/test";
 import internal from "stream";
 
@@ -10,7 +12,7 @@ export const repo2 = "pickledb-rs";
 
 export const authenticate = async (page: Page) => {
   await page.getByRole("button", { name: "GitHub Authentication" }).click();
-  await page.getByLabel("GitHub Access Token *").fill(process.env.GITHUB_ACCESS_TOKEN);
+  await page.getByLabel("GitHub Access Token *").fill(process.env.GH_ACCESS_TOKEN);
   await page.getByRole("button", { name: "Login" }).click();
   await page.getByRole("button", { name: "Login" }).waitFor({ state: "detached" });
 };

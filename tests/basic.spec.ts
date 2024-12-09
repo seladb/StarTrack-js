@@ -1,3 +1,5 @@
+// cspell: ignore nsewdrag
+
 import { test, expect } from "@playwright/test";
 import { getComparator } from "playwright-core/lib/utils";
 import {
