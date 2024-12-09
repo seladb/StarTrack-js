@@ -20,7 +20,9 @@ test("GitHub Authentication", async ({ page }) => {
   // Log out
   await page.getByRole("menuitem", { name: "Log out" }).click();
   expect(await page.evaluate(() => sessionStorage)["startrack_js_access_token"]).toBeUndefined();
-  expect(page.getByRole("button", { name: "GitHub Authentication" })).toBeVisible();
+  const gitHubAuthButton = page.getByRole("button", { name: "GitHub Authentication" });
+  await gitHubAuthButton.waitFor({ state: "visible", timeout: 5000 });
+  expect(gitHubAuthButton).toBeVisible();
 });
 
 test("GitHub Authentication Local Storage", async ({ page }) => {
