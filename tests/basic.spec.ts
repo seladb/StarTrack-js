@@ -126,9 +126,11 @@ test("Basic Flow", async ({ page }, testDir) => {
   await page.getByTestId("CancelIcon").last().click();
   const chartElement = page.locator(".nsewdrag");
   const gridElement = page.getByRole("gridcell");
+  const downloadDataElement = page.getByText("Download Data");
   await chartElement.waitFor({ state: "hidden", timeout: 5000 });
   await gridElement.waitFor({ state: "hidden", timeout: 5000 });
+  await downloadDataElement.waitFor({ state: "hidden", timeout: 5000 });
   expect(chartElement).not.toBeVisible();
   expect(gridElement).not.toBeVisible();
-  expect(page.getByText("Download Data")).not.toBeVisible();
+  expect(downloadDataElement).not.toBeVisible();
 });

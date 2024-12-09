@@ -104,6 +104,7 @@ Dev packages:
 
 - [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
 - [CSpell](https://cspell.org/) for spell check
+- [Playwright](https://playwright.dev/) for integration tests
 
 To run it locally follow these steps:
 
