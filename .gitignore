@@ -22,5 +22,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+node_modules/
+
 # vscode
 .vscode
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
