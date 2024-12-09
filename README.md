@@ -1,7 +1,8 @@
 <div align="center">
 <img src="public/logo.png" width="550" />
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/seladb/StarTrack-js/buildAndTest.yml?branch=typescript&label=Actions&logo=github&style=flat)](https://github.com/seladb/StarTrack-js/actions?query=workflow:%22Build%20and%20Test%22)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/seladb/StarTrack-js/buildAndTest.yml?label=Actions&logo=github&style=flat)](https://github.com/seladb/StarTrack-js/actions?query=workflow:%22Build%20and%20Test%22)
+[![Playwright Tests Status](https://img.shields.io/github/actions/workflow/status/seladb/StarTrack-js/playwright.yml?label=Playwright&logo=github&style=flat)](https://github.com/seladb/StarTrack-js/actions?query=workflow:%22Playwright%20Tests%22)
 [![Coverage Status](https://coveralls.io/repos/github/seladb/StarTrack-js/badge.svg?branch=master)](https://coveralls.io/github/seladb/StarTrack-js?branch=master)
 
 </div>
@@ -104,6 +105,7 @@ Dev packages:
 
 - [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
 - [CSpell](https://cspell.org/) for spell check
+- [Playwright](https://playwright.dev/) for integration tests
 
 To run it locally follow these steps:
 
