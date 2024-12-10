@@ -13,7 +13,7 @@ describe(GitHubAuthForm, () => {
 
     render(<GitHubAuthForm open={true} onClose={onClose} />);
 
-    const textBox = screen.getByRole("textbox") as HTMLInputElement;
+    const textBox = screen.getByTestId("access-token-input").firstChild as HTMLInputElement;
     const loginBtn = screen.getByRole("button", { name: "Login" });
     const closeBtn = screen.getByRole("button", { name: "Close" });
     const checkBox = screen.getByRole("checkbox");
@@ -120,5 +120,20 @@ describe(GitHubAuthForm, () => {
       expect(onClose).toHaveBeenCalledWith(null);
       expect(textBox.value).toBe("");
     });
+  });
+
+  it("Show or hide access token", async () => {
+    const { textBox } = setup(true);
+    const showAccessTokenButton = screen.getByLabelText(/Access token hidden/i);
+
+    expect(textBox).toHaveAttribute("type", "password");
+
+    fireEvent.click(showAccessTokenButton);
+
+    expect(textBox).toHaveAttribute("type", "text");
+
+    fireEvent.click(showAccessTokenButton);
+
+    expect(textBox).toHaveAttribute("type", "password");
   });
 });
