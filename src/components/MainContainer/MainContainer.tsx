@@ -79,6 +79,7 @@ export default function MainContainer() {
         forecastInfo?.toForecastProps() || undefined,
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       newRepoInfo && setRepoInfos([...repoInfos, newRepoInfo]);
 
       if (

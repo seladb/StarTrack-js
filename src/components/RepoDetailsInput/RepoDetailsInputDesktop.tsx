@@ -92,6 +92,7 @@ export default function RepoDetailsInputDesktop({
     }
 
     if (event.key === "/") {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       repoInputRef.current && repoInputRef.current.focus();
       event.preventDefault();
     }

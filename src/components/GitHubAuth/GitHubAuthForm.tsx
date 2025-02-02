@@ -47,6 +47,7 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
   const handleLoginClick = async () => {
     if (accessTokenValue) {
       const isValid = await validateAndStoreAccessToken(accessTokenValue, storageType);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       isValid
         ? setAccessTokenValid(TokenValidationStatus.Valid)
         : setAccessTokenValid(TokenValidationStatus.Invalid);
