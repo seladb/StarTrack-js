@@ -16,9 +16,7 @@ export default function RepoChip({ user, repo, color, onDelete }: RepoChipProps)
     window.open(url, "_blank", "noreferrer");
   };
 
-  const handleDelete = () => {
-    onDelete && onDelete(user, repo);
-  };
+  const handleDelete = () => onDelete && onDelete(user, repo);
 
   const fontColor = theme.palette.common.white;
   const hoverColor = darken(fontColor, 0.07);

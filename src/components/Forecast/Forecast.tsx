@@ -13,6 +13,7 @@ export default function Forecast({ forecastInfo, onForecastInfoChange }: Forecas
   const [forecastFormOpen, setForecastFormOpen] = React.useState<boolean>(false);
 
   const handleForecastFormClosed = (forecastRequestedInfo: ForecastInfo | null) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     forecastRequestedInfo && onForecastInfoChange(forecastRequestedInfo);
     setForecastFormOpen(false);
   };

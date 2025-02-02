@@ -35,9 +35,7 @@ export default function DownloadData({ repoInfos }: DownloadDataProps) {
     }
   };
 
-  const downloadData = async () => {
-    fileFormat === "csv" ? await downloadCsv() : downloadJson();
-  };
+  const downloadData = async () => (fileFormat === "csv" ? await downloadCsv() : downloadJson());
 
   return (
     <Stack direction="row" spacing={2}>
