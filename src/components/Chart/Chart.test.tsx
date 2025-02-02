@@ -13,17 +13,14 @@ jest.mock("react-plotly.js", () => ({
   default: (props: PlotParams) => {
     mockPlot(props);
 
-    const onZoomChanged = () => {
-      props.onRelayout && props.onRelayout(mockOnRelayoutEvent());
-    };
+    const onZoomChanged = () => props.onRelayout && props.onRelayout(mockOnRelayoutEvent());
 
-    const onChangeScale = () => {
+    const onChangeScale = () =>
       props.config?.modeBarButtonsToAdd &&
-        (props.config?.modeBarButtonsToAdd[0] as ModeBarButton).click(
-          jest.fn() as unknown as PlotlyHTMLElement,
-          jest.fn() as unknown as MouseEvent,
-        );
-    };
+      (props.config?.modeBarButtonsToAdd[0] as ModeBarButton).click(
+        jest.fn() as unknown as PlotlyHTMLElement,
+        jest.fn() as unknown as MouseEvent,
+      );
 
     return (
       <div>

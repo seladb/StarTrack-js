@@ -11,9 +11,7 @@ interface RepoChipContainerProps {
 }
 
 export default function RepoChipContainer({ reposDetails, onDelete }: RepoChipContainerProps) {
-  const handleDelete = (user: string, repo: string) => {
-    onDelete && onDelete(user, repo);
-  };
+  const handleDelete = (user: string, repo: string) => onDelete && onDelete(user, repo);
 
   return (
     <Stack
