@@ -1,6 +1,6 @@
 import React from "react";
 import ReactGA from "react-ga";
-import { RouterProvider, createHashRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router";
 import MainPage from "./routes/MainPage";
 import Preload from "./routes/Preload";
 import ErrorPage from "./routes/ErrorPage";

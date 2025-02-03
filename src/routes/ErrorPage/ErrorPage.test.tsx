@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ErrorPage from "./ErrorPage";
-import { Outlet, RouterProvider, createMemoryRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createMemoryRouter } from "react-router";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/styles";
 

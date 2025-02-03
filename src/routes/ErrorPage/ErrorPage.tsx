@@ -1,7 +1,7 @@
 import { Button, Typography, Box, Grid } from "@mui/material";
 import { Illustration } from "./Illustration";
 import { createStyles, makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Theme } from "@mui/material/styles";
 
 const useStyles = makeStyles((theme: Theme) => {

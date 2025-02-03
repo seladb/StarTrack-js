@@ -11,7 +11,7 @@ import RepoStats from "../RepoStats";
 import URLBox from "../URLBox";
 import { Box, Stack } from "@mui/material";
 import { ForecastProps, NotEnoughDataError, calcForecast } from "../../utils/StargazerStats";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { getRepoStargazerCount } from "../../utils/GitHubUtils";
 import { Forecast, ForecastInfo } from "../Forecast";
 
