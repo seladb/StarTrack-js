@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import { ProgressProvider } from "../../shared/ProgressContext";
 import RepoLoader from "./RepoLoader";
 import { RepoMetadata } from "./PreloadTypes";
