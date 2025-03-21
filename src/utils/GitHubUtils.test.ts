@@ -239,10 +239,11 @@ describe(utils.getRepoStargazerCount, () => {
 
   it("return star count", async () => {
     const expectedCount = 1000;
-    jest.spyOn(axios, "get").mockImplementation(() =>
-      // eslint-disable-next-line camelcase
-      Promise.resolve(createAxiosResponse(200, { stargazers_count: expectedCount })),
-    );
+    jest
+      .spyOn(axios, "get")
+      .mockImplementation(() =>
+        Promise.resolve(createAxiosResponse(200, { stargazers_count: expectedCount })),
+      );
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).resolves.toEqual(expectedCount);
     expect(axios.get).toHaveBeenCalledWith("https://api.github.com/repos/user1/repo1", fakeHeaders);
@@ -319,11 +320,9 @@ describe(utils.addStarData, () => {
 
     const githubStarData = [
       {
-        // eslint-disable-next-line camelcase
         starred_at: "200",
       },
       {
-        // eslint-disable-next-line camelcase
         starred_at: "300",
       },
     ];
@@ -345,7 +344,6 @@ describe(utils.getLastStargazerPage, () => {
 
   it("Throws an error if can't find 'last' value in link header", () => {
     const linkHeader =
-      // eslint-disable-next-line quotes
       '<https://api.github.com/repositories/24911519/stargazers?per_page=100&page=2>; rel="next"';
     expect(() => {
       utils.getLastStargazerPage(linkHeader);
@@ -355,12 +353,10 @@ describe(utils.getLastStargazerPage, () => {
   it.each([
     ["", 1],
     [
-      // eslint-disable-next-line quotes
       '<https://api.github.com/repositories/24911519/stargazers?per_page=100&page=2>; rel="next", <https://api.github.com/repositories/24911519/stargazers?per_page=100&page=22>; rel="last"',
       22,
     ],
     [
-      // eslint-disable-next-line quotes
       '<https://api.github.com/repositories/24911519/stargazers?per_page=100&page=22>; rel="last"',
       22,
     ],
@@ -429,13 +425,11 @@ describe(utils.loadStargazers, () => {
     jest.spyOn(utils, "loadStarGazerPage").mockImplementation((_user, _repo, pageNum) => {
       const data = [
         {
-          // eslint-disable-next-line camelcase
           starred_at: moment(startDate)
             .add((pageNum - 1) * 2, "days")
             .format(),
         },
         {
-          // eslint-disable-next-line camelcase
           starred_at: moment(startDate)
             .add((pageNum - 1) * 2 + 1, "days")
             .format(),
@@ -496,7 +490,6 @@ describe(utils.loadStargazers, () => {
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       "Cannot load a repo with more than " +
         maxSupportedPagesWithoutAccessToken * 100 +
-        // eslint-disable-next-line quotes
         ' stars without GitHub access token. Please click "GitHub Authentication" and provide one',
     );
   });
@@ -538,7 +531,6 @@ describe(utils.loadStargazers, () => {
       .mockRejectedValueOnce(createAxiosError(createAxiosResponse(responseCode, responseStatus)));
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
-      // eslint-disable-next-line quotes
       /^API rate limit exceeded! Please click "GitHub Authentication" and provide GitHub access token to increase rate limit$/,
     );
   });

@@ -31,7 +31,6 @@ describe(RepoChipContainer, () => {
     });
 
     const chip2 = screen.getByText("user2 / repo2");
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const chip2DeleteIcon = within(chip2.parentElement!).getByTestId("CancelIcon");
     fireEvent.click(chip2DeleteIcon);
 

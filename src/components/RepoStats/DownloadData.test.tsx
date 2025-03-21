@@ -67,7 +67,6 @@ describe(DownloadData, () => {
 
     expect(mockDownloadFile).toHaveBeenCalledWith(
       "StargazerData.json",
-      // eslint-disable-next-line quotes
       '{\n  "key1": "value1",\n  "key2": "value2"\n}',
       "application/json",
     );

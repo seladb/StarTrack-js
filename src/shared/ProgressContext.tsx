@@ -20,7 +20,6 @@ export const useProgressBarStyles = makeStyles(() =>
   createStyles({
     progressBar: {
       // Disable the transition animation from 100 to 0 inside the progress bar
-      // eslint-disable-next-line quotes
       '&[aria-valuenow="0"]': {
         "& > $progressBarInner": {
           transition: "none",

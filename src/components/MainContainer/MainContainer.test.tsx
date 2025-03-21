@@ -263,7 +263,6 @@ describe(MainContainer, () => {
 
   it("handle error loading repo data", async () => {
     const errorMessage = "something went wrong";
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     jest
       .spyOn(StargazerLoader, "loadStargazers")
       .mockImplementationOnce(() => Promise.reject(errorMessage));

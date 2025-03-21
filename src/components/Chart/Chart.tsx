@@ -128,9 +128,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
             size: theme.typography.fontSize,
             color: theme.palette.text.primary,
           },
-          // eslint-disable-next-line camelcase
           plot_bgcolor: theme.palette.background.default,
-          // eslint-disable-next-line camelcase
           paper_bgcolor: theme.palette.background.default,
           hoverlabel: {
             font: {
