@@ -27,6 +27,12 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 - Download stargazer data to JSON or CSV file
 
+## What's new in version 3.2.0?
+
+- Add Playwright integration tests
+- Convert the access token input in the GitHub Authentication form to a password field
+- Update dependencies
+
 ## What's new in version 3.1.0?
 
 - Enable the option to download stargazer data in JSON or CSV format
