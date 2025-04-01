@@ -18,7 +18,7 @@
     "@types/node": "^20.12.8",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.2.18",
-    "axios": "^1.8.2",
+    "axios": "^1.8.4",
     "client-zip": "^2.4.5",
     "formik": "^2.4.6",
     "moment": "^2.30.1",
