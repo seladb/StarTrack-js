@@ -11405,10 +11405,10 @@ react-refresh@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"
   integrity sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==
 
-react-responsive@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-10.0.0.tgz#657c7a90823cd565f43aa5918bd8eb0cd2c91c91"
-  integrity sha512-N6/UiRLGQyGUqrarhBZmrSmHi2FXSD++N5VbSKsBBvWfG0ZV7asvUBluSv5lSzdMyEVjzZ6Y8DL4OHABiztDOg==
+react-responsive@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-10.0.1.tgz#293d4d2562da93409861216f0110d146c5676eb3"
+  integrity sha512-OM5/cRvbtUWEX8le8RCT8scA8y2OPtb0Q/IViEyCEM5FBN8lRrkUOZnu87I88A6njxDldvxG+rLBxWiA7/UM9g==
   dependencies:
     hyphenate-style-name "^1.0.0"
     matchmediaquery "^0.4.2"
