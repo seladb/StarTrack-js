@@ -14022,10 +14022,10 @@ weak-map@^1.0.5:
   resolved "https://registry.yarnpkg.com/weak-map/-/weak-map-1.0.8.tgz#394c18a9e8262e790544ed8b55c6a4ddad1cb1a3"
   integrity sha512-lNR9aAefbGPpHO7AEnY0hCFjz1eTkWCXYvkTRrTHs9qv8zJp+SkVYpzfLIFXQQiG3tVvbNFQgVg2bQS8YGgxyw==
 
-web-vitals@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-5.0.2.tgz#06bd045d67572545beff0b9080504ab169bb7370"
-  integrity sha512-nhl+fujoz9Io6MdDSyGSiiUSR1DLMvD3Mde1sNaRKrNwsEFYQICripmEIyUvE2DPKDkW1BbHa4saEDo1U/2D/Q==
+web-vitals@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-5.1.0.tgz#2f117e92c8c4eeb107cb163cbb482ac20d685ebd"
+  integrity sha512-ArI3kx5jI0atlTtmV0fWU3fjpLmq/nD3Zr1iFFlJLaqa5wLBkUSzINwBPySCX/8jRyjlmy1Volw1kz1g9XE4Jg==
 
 webgl-context@^2.2.0:
   version "2.2.0"
