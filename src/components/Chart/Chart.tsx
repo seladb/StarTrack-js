@@ -15,6 +15,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
 
   const [chartHeight, setChartHeight] = React.useState<number>(800);
   const [yaxisType, setYaxisType] = React.useState<Plotly.AxisType>("linear");
+  const [timeline, setTimeline] = React.useState<"absolute" | "relative">("absolute");
 
   const plotRef = React.useRef<HTMLDivElement>();
 
@@ -83,16 +84,48 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     click: () => setYaxisType("linear"),
   };
 
+  const AbsoluteButton: ModeBarButton = {
+    name: "absolute-timeline",
+    title: "Use absolute dates",
+    icon: {
+      width: 512,
+      height: 512,
+      path: "M120 0c13.3 0 24 10.7 24 24l0 40 160 0 0-40c0-13.3 10.7-24 24-24s24 10.7 24 24l0 40 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-40c0-13.3 10.7-24 24-24zm0 112l-56 0c-8.8 0-16 7.2-16 16l0 48 352 0 0-48c0-8.8-7.2-16-16-16l-264 0zM48 224l0 192c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-192-352 0z",
+    },
+    click: () => setTimeline("absolute"),
+  };
+
+  const RelativeButton: ModeBarButton = {
+    name: "relative-timeline",
+    title: "Use dates relative to the first star",
+    icon: {
+      width: 512,
+      height: 512,
+      path: "M168.5 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 25.3c-108 11.9-192 103.5-192 214.7 0 119.3 96.7 216 216 216s216-96.7 216-216c0-39.8-10.8-77.1-29.6-109.2l28.2-28.2c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-23.4 23.4c-32.9-30.2-75.2-50.3-122-55.5l0-25.3 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-112 0zm80 184l0 104c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-104c0-13.3 10.7-24 24-24s24 10.7 24 24z",
+    },
+    click: () => setTimeline("relative"),
+  };
+
   return (
     <Box ref={plotRef}>
       <Plot
         data={repoInfos.flatMap(({ stargazerData, username, repo, color, forecast }) => {
+          const startDate = new Date(stargazerData.timestamps[0]).getTime();
+
           const series = [
             {
-              x: stargazerData.timestamps,
+              x:
+                timeline === "absolute"
+                  ? stargazerData.timestamps
+                  : stargazerData.timestamps.map(
+                      (it) => (new Date(it).getTime() - startDate) / (1000 * 3600 * 24),
+                    ),
               y: stargazerData.starCounts,
               name: `${username}/${repo}`,
-              hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo}: <b>%{y}</b><extra></extra>`,
+              hovertemplate:
+                timeline === "absolute"
+                  ? `%{x|%d %b %Y}<br>${username}/${repo}: <b>%{y}</b><extra></extra>`
+                  : `%{x:d} days<br>${username}/${repo}: <b>%{y}</b><extra></extra>`,
               line: {
                 color: color.hex,
                 width: 5,
@@ -103,10 +136,18 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
 
           if (forecast) {
             series.push({
-              x: forecast.timestamps,
+              x:
+                timeline === "absolute"
+                  ? forecast.timestamps
+                  : forecast.timestamps.map(
+                      (it) => (new Date(it).getTime() - startDate) / (1000 * 3600 * 24),
+                    ),
               y: forecast.starCounts,
               name: `${username}/${repo} (forecast)`,
-              hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo} (forecast): <b>%{y}</b><extra></extra>`,
+              hovertemplate:
+                timeline === "absolute"
+                  ? `%{x|%d %b %Y}<br>${username}/${repo} (forecast): <b>%{y}</b><extra></extra>`
+                  : `%{x:d} days<br>${username}/${repo} (forecast): <b>%{y}</b><extra></extra>`,
               line: {
                 color: color.hex,
                 width: 5,
@@ -120,7 +161,10 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
         style={{ width: "100%", height: "100%" }}
         useResizeHandler
         config={{
-          modeBarButtonsToAdd: [yaxisType === "linear" ? LogButton : LinearButton],
+          modeBarButtonsToAdd: [
+            yaxisType === "linear" ? LogButton : LinearButton,
+            timeline === "absolute" ? RelativeButton : AbsoluteButton,
+          ],
         }}
         layout={{
           font: {
@@ -142,7 +186,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
             remove: ["zoomIn2d"],
           },
           xaxis: {
-            type: "date",
+            type: timeline === "absolute" ? "date" : "linear",
           },
           yaxis: {
             fixedrange: true,

@@ -15,17 +15,43 @@ jest.mock("react-plotly.js", () => ({
 
     const onZoomChanged = () => props.onRelayout && props.onRelayout(mockOnRelayoutEvent());
 
-    const onChangeScale = () =>
-      props.config?.modeBarButtonsToAdd &&
-      (props.config?.modeBarButtonsToAdd[0] as ModeBarButton).click(
+    const onChangeScale = () => {
+      if (!props.config?.modeBarButtonsToAdd) {
+        return;
+      }
+      const changeScaleButton = (props.config.modeBarButtonsToAdd as ModeBarButton[]).find((it) =>
+        (it as ModeBarButton).name.endsWith("-scale"),
+      );
+      if (!changeScaleButton) {
+        return;
+      }
+      changeScaleButton.click(
         jest.fn() as unknown as PlotlyHTMLElement,
         jest.fn() as unknown as MouseEvent,
       );
+    };
+
+    const onChangeTimeline = () => {
+      if (!props.config?.modeBarButtonsToAdd) {
+        return;
+      }
+      const changeTimelineButton = (props.config.modeBarButtonsToAdd as ModeBarButton[]).find(
+        (it) => (it as ModeBarButton).name.endsWith("-timeline"),
+      );
+      if (!changeTimelineButton) {
+        return;
+      }
+      changeTimelineButton.click(
+        jest.fn() as unknown as PlotlyHTMLElement,
+        jest.fn() as unknown as MouseEvent,
+      );
+    };
 
     return (
       <div>
         <button data-testid="plot-zoom-change" onClick={onZoomChanged}></button>;
         <button data-testid="plot-change-scale" onClick={onChangeScale}></button>;
+        <button data-testid="plot-change-timeline" onClick={onChangeTimeline}></button>;
       </div>
     );
   },
@@ -308,18 +334,70 @@ describe("Chart", () => {
     );
   });
 
+  it("show forecast data with relative timeline", () => {
+    const customRepoInfos: Array<RepoInfo> = [
+      {
+        username: "user1",
+        repo: "repo1",
+        color: { hsl: "hslA", hex: "#111111" },
+        stargazerData: {
+          timestamps: ["2020-01-01", "2020-01-11", "2020-01-21"],
+          starCounts: [1, 2, 3],
+        },
+        forecast: {
+          timestamps: ["2020-02-10", "2020-03-01"],
+          starCounts: [4, 5],
+        },
+      },
+    ];
+
+    render(<Chart repoInfos={customRepoInfos} />);
+
+    const mockChangeTimeline = screen.getByTestId("plot-change-timeline");
+    fireEvent.click(mockChangeTimeline);
+
+    expect(mockPlot).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: [
+          {
+            x: [0, 10, 20],
+            y: [1, 2, 3],
+            name: "user1/repo1",
+            hovertemplate: "%{x:d} days<br>user1/repo1: <b>%{y}</b><extra></extra>",
+            line: {
+              color: "#111111",
+              width: 5,
+              dash: "solid",
+            },
+          },
+          {
+            x: [40, 60],
+            y: [4, 5],
+            name: "user1/repo1 (forecast)",
+            hovertemplate: "%{x:d} days<br>user1/repo1 (forecast): <b>%{y}</b><extra></extra>",
+            line: {
+              color: "#111111",
+              width: 5,
+              dash: "dot",
+            },
+          },
+        ],
+      }),
+    );
+  });
+
   it("switch scale", () => {
     render(<Chart repoInfos={repoInfos} />);
 
     expect(getLastCallArguments(mockPlot)[0]).toEqual(
       expect.objectContaining({
         config: {
-          modeBarButtonsToAdd: [
+          modeBarButtonsToAdd: expect.arrayContaining([
             expect.objectContaining({
               name: "log-scale",
               title: "Use logarithmic scale",
             }),
-          ],
+          ]),
         },
         layout: expect.objectContaining({
           yaxis: expect.objectContaining({
@@ -335,12 +413,12 @@ describe("Chart", () => {
     expect(getLastCallArguments(mockPlot)[0]).toEqual(
       expect.objectContaining({
         config: {
-          modeBarButtonsToAdd: [
+          modeBarButtonsToAdd: expect.arrayContaining([
             expect.objectContaining({
               name: "linear-scale",
               title: "Use linear scale",
             }),
-          ],
+          ]),
         },
         layout: expect.objectContaining({
           yaxis: expect.objectContaining({
@@ -355,18 +433,112 @@ describe("Chart", () => {
     expect(getLastCallArguments(mockPlot)[0]).toEqual(
       expect.objectContaining({
         config: {
-          modeBarButtonsToAdd: [
+          modeBarButtonsToAdd: expect.arrayContaining([
             expect.objectContaining({
               name: "log-scale",
               title: "Use logarithmic scale",
             }),
-          ],
+          ]),
         },
         layout: expect.objectContaining({
           yaxis: expect.objectContaining({
             type: "linear",
           }),
         }),
+      }),
+    );
+  });
+
+  it("switch timeline", () => {
+    const customRepoInfos: Array<RepoInfo> = [
+      {
+        username: "alpha",
+        repo: "one",
+        color: { hsl: "hslA", hex: "#111111" },
+        stargazerData: {
+          timestamps: ["2019-12-31", "2020-01-15", "2020-02-01"],
+          starCounts: [1, 2, 3],
+        },
+      },
+      {
+        username: "beta",
+        repo: "two",
+        color: { hsl: "hslB", hex: "#222222" },
+        stargazerData: {
+          timestamps: ["2019-12-15", "2020-01-20", "2020-03-01"],
+          starCounts: [1, 2, 3],
+        },
+      },
+    ];
+
+    render(<Chart repoInfos={customRepoInfos} />);
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        config: {
+          modeBarButtonsToAdd: expect.arrayContaining([
+            expect.objectContaining({
+              name: "relative-timeline",
+              title: "Use dates relative to the first star",
+            }),
+          ]),
+        },
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            x: expect.arrayContaining(["2019-12-31", "2020-01-15", "2020-02-01"]),
+          }),
+          expect.objectContaining({
+            x: expect.arrayContaining(["2019-12-15", "2020-01-20", "2020-03-01"]),
+          }),
+        ]),
+      }),
+    );
+
+    const mockChangeTimeline = screen.getByTestId("plot-change-timeline");
+    fireEvent.click(mockChangeTimeline);
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        config: {
+          modeBarButtonsToAdd: expect.arrayContaining([
+            expect.objectContaining({
+              name: "absolute-timeline",
+              title: "Use absolute dates",
+            }),
+          ]),
+        },
+        // relative timeline -> x values are numbers (days since first star)
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            x: expect.arrayContaining([0, 15, 32]),
+          }),
+          expect.objectContaining({
+            x: expect.arrayContaining([0, 36, 77]),
+          }),
+        ]),
+      }),
+    );
+
+    fireEvent.click(mockChangeTimeline);
+
+    expect(getLastCallArguments(mockPlot)[0]).toEqual(
+      expect.objectContaining({
+        config: {
+          modeBarButtonsToAdd: expect.arrayContaining([
+            expect.objectContaining({
+              name: "relative-timeline",
+              title: "Use dates relative to the first star",
+            }),
+          ]),
+        },
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            x: expect.arrayContaining(["2019-12-31", "2020-01-15", "2020-02-01"]),
+          }),
+          expect.objectContaining({
+            x: expect.arrayContaining(["2019-12-15", "2020-01-20", "2020-03-01"]),
+          }),
+        ]),
       }),
     );
   });
