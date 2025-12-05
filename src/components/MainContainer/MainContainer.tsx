@@ -193,7 +193,11 @@ export default function MainContainer() {
               })}
               onDelete={handleRemoveRepo}
             />
-            <Chart repoInfos={repoInfos} onZoomChanged={handleChartZoomChange} />
+            <Chart
+              repoInfos={repoInfos}
+              onZoomChanged={handleChartZoomChange}
+              timeline={"absolute"}
+            />
             <Forecast
               forecastInfo={forecastInfo}
               onForecastInfoChange={handleForecastInfoChange}

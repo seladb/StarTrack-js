@@ -8,9 +8,10 @@ import { useTheme } from "@mui/material/styles";
 interface ChartProps {
   repoInfos: Array<RepoInfo>;
   onZoomChanged?: (start: string, end: string) => void;
+  timeline: "absolute" | "relative";
 }
 
-function Chart({ repoInfos, onZoomChanged }: ChartProps) {
+function Chart({ repoInfos, onZoomChanged, timeline }: ChartProps) {
   const theme = useTheme();
 
   const [chartHeight, setChartHeight] = React.useState<number>(800);
@@ -87,9 +88,16 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     <Box ref={plotRef}>
       <Plot
         data={repoInfos.flatMap(({ stargazerData, username, repo, color, forecast }) => {
+          const startDate = new Date(stargazerData.timestamps[0]).getTime();
+
           const series = [
             {
-              x: stargazerData.timestamps,
+              x:
+                timeline === "absolute"
+                  ? stargazerData.timestamps
+                  : stargazerData.timestamps.map(
+                      (it) => (new Date(it).getTime() - startDate) / (1000 * 3600 * 24),
+                    ),
               y: stargazerData.starCounts,
               name: `${username}/${repo}`,
               hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo}: <b>%{y}</b><extra></extra>`,
@@ -103,7 +111,12 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
 
           if (forecast) {
             series.push({
-              x: forecast.timestamps,
+              x:
+                timeline === "absolute"
+                  ? forecast.timestamps
+                  : forecast.timestamps.map(
+                      (it) => (new Date(it).getTime() - startDate) / (1000 * 3600 * 24),
+                    ),
               y: forecast.starCounts,
               name: `${username}/${repo} (forecast)`,
               hovertemplate: `%{x|%d %b %Y}<br>${username}/${repo} (forecast): <b>%{y}</b><extra></extra>`,
@@ -142,7 +155,7 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
             remove: ["zoomIn2d"],
           },
           xaxis: {
-            type: "date",
+            type: timeline === "absolute" ? "date" : "linear",
           },
           yaxis: {
             fixedrange: true,
