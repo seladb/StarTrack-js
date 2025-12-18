@@ -27,6 +27,10 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 - Download stargazer data to JSON or CSV file
 
+## What's new in version 3.3.0?
+
+- Add relative time axis to the chart so the graph starts from the first star instead of an absolute date (thank @fdw !)
+
 ## What's new in version 3.2.0?
 
 - Add Playwright integration tests
