@@ -22,6 +22,8 @@ jobs:
         run: yarn install
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
+      - name: Build
+        run: yarn run build
       - name: Run Playwright tests
         env:
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
