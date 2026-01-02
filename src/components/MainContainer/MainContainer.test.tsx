@@ -10,7 +10,7 @@ import { ForecastInfo } from "../Forecast";
 const mockLocation = jest.fn();
 
 vi.mock("react-router", async () => ({
-  ...await vi.importActual("react-router"),
+  ...(await vi.importActual("react-router")),
   useLocation: () => {
     return mockLocation() ?? { state: null };
   },
