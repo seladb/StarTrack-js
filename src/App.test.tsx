@@ -1,14 +1,15 @@
 import { render } from "@testing-library/react";
+import { vi } from "vitest";
 import App from "./App";
 
 const mockReactGAPageView = jest.fn();
 
-jest.mock("react-ga", () => ({
+vi.mock("react-ga", () => ({
   initialize: jest.fn(),
   pageview: (args: unknown[]) => mockReactGAPageView(args),
 }));
 
-jest.mock("./routes/MainPage/MainPage", () => ({
+vi.mock("./routes/MainPage/MainPage", () => ({
   __esModule: true,
   default: jest.fn(),
 }));

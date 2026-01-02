@@ -11,7 +11,7 @@
     "@mui/material": "^5.16.14",
     "@mui/styles": "^5.15.7",
     "@mui/x-data-grid": "^7.14.0",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
@@ -30,22 +30,22 @@
     "react-plotly.js": "^2.6.0",
     "react-responsive": "^10.0.1",
     "react-router-dom": "^7.2.0",
-    "react-scripts": "5.0.1",
     "typescript": "^5.7.2",
     "web-vitals": "^5.1.0",
     "yup": "^1.6.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
     "lint": "eslint --ext js,jsx,ts,tsx src/",
     "lint:fix": "eslint --ext js,jsx,ts,tsx --fix src/",
     "format": "prettier --write . --config ./.prettierrc",
     "format:check": "prettier --check . --config ./.prettierrc",
     "spellcheck": "cspell **/*.{ts,tsx}",
-    "coverage": "yarn test -- --watchAll=false --coverage"
+    "coverage": "vitest --coverage"
   },
   "jest": {
     "transformIgnorePatterns": [
@@ -80,6 +80,9 @@
     "@types/react-plotly.js": "^2.6.3",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
     "@typescript-eslint/parser": "^8.31.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
     "cspell": "^8.15.5",
     "csv-parse": "^6.1.0",
     "eslint": "^8.57.0",
@@ -87,6 +90,9 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "prettier": "^3.5.3"
+    "jsdom": "^27.4.0",
+    "prettier": "^3.5.3",
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16"
   }
 }

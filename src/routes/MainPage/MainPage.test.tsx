@@ -1,9 +1,10 @@
 import { render } from "@testing-library/react";
+import { vi } from "vitest";
 import MainPage from "./MainPage";
 
 const mockMainContainer = jest.fn();
 
-jest.mock("../../components/MainContainer/MainContainer", () => ({
+vi.mock("../../components/MainContainer/MainContainer", () => ({
   __esModule: true,
   default: () => {
     mockMainContainer();
@@ -13,7 +14,7 @@ jest.mock("../../components/MainContainer/MainContainer", () => ({
 
 const mockTopNav = jest.fn();
 
-jest.mock("../../components/TopNav/TopNav", () => ({
+vi.mock("../../components/TopNav/TopNav", () => ({
   __esModule: true,
   default: () => {
     mockTopNav();
@@ -23,7 +24,7 @@ jest.mock("../../components/TopNav/TopNav", () => ({
 
 const mockFooter = jest.fn();
 
-jest.mock("../../components/Footer/Footer", () => ({
+vi.mock("../../components/Footer/Footer", () => ({
   __esModule: true,
   default: () => {
     mockFooter();

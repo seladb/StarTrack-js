@@ -1,9 +1,10 @@
 import { render } from "@testing-library/react";
+import { vi } from "vitest";
 import { createMatchMedia } from "../../utils/test";
 import RepoDetailsInput from "./RepoDetailsInput";
 
 const mockRepoDetailsInputDesktop = jest.fn();
-jest.mock("./RepoDetailsInputDesktop", () => ({
+vi.mock("./RepoDetailsInputDesktop", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoDetailsInputDesktop(props);
@@ -12,7 +13,7 @@ jest.mock("./RepoDetailsInputDesktop", () => ({
 }));
 
 const mockRepoDetailsInputMobile = jest.fn();
-jest.mock("./RepoDetailsInputMobile", () => ({
+vi.mock("./RepoDetailsInputMobile", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoDetailsInputMobile(props);

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { vi } from "vitest";
 import Chart from "./Chart";
 import RepoInfo from "../../utils/RepoInfo";
 import { PlotParams } from "react-plotly.js";
@@ -8,7 +9,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 
 const mockPlot = jest.fn();
 const mockOnRelayoutEvent = jest.fn();
-jest.mock("react-plotly.js", () => ({
+vi.mock("react-plotly.js", () => ({
   __esModule: true,
   default: (props: PlotParams) => {
     mockPlot(props);

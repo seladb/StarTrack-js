@@ -1,11 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import * as StargazerStats from "../../utils/StargazerStats";
 import RepoInfo from "../../utils/RepoInfo";
 import RepoStats from "./RepoStats";
 import { createMatchMedia } from "../../utils/test";
 
 const mockStatsGridLargeScreen = jest.fn();
-jest.mock("./StatsGridLargeScreen", () => ({
+vi.mock("./StatsGridLargeScreen", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockStatsGridLargeScreen(props);
@@ -14,7 +15,7 @@ jest.mock("./StatsGridLargeScreen", () => ({
 }));
 
 const mockStatsGridSmallScreen = jest.fn();
-jest.mock("./StatsGridSmallScreen", () => ({
+vi.mock("./StatsGridSmallScreen", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockStatsGridSmallScreen(props);
@@ -23,7 +24,7 @@ jest.mock("./StatsGridSmallScreen", () => ({
 }));
 
 const mockDownloadData = jest.fn();
-jest.mock("./DownloadData", () => ({
+vi.mock("./DownloadData", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockDownloadData(props);

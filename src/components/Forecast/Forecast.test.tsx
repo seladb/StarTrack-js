@@ -1,11 +1,12 @@
 import { render, act } from "@testing-library/react";
+import { vi } from "vitest";
 import Forecast from "./Forecast";
 import { ForecastInfo } from "./ForecastInfo";
 import { getLastCallArguments } from "../../utils/test";
 
 const mockForecastRow = jest.fn();
 
-jest.mock("./ForecastRow", () => ({
+vi.mock("./ForecastRow", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockForecastRow(props);
@@ -20,7 +21,7 @@ interface mockForecastFormProps {
 
 const mockForecastForm = jest.fn();
 
-jest.mock("./ForecastForm", () => ({
+vi.mock("./ForecastForm", () => ({
   __esModule: true,
   default: (props: mockForecastFormProps) => {
     mockForecastForm(props);
