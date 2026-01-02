@@ -7,7 +7,7 @@ import { vi } from "vitest";
 import { TextEncoder, TextDecoder } from "node:util";
 
 // Make jest available globally for compatibility with existing tests
-(global as any).jest = vi;
+globalThis.jest = vi;
 
 if (!global.TextEncoder) {
   global.TextEncoder = TextEncoder;
