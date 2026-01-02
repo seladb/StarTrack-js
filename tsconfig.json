@@ -22,7 +22,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Vite */
-    "types": ["vite/client"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
