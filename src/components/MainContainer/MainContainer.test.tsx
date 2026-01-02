@@ -104,6 +104,11 @@ describe(MainContainer, () => {
     (getRepoStargazerCount as jest.Mock).mockImplementation(() => Promise.resolve(1));
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.clearAllMocks();
+  });
+
   const username = "username";
   const repo = "repo";
 
@@ -442,6 +447,8 @@ describe(MainContainer, () => {
     };
 
     mockLocation.mockReturnValue({ state: [repoInfo] });
+
+    jest.spyOn(StargazerStats, "calcForecast").mockReturnValueOnce(forecastData);
 
     jest
       .spyOn(StargazerLoader, "loadStargazers")
