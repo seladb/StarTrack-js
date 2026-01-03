@@ -32,3 +32,9 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: playwright-screenshots
+          path: test-results/
+          retention-days: 30
