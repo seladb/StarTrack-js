@@ -25,7 +25,7 @@ jobs:
       - name: Run Playwright tests
         env:
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        run: yarn playwright test
+        run: yarn playwright test --reporter=list
       - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}
         with:
