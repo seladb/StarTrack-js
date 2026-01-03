@@ -3,7 +3,7 @@
 import { Page } from "@playwright/test";
 import internal from "stream";
 
-export const localUrl = "http://127.0.0.1:4173/StarTrack-js/#/";
+export const localUrl = "http://127.0.0.1:3000/#/";
 export const referenceUrl = "https://seladb.github.io/StarTrack-js/#/";
 
 export const username = "seladb";

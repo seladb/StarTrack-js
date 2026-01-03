@@ -11,6 +11,7 @@
     "@mui/material": "^5.16.14",
     "@mui/styles": "^5.15.7",
     "@mui/x-data-grid": "^7.14.0",
+    "@popperjs/core": "^2.11.8",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.6.1",
