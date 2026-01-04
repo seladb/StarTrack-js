@@ -56,12 +56,12 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     const accessToken = accessTokenValid === TokenValidationStatus.Valid ? accessTokenValue : null;
     setAccessTokenValid(TokenValidationStatus.Init);
     setAccessTokenValue(null);
     onClose(accessToken);
-  };
+  }, [accessTokenValid, accessTokenValue, onClose]);
 
   const textFieldHelperText = () => {
     return accessTokenValid === TokenValidationStatus.Invalid
@@ -75,7 +75,7 @@ export default function GitHubAuthForm({ open, onClose }: GitHubAuthFormProps) {
     if (accessTokenValid === TokenValidationStatus.Valid) {
       handleClose();
     }
-  }, [accessTokenValid]);
+  }, [accessTokenValid, handleClose]);
 
   return (
     <Dialog open={open} onClose={handleClose}>

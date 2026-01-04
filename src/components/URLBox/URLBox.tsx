@@ -21,10 +21,6 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
 
   const baseUrl = `${window.location.href}preload?`;
 
-  React.useEffect(() => {
-    setUrl(calcUrl());
-  }, [repoInfos]);
-
   const calcUrl = () => {
     return repoInfos.length === 0
       ? ""
@@ -35,6 +31,10 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
             )
             .join("&");
   };
+
+  React.useEffect(() => {
+    setUrl(calcUrl());
+  }, [repoInfos]);
 
   const copyToClipboard = async () => {
     await global.navigator.clipboard.writeText(url);
