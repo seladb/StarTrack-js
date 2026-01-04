@@ -33,20 +33,20 @@ describe(URLBox, () => {
   describe("copy URL", () => {
     const writeTextMock = vi.fn();
 
-    const originalClipboard = { ...global.navigator.clipboard };
+    const originalClipboard = { ...navigator.clipboard };
 
     beforeEach(() => {
       const mockClipboard = {
         writeText: writeTextMock,
       };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (global.navigator as any).clipboard = mockClipboard;
+      (navigator as any).clipboard = mockClipboard;
     });
 
     afterEach(() => {
       vi.resetAllMocks();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (global.navigator as any).clipboard = originalClipboard;
+      (navigator as any).clipboard = originalClipboard;
     });
 
     it("copies the URL", () => {
