@@ -38,14 +38,14 @@ export function Preload() {
   const [repoDataLoaded, setRepoDataLoaded] = React.useState<RepoInfo[]>([]);
   const [repoLoadErrors, setRepoLoadErrors] = React.useState<RepoLoadError[]>([]);
 
+  const { search } = useLocation();
+  const dataToLoad = parseUrlParams(search);
+
   React.useEffect(() => {
     if (currentlyLoadingIndex >= dataToLoad.length && repoLoadErrors.length === 0) {
       navigate("/", { state: repoDataLoaded });
     }
-  }, [currentlyLoadingIndex]);
-
-  const { search } = useLocation();
-  const dataToLoad = parseUrlParams(search);
+  }, [currentlyLoadingIndex, dataToLoad.length, navigate, repoDataLoaded, repoLoadErrors.length]);
 
   const getSubTitle = () => {
     return currentlyLoadingIndex < dataToLoad.length

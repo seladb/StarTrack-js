@@ -45,6 +45,7 @@ export default function RepoLoader({ repoDataToLoad, onLoadDone, onLoadError }: 
       startProgress();
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repoDataToLoad]);
 
   const handleProgress = (value: number) => {
