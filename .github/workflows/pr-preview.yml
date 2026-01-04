@@ -1,10 +1,7 @@
 name: Deploy PR Preview
 
 on:
-  workflow_dispatch: # Manual trigger
-  push:
-    branches:
-      - migrate-react-create-app-to-vite
+  workflow_dispatch: # Manual trigger from any branch
 
 permissions:
   contents: write
@@ -16,13 +13,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      
+
       - uses: actions/setup-node@v6
         with:
           cache: yarn
 
       - name: Install packages
         run: yarn install
+
+      - name: Format
+        run: yarn run format:check
+
+      - name: Lint
+        run: yarn run lint
+
+      - name: Spell check
+        run: yarn run spellcheck
+
+      - name: Run tests
+        run: yarn test
 
       - name: Build with preview base path
         run: yarn run build
@@ -44,10 +53,16 @@ jobs:
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
 
-      - name: Find PR number
+      - name: Get current branch name
+        id: branch
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Find PR number for current branch
         id: pr
         run: |
-          PR_NUMBER=$(gh pr view migrate-react-create-app-to-vite --json number --jq .number || echo "")
+          PR_NUMBER=$(gh pr list --head "${{ steps.branch.outputs.name }}" --json number --jq '.[0].number' || echo "")
           echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,28 +73,30 @@ jobs:
         with:
           script: |
             const previewUrl = 'https://seladb.github.io/StarTrack-js/pr-preview/';
+            const branchName = '${{ steps.branch.outputs.name }}';
             const comment = `## 🚀 PR Preview Deployed!
-            
+
             Your preview is ready at: ${previewUrl}
-            
-            **Note:** This is a temporary preview deployment. It will be replaced when you push new changes to this branch.
-            
-            Built with commit: ${context.sha.substring(0, 7)}`;
-            
+
+            **Branch:** \`${branchName}\`
+            **Commit:** ${context.sha.substring(0, 7)}
+
+            **Note:** This is a temporary preview deployment. Running this workflow again will replace the current preview.`;
+
             const prNumber = ${{ steps.pr.outputs.number }};
-            
+
             // Find existing preview comments
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
             });
-            
+
             const botComment = comments.find(comment => 
               comment.user.type === 'Bot' && 
               comment.body.includes('PR Preview Deployed')
             );
-            
+
             if (botComment) {
               // Update existing comment
               await github.rest.issues.updateComment({
@@ -97,3 +114,9 @@ jobs:
                 body: comment
               });
             }
+
+      - name: Output preview URL
+        run: |
+          echo "::notice::Preview deployed to https://seladb.github.io/StarTrack-js/pr-preview/"
+          echo "Branch: ${{ steps.branch.outputs.name }}"
+          echo "Commit: ${{ github.sha }}"
