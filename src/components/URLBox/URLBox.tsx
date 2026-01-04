@@ -37,7 +37,7 @@ export default function URLBox({ repoInfos }: URLBoxProps) {
   }, [calcUrl]);
 
   const copyToClipboard = async () => {
-    await global.navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(url);
     setShowTooltip(true);
   };
 
