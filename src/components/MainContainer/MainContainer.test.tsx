@@ -7,7 +7,7 @@ import * as StargazerStats from "../../utils/StargazerStats";
 import { getRepoStargazerCount } from "../../utils/GitHubUtils";
 import { ForecastInfo } from "../Forecast";
 
-const mockLocation = jest.fn();
+const mockLocation = vi.fn();
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual("react-router")),
@@ -16,9 +16,9 @@ vi.mock("react-router", async () => ({
   },
 }));
 
-const mockStartProgress = jest.fn();
-const mockSetProgress = jest.fn();
-const mockEndProgress = jest.fn();
+const mockStartProgress = vi.fn();
+const mockSetProgress = vi.fn();
+const mockEndProgress = vi.fn();
 
 vi.mock("../../shared/ProgressContext", () => ({
   useProgress: () => ({
@@ -28,7 +28,7 @@ vi.mock("../../shared/ProgressContext", () => ({
   }),
 }));
 
-const mockShowAlert = jest.fn();
+const mockShowAlert = vi.fn();
 
 vi.mock("../../shared/AlertContext", () => ({
   useAlertDialog: () => ({
@@ -36,7 +36,7 @@ vi.mock("../../shared/AlertContext", () => ({
   }),
 }));
 
-const mockRepoDetailsInput = jest.fn();
+const mockRepoDetailsInput = vi.fn();
 
 vi.mock("../RepoDetailsInput", () => ({
   __esModule: true,
@@ -46,7 +46,7 @@ vi.mock("../RepoDetailsInput", () => ({
   },
 }));
 
-const mockRepoChipContainer = jest.fn();
+const mockRepoChipContainer = vi.fn();
 
 vi.mock("../RepoChips", () => ({
   __esModule: true,
@@ -56,7 +56,7 @@ vi.mock("../RepoChips", () => ({
   },
 }));
 
-const mockChart = jest.fn();
+const mockChart = vi.fn();
 
 vi.mock("../Chart", () => ({
   __esModule: true,
@@ -66,7 +66,7 @@ vi.mock("../Chart", () => ({
   },
 }));
 
-const mockForecast = jest.fn();
+const mockForecast = vi.fn();
 
 vi.mock("../Forecast", async () => ({
   __esModule: true,
@@ -77,7 +77,7 @@ vi.mock("../Forecast", async () => ({
   },
 }));
 
-const mockRepoStats = jest.fn();
+const mockRepoStats = vi.fn();
 
 vi.mock("../RepoStats", () => ({
   __esModule: true,
@@ -87,7 +87,7 @@ vi.mock("../RepoStats", () => ({
   },
 }));
 
-const mockURLBox = jest.fn();
+const mockURLBox = vi.fn();
 
 vi.mock("../URLBox", () => ({
   __esModule: true,
@@ -101,7 +101,7 @@ vi.mock("../../utils/GitHubUtils");
 
 describe(MainContainer, () => {
   beforeEach(() => {
-    (getRepoStargazerCount as jest.Mock).mockImplementation(() => Promise.resolve(1));
+    (getRepoStargazerCount as vi.Mock).mockImplementation(() => Promise.resolve(1));
   });
 
   afterEach(() => {
@@ -129,7 +129,7 @@ describe(MainContainer, () => {
   );
 
   const setupLoadStargazers = () => {
-    jest.spyOn(StargazerLoader, "loadStargazers").mockImplementationOnce(
+    vi.spyOn(StargazerLoader, "loadStargazers").mockImplementationOnce(
       (
         username: string,
         repo: string,
@@ -224,7 +224,7 @@ describe(MainContainer, () => {
   });
 
   it("load a repo with too many stars", async () => {
-    (getRepoStargazerCount as jest.Mock).mockImplementation(() =>
+    (getRepoStargazerCount as vi.Mock).mockImplementation(() =>
       Promise.resolve(stargazerData.starCounts.length + 100000),
     );
 
@@ -241,7 +241,7 @@ describe(MainContainer, () => {
   });
 
   it("small mismatch between star count and star data", async () => {
-    (getRepoStargazerCount as jest.Mock).mockImplementation(() =>
+    (getRepoStargazerCount as vi.Mock).mockImplementation(() =>
       Promise.resolve(stargazerData.starCounts.length + allowStarCountAndStarDataMismatch),
     );
 
@@ -256,7 +256,7 @@ describe(MainContainer, () => {
 
   it("handle error fetching star count", async () => {
     const errorMessage = "something went wrong";
-    (getRepoStargazerCount as jest.Mock).mockImplementation(() => Promise.reject(errorMessage));
+    (getRepoStargazerCount as vi.Mock).mockImplementation(() => Promise.reject(errorMessage));
 
     render(<MainContainer />);
 
@@ -269,9 +269,9 @@ describe(MainContainer, () => {
   it("handle error loading repo data", async () => {
     const errorMessage = "something went wrong";
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    jest
-      .spyOn(StargazerLoader, "loadStargazers")
-      .mockImplementationOnce(() => Promise.reject(errorMessage));
+    vi.spyOn(StargazerLoader, "loadStargazers").mockImplementationOnce(() =>
+      Promise.reject(errorMessage),
+    );
 
     render(<MainContainer />);
 
@@ -365,7 +365,7 @@ describe(MainContainer, () => {
   it("set and remove forecast", async () => {
     setupLoadStargazers();
 
-    const mockCalcForecast = jest
+    const mockCalcForecast = vi
       .spyOn(StargazerStats, "calcForecast")
       .mockReturnValueOnce(forecastData);
 
@@ -397,7 +397,7 @@ describe(MainContainer, () => {
   it("error calculating forecast", async () => {
     setupLoadStargazers();
 
-    jest.spyOn(StargazerStats, "calcForecast").mockImplementationOnce(() => {
+    vi.spyOn(StargazerStats, "calcForecast").mockImplementationOnce(() => {
       throw new Error("some error");
     });
 
@@ -418,7 +418,7 @@ describe(MainContainer, () => {
   it("not enough data to calculate forecast", async () => {
     setupLoadStargazers();
 
-    jest.spyOn(StargazerStats, "calcForecast").mockImplementationOnce(() => {
+    vi.spyOn(StargazerStats, "calcForecast").mockImplementationOnce(() => {
       throw new StargazerStats.NotEnoughDataError();
     });
 
@@ -448,11 +448,11 @@ describe(MainContainer, () => {
 
     mockLocation.mockReturnValue({ state: [repoInfo] });
 
-    jest.spyOn(StargazerStats, "calcForecast").mockReturnValueOnce(forecastData);
+    vi.spyOn(StargazerStats, "calcForecast").mockReturnValueOnce(forecastData);
 
-    jest
-      .spyOn(StargazerLoader, "loadStargazers")
-      .mockImplementationOnce(() => Promise.reject(new StargazerStats.NotEnoughDataError()));
+    vi.spyOn(StargazerLoader, "loadStargazers").mockImplementationOnce(() =>
+      Promise.reject(new StargazerStats.NotEnoughDataError()),
+    );
 
     render(<MainContainer />);
 

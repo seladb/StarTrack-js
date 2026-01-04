@@ -3,8 +3,8 @@ import ForecastRow from "./ForecastRow";
 import { TimeUnit } from "./ForecastInfo";
 
 describe(ForecastRow, () => {
-  const onRowClick = jest.fn();
-  const onRowDelete = jest.fn();
+  const onRowClick = vi.fn();
+  const onRowDelete = vi.fn();
 
   it("renders the row with null info", () => {
     render(<ForecastRow info={null} onClick={onRowClick} onDelete={onRowDelete} />);

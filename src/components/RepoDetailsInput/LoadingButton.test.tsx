@@ -3,8 +3,8 @@ import LoadingButton from "./LoadingButton";
 import { renderWithTheme } from "../../utils/test";
 
 describe(LoadingButton, () => {
-  const mockHandleGoClick = jest.fn();
-  const mockHandleCancelClick = jest.fn();
+  const mockHandleGoClick = vi.fn();
+  const mockHandleCancelClick = vi.fn();
 
   it("render when not loading", () => {
     render(

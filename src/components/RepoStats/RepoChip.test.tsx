@@ -3,10 +3,10 @@ import * as GitHubUtils from "../../utils/GitHubUtils";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 describe(RepoChip, () => {
-  let windowOpenMock: jest.SpyInstance;
+  let windowOpenMock: vi.SpyInstance;
 
   beforeEach(() => {
-    windowOpenMock = jest.spyOn(window, "open").mockImplementation(() => null);
+    windowOpenMock = vi.spyOn(window, "open").mockImplementation(() => null);
   });
 
   afterEach(() => {
@@ -20,7 +20,7 @@ describe(RepoChip, () => {
 
     const repoUrl = "https://repo.org";
 
-    const getRepoUrlMock = jest.spyOn(GitHubUtils, "getRepoUrl").mockReturnValue(repoUrl);
+    const getRepoUrlMock = vi.spyOn(GitHubUtils, "getRepoUrl").mockReturnValue(repoUrl);
 
     render(<RepoChip user={user} repo={repo} color={color} />);
 

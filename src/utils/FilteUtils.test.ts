@@ -1,7 +1,7 @@
 import * as utils from "./FileUtils";
 import { vi } from "vitest";
 
-const mockDownloadZip = jest.fn();
+const mockDownloadZip = vi.fn();
 
 vi.mock("client-zip", () => ({
   downloadZip: (props: unknown[]) => {
@@ -12,16 +12,16 @@ vi.mock("client-zip", () => ({
 
 describe(utils.downloadFileFromBlob, () => {
   it("download file", async () => {
-    const blobPropsMock = jest.fn();
-    const revokeObjectURLMock = jest.fn();
-    URL.createObjectURL = jest.fn().mockImplementationOnce((props: unknown[]) => {
+    const blobPropsMock = vi.fn();
+    const revokeObjectURLMock = vi.fn();
+    URL.createObjectURL = vi.fn().mockImplementationOnce((props: unknown[]) => {
       blobPropsMock(props);
       return "url";
     });
     URL.revokeObjectURL = revokeObjectURLMock;
 
     const link = document.createElement("a");
-    jest.spyOn(document, "createElement").mockReturnValueOnce(link);
+    vi.spyOn(document, "createElement").mockReturnValueOnce(link);
 
     const blob = new Blob(["file content"], { type: "text/plain" });
     utils.downloadFileFromBlob("my_file.json", blob);
@@ -34,8 +34,8 @@ describe(utils.downloadFileFromBlob, () => {
 
 describe(utils.downloadFile, () => {
   it("download file", () => {
-    const downloadFileFromBlobMock = jest.fn();
-    jest.spyOn(utils, "downloadFileFromBlob").mockImplementationOnce((fileName, blob: Blob) => {
+    const downloadFileFromBlobMock = vi.fn();
+    vi.spyOn(utils, "downloadFileFromBlob").mockImplementationOnce((fileName, blob: Blob) => {
       downloadFileFromBlobMock({ type: blob.type, contentSize: blob.size, fileName: fileName });
     });
 
@@ -51,7 +51,7 @@ describe(utils.downloadFile, () => {
 
 describe(utils.zipAndDownloadFiles, () => {
   it("zip and download files", async () => {
-    const mockDownloadFileFromBlob = jest.spyOn(utils, "downloadFileFromBlob").mockImplementation();
+    const mockDownloadFileFromBlob = vi.spyOn(utils, "downloadFileFromBlob").mockImplementation();
 
     const files = [
       {

@@ -22,7 +22,7 @@ describe(ErrorPage, () => {
     });
 
     // prevent `render` from logging a warning to console about "No routes matched location "/error""
-    jest.spyOn(console, "warn").mockImplementationOnce(jest.fn());
+    vi.spyOn(console, "warn").mockImplementationOnce(vi.fn());
 
     render(
       <ThemeProvider theme={theme}>

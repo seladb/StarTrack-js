@@ -5,7 +5,7 @@ import RepoInfo from "../../utils/RepoInfo";
 import RepoStats from "./RepoStats";
 import { createMatchMedia } from "../../utils/test";
 
-const mockStatsGridLargeScreen = jest.fn();
+const mockStatsGridLargeScreen = vi.fn();
 vi.mock("./StatsGridLargeScreen", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
@@ -14,7 +14,7 @@ vi.mock("./StatsGridLargeScreen", () => ({
   },
 }));
 
-const mockStatsGridSmallScreen = jest.fn();
+const mockStatsGridSmallScreen = vi.fn();
 vi.mock("./StatsGridSmallScreen", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
@@ -23,7 +23,7 @@ vi.mock("./StatsGridSmallScreen", () => ({
   },
 }));
 
-const mockDownloadData = jest.fn();
+const mockDownloadData = vi.fn();
 vi.mock("./DownloadData", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
@@ -77,7 +77,7 @@ describe(RepoStats, () => {
   ];
 
   it("render on a small screen", () => {
-    jest.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
+    vi.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
     window.matchMedia = createMatchMedia(200);
 
@@ -88,7 +88,7 @@ describe(RepoStats, () => {
   });
 
   it("render on a large screen", () => {
-    jest.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
+    vi.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
     window.matchMedia = createMatchMedia(1000);
 
@@ -99,7 +99,7 @@ describe(RepoStats, () => {
   });
 
   it("calcs stats with date range", () => {
-    const mockCalcStats = jest.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
+    const mockCalcStats = vi.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
     const minDate = new Date();
     minDate.setDate(new Date().getDate() - 30);
@@ -137,7 +137,7 @@ describe(RepoStats, () => {
   });
 
   it("renders correctly when date range is undefined", () => {
-    const mockCalcStats = jest.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
+    const mockCalcStats = vi.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
     render(<RepoStats repoInfos={repoInfos} dateRange={undefined} />);
 

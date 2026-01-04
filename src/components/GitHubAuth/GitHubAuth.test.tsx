@@ -4,7 +4,7 @@ import GitHubAuth from "./GitHubAuth";
 import * as GitHubUtils from "../../utils/GitHubUtils";
 import { getLastCallArguments } from "../../utils/test";
 
-const mockGitHubAuthForm = jest.fn();
+const mockGitHubAuthForm = vi.fn();
 
 vi.mock("./GitHubAuthForm", () => ({
   __esModule: true,
@@ -14,7 +14,7 @@ vi.mock("./GitHubAuthForm", () => ({
   },
 }));
 
-const mockLoggedIn = jest.fn();
+const mockLoggedIn = vi.fn();
 
 vi.mock("./LoggedIn", () => ({
   __esModule: true,
@@ -34,7 +34,7 @@ describe(GitHubAuth, () => {
   });
 
   it("render on logged in", () => {
-    jest.spyOn(GitHubUtils, "getAccessToken").mockReturnValueOnce("token");
+    vi.spyOn(GitHubUtils, "getAccessToken").mockReturnValueOnce("token");
 
     render(<GitHubAuth />);
 
@@ -61,7 +61,7 @@ describe(GitHubAuth, () => {
   });
 
   it("log out", () => {
-    jest.spyOn(GitHubUtils, "getAccessToken").mockReturnValueOnce("token");
+    vi.spyOn(GitHubUtils, "getAccessToken").mockReturnValueOnce("token");
 
     render(<GitHubAuth />);
 
