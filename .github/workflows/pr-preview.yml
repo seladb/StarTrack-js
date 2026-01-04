@@ -1,0 +1,122 @@
+name: Deploy PR Preview
+
+on:
+  workflow_dispatch: # Manual trigger from any branch
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy-preview:
+    name: Deploy PR Preview to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          cache: yarn
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Format
+        run: yarn run format:check
+
+      - name: Lint
+        run: yarn run lint
+
+      - name: Spell check
+        run: yarn run spellcheck
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build with preview base path
+        run: yarn run build
+        env:
+          VITE_BASE_PATH: /StarTrack-js/pr-preview/
+
+      - name: Update base path in built files
+        run: |
+          # Update the base path in index.html and JS files
+          find build -type f \( -name "*.html" -o -name "*.js" -o -name "*.css" \) -exec sed -i 's|/StarTrack-js/|/StarTrack-js/pr-preview/|g' {} +
+
+      - name: Deploy to GitHub Pages preview folder
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          destination_dir: pr-preview
+          keep_files: true # Keep other files in gh-pages (including production)
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+
+      - name: Get current branch name
+        id: branch
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Find PR number for current branch
+        id: pr
+        run: |
+          PR_NUMBER=$(gh pr list --head "${{ steps.branch.outputs.name }}" --json number --jq '.[0].number' || echo "")
+          echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment PR with preview URL
+        if: steps.pr.outputs.number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = 'https://seladb.github.io/StarTrack-js/pr-preview/';
+            const branchName = '${{ steps.branch.outputs.name }}';
+            const comment = `## 🚀 PR Preview Deployed!
+
+            Your preview is ready at: ${previewUrl}
+
+            **Branch:** \`${branchName}\`
+            **Commit:** ${context.sha.substring(0, 7)}
+
+            **Note:** This is a temporary preview deployment. Running this workflow again will replace the current preview.`;
+
+            const prNumber = ${{ steps.pr.outputs.number }};
+
+            // Find existing preview comments
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('PR Preview Deployed')
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: comment
+              });
+            }
+
+      - name: Output preview URL
+        run: |
+          echo "::notice::Preview deployed to https://seladb.github.io/StarTrack-js/pr-preview/"
+          echo "Branch: ${{ steps.branch.outputs.name }}"
+          echo "Commit: ${{ github.sha }}"

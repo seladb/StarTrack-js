@@ -1,9 +1,10 @@
 import { render } from "@testing-library/react";
+import { vi } from "vitest";
 import StatsGridLargeScreen, { RenderRepoChip } from "./StatsGridLargeScreen";
 
 const mockRepoChip = jest.fn();
 
-jest.mock("./RepoChip", () => ({
+vi.mock("./RepoChip", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoChip(props);
@@ -12,7 +13,7 @@ jest.mock("./RepoChip", () => ({
 }));
 
 const mockDataGrid = jest.fn();
-jest.mock("@mui/x-data-grid", () => ({
+vi.mock("@mui/x-data-grid", () => ({
   __esModule: true,
   DataGrid: (props: unknown[]) => {
     mockDataGrid(props);

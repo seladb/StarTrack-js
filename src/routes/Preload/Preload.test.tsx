@@ -1,4 +1,5 @@
 import { render, act, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import { parseUrlParams, Preload } from "./Preload";
 import { getLastCallArguments } from "../../utils/test";
 
@@ -27,7 +28,7 @@ describe("parseUrlParams", () => {
 
 const mockRepoLoader = jest.fn();
 
-jest.mock("./RepoLoader", () => ({
+vi.mock("./RepoLoader", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoLoader(props);
@@ -38,8 +39,8 @@ jest.mock("./RepoLoader", () => ({
 const mockNavigate = jest.fn();
 const mockLocation = jest.fn();
 
-jest.mock("react-router", () => ({
-  ...jest.requireActual("react-router"),
+vi.mock("react-router", async () => ({
+  ...(await vi.importActual("react-router")),
   useNavigate: () => mockNavigate,
   useLocation: () => {
     return mockLocation() ?? { search: "" };

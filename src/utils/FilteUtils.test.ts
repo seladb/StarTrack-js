@@ -1,8 +1,9 @@
 import * as utils from "./FileUtils";
+import { vi } from "vitest";
 
 const mockDownloadZip = jest.fn();
 
-jest.mock("client-zip", () => ({
+vi.mock("client-zip", () => ({
   downloadZip: (props: unknown[]) => {
     mockDownloadZip(props);
     return new Response();

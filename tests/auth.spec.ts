@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./setup";
 import { localUrl } from "./utils";
 
 test("GitHub Authentication", async ({ page }) => {

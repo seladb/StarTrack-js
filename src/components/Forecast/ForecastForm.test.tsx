@@ -201,6 +201,6 @@ describe(ForecastForm, () => {
       expect(screen.getByText("Value required")).toBeInTheDocument();
     });
 
-    expect(onClose).not.toBeCalled();
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

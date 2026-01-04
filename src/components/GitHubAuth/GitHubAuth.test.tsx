@@ -1,11 +1,12 @@
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import { vi } from "vitest";
 import GitHubAuth from "./GitHubAuth";
 import * as GitHubUtils from "../../utils/GitHubUtils";
 import { getLastCallArguments } from "../../utils/test";
 
 const mockGitHubAuthForm = jest.fn();
 
-jest.mock("./GitHubAuthForm", () => ({
+vi.mock("./GitHubAuthForm", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockGitHubAuthForm(props);
@@ -15,7 +16,7 @@ jest.mock("./GitHubAuthForm", () => ({
 
 const mockLoggedIn = jest.fn();
 
-jest.mock("./LoggedIn", () => ({
+vi.mock("./LoggedIn", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockLoggedIn(props);

@@ -1,11 +1,12 @@
 import { screen, render, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import DownloadData from "./DownloadData";
 import RepoInfo from "../../utils/RepoInfo";
 
 const mockDownloadFile = jest.fn();
 const mockZipAndDownloadFiles = jest.fn();
 
-jest.mock("../../utils/FileUtils", () => ({
+vi.mock("../../utils/FileUtils", () => ({
   downloadFile: (fileName: string, fileContent: string, contentType: string) => {
     mockDownloadFile(fileName, fileContent, contentType);
   },
@@ -17,7 +18,7 @@ jest.mock("../../utils/FileUtils", () => ({
 const mockExportRepoInfosToJson = jest.fn();
 const mockExportRepoInfosToCsv = jest.fn();
 
-jest.mock("../../utils/RepoInfoExporter", () => ({
+vi.mock("../../utils/RepoInfoExporter", () => ({
   exportRepoInfosToJson: (repoInfos: Array<RepoInfo>) => {
     mockExportRepoInfosToJson(repoInfos);
     return { key1: "value1", key2: "value2" };

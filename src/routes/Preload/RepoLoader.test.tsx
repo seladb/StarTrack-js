@@ -1,12 +1,13 @@
 import RepoLoader from "./RepoLoader";
 import * as StargazerLoader from "../../utils/StargazerLoader";
 import { render, waitFor } from "@testing-library/react";
+import { vi } from "vitest";
 
 const mockStartProgress = jest.fn();
 const mockSetProgress = jest.fn();
 const mockEndProgress = jest.fn();
 
-jest.mock("../../shared/ProgressContext", () => ({
+vi.mock("../../shared/ProgressContext", () => ({
   useProgress: () => ({
     startProgress: mockStartProgress,
     setProgress: mockSetProgress,

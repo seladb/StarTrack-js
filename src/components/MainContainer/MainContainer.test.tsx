@@ -1,4 +1,5 @@
 import { render, screen, act, waitFor } from "@testing-library/react";
+import { vi } from "vitest";
 import MainContainer, { allowStarCountAndStarDataMismatch } from "./MainContainer";
 import { getLastCallArguments } from "../../utils/test";
 import * as StargazerLoader from "../../utils/StargazerLoader";
@@ -8,8 +9,8 @@ import { ForecastInfo } from "../Forecast";
 
 const mockLocation = jest.fn();
 
-jest.mock("react-router", () => ({
-  ...jest.requireActual("react-router"),
+vi.mock("react-router", async () => ({
+  ...(await vi.importActual("react-router")),
   useLocation: () => {
     return mockLocation() ?? { state: null };
   },
@@ -19,7 +20,7 @@ const mockStartProgress = jest.fn();
 const mockSetProgress = jest.fn();
 const mockEndProgress = jest.fn();
 
-jest.mock("../../shared/ProgressContext", () => ({
+vi.mock("../../shared/ProgressContext", () => ({
   useProgress: () => ({
     startProgress: mockStartProgress,
     setProgress: mockSetProgress,
@@ -29,7 +30,7 @@ jest.mock("../../shared/ProgressContext", () => ({
 
 const mockShowAlert = jest.fn();
 
-jest.mock("../../shared/AlertContext", () => ({
+vi.mock("../../shared/AlertContext", () => ({
   useAlertDialog: () => ({
     showAlert: mockShowAlert,
   }),
@@ -37,7 +38,7 @@ jest.mock("../../shared/AlertContext", () => ({
 
 const mockRepoDetailsInput = jest.fn();
 
-jest.mock("../RepoDetailsInput", () => ({
+vi.mock("../RepoDetailsInput", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoDetailsInput(props);
@@ -47,7 +48,7 @@ jest.mock("../RepoDetailsInput", () => ({
 
 const mockRepoChipContainer = jest.fn();
 
-jest.mock("../RepoChips", () => ({
+vi.mock("../RepoChips", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoChipContainer(props);
@@ -57,7 +58,7 @@ jest.mock("../RepoChips", () => ({
 
 const mockChart = jest.fn();
 
-jest.mock("../Chart", () => ({
+vi.mock("../Chart", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockChart(props);
@@ -67,9 +68,9 @@ jest.mock("../Chart", () => ({
 
 const mockForecast = jest.fn();
 
-jest.mock("../Forecast", () => ({
+vi.mock("../Forecast", async () => ({
   __esModule: true,
-  ...jest.requireActual("../Forecast"),
+  ...(await vi.importActual("../Forecast")),
   Forecast: (props: unknown[]) => {
     mockForecast(props);
     return <div data-testid="Forecast" />;
@@ -78,7 +79,7 @@ jest.mock("../Forecast", () => ({
 
 const mockRepoStats = jest.fn();
 
-jest.mock("../RepoStats", () => ({
+vi.mock("../RepoStats", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockRepoStats(props);
@@ -88,7 +89,7 @@ jest.mock("../RepoStats", () => ({
 
 const mockURLBox = jest.fn();
 
-jest.mock("../URLBox", () => ({
+vi.mock("../URLBox", () => ({
   __esModule: true,
   default: (props: unknown[]) => {
     mockURLBox(props);
@@ -96,12 +97,16 @@ jest.mock("../URLBox", () => ({
   },
 }));
 
-jest.mock("../../utils/GitHubUtils");
+vi.mock("../../utils/GitHubUtils");
 
 describe(MainContainer, () => {
   beforeEach(() => {
-    jest.resetAllMocks();
     (getRepoStargazerCount as jest.Mock).mockImplementation(() => Promise.resolve(1));
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   const username = "username";
@@ -384,9 +389,8 @@ describe(MainContainer, () => {
     );
 
     await waitFor(() => {
-      expect(getLastCallArguments(mockChart)[0]).toEqual(
-        expect.not.objectContaining({ forecast: undefined }),
-      );
+      const args = getLastCallArguments(mockChart)[0];
+      expect(args.forecast).toBeUndefined();
     });
   });
 
@@ -405,10 +409,9 @@ describe(MainContainer, () => {
 
     expect(mockShowAlert).toHaveBeenCalledWith("Something went wrong, please try again");
 
-    waitFor(() => {
-      expect(getLastCallArguments(mockChart)[0]).toEqual(
-        expect.objectContaining({ forecast: undefined }),
-      );
+    await waitFor(() => {
+      const args = getLastCallArguments(mockChart)[0];
+      expect(args.forecast).toBeUndefined();
     });
   });
 
@@ -429,10 +432,9 @@ describe(MainContainer, () => {
       "username/repo: there were not enough stars in the last 7 days to calculate the forecast",
     );
 
-    waitFor(() => {
-      expect(getLastCallArguments(mockChart)[0]).toEqual(
-        expect.objectContaining({ forecast: undefined }),
-      );
+    await waitFor(() => {
+      const args = getLastCallArguments(mockChart)[0];
+      expect(args.forecast).toBeUndefined();
     });
   });
 
@@ -445,6 +447,8 @@ describe(MainContainer, () => {
     };
 
     mockLocation.mockReturnValue({ state: [repoInfo] });
+
+    jest.spyOn(StargazerStats, "calcForecast").mockReturnValueOnce(forecastData);
 
     jest
       .spyOn(StargazerLoader, "loadStargazers")

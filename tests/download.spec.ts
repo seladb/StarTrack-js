@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./setup";
 import { localUrl, username, repo1, authenticate } from "./utils";
 import { parse } from "csv-parse/sync";
 
