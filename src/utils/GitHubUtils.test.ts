@@ -536,7 +536,6 @@ describe(utils.loadStargazers, () => {
     );
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
-      // eslint-disable-next-line quotes
       /^API rate limit exceeded! Please click "GitHub Authentication" and provide GitHub access token to increase rate limit$/,
     );
   });

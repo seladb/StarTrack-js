@@ -161,6 +161,7 @@ export default function MainContainer() {
       setRepoInfos(updatedRepoInfos);
       setForecastInfo(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [forecastInfo]);
 
   React.useEffect(() => {
@@ -173,7 +174,7 @@ export default function MainContainer() {
     if (state) {
       setRepoInfos(state);
     }
-  }, state);
+  }, [state]);
 
   return (
     <Container sx={{ marginTop: "3rem", marginBottom: "3rem" }}>

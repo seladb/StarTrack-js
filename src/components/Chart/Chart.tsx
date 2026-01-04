@@ -19,15 +19,6 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
 
   const plotRef = React.useRef<HTMLDivElement>();
 
-  React.useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   const handleResize = () => {
     if (!plotRef.current) {
       return;
@@ -36,6 +27,15 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     const { width } = plotRef.current.getBoundingClientRect();
     setChartHeight(Math.min(width * 0.8, 800));
   };
+
+  React.useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleChartEvent = (event: Readonly<PlotRelayoutEvent>) => {
     if (!onZoomChanged) {

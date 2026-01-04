@@ -133,11 +133,9 @@ export const calcForecast = (
 
   const leastSquaresFun = StargazerStats.calcLeastSquares(filteredTimestamps, filteredStarCount);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const lastDate = filteredTimestamps.at(-1)!;
 
   // This makes sure the forecast starts from the recent star count
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const delta = filteredStarCount.at(-1)! - Math.round(leastSquaresFun(lastDate));
 
   const forecastData = Array.from(Array(numValues + 1).keys())
