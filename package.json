@@ -73,7 +73,7 @@
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/ui": "^4.0.16",
-    "cspell": "^8.15.5",
+    "cspell": "^9.4.0",
     "csv-parse": "^6.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
