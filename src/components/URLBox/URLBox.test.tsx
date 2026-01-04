@@ -31,7 +31,7 @@ describe(URLBox, () => {
   });
 
   describe("copy URL", () => {
-    const writeTextMock = jest.fn();
+    const writeTextMock = vi.fn();
 
     const originalClipboard = { ...global.navigator.clipboard };
 
@@ -44,7 +44,7 @@ describe(URLBox, () => {
     });
 
     afterEach(() => {
-      jest.resetAllMocks();
+      vi.resetAllMocks();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (global.navigator as any).clipboard = originalClipboard;
     });

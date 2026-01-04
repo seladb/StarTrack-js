@@ -26,7 +26,7 @@ describe("parseUrlParams", () => {
   });
 });
 
-const mockRepoLoader = jest.fn();
+const mockRepoLoader = vi.fn();
 
 vi.mock("./RepoLoader", () => ({
   __esModule: true,
@@ -36,8 +36,8 @@ vi.mock("./RepoLoader", () => ({
   },
 }));
 
-const mockNavigate = jest.fn();
-const mockLocation = jest.fn();
+const mockNavigate = vi.fn();
+const mockLocation = vi.fn();
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual("react-router")),

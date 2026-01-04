@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 import StatsGridSmallScreen from "./StatsGridSmallScreen";
 
-const mockRepoChip = jest.fn();
+const mockRepoChip = vi.fn();
 
 vi.mock("./RepoChip", () => ({
   __esModule: true,

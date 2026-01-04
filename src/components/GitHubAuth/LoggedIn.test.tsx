@@ -7,7 +7,7 @@ describe(LoggedIn, () => {
   const accessToken = "access-token";
   const accessTokenDisplayText = "-token";
 
-  const handleLogOut = jest.fn();
+  const handleLogOut = vi.fn();
 
   const setup = () => {
     render(<LoggedIn accessToken={accessToken} onLogOut={handleLogOut} />);
@@ -47,7 +47,7 @@ describe(LoggedIn, () => {
   });
 
   it("render on large screen", () => {
-    const mockRemoveAccessToken = jest.spyOn(GitHubUtils, "removeAccessToken");
+    const mockRemoveAccessToken = vi.spyOn(GitHubUtils, "removeAccessToken");
 
     window.matchMedia = createMatchMedia(800);
 
@@ -83,7 +83,7 @@ describe(LoggedIn, () => {
     (storageType) => {
       setup();
 
-      jest.spyOn(GitHubUtils, "getStorageType").mockReturnValueOnce(storageType);
+      vi.spyOn(GitHubUtils, "getStorageType").mockReturnValueOnce(storageType);
 
       const button = screen.getByRole("button", { name: accessTokenDisplayText });
       fireEvent.click(button);

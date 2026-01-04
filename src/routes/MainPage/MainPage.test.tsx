@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { vi } from "vitest";
 import MainPage from "./MainPage";
 
-const mockMainContainer = jest.fn();
+const mockMainContainer = vi.fn();
 
 vi.mock("../../components/MainContainer/MainContainer", () => ({
   __esModule: true,
@@ -12,7 +12,7 @@ vi.mock("../../components/MainContainer/MainContainer", () => ({
   },
 }));
 
-const mockTopNav = jest.fn();
+const mockTopNav = vi.fn();
 
 vi.mock("../../components/TopNav/TopNav", () => ({
   __esModule: true,
@@ -22,7 +22,7 @@ vi.mock("../../components/TopNav/TopNav", () => ({
   },
 }));
 
-const mockFooter = jest.fn();
+const mockFooter = vi.fn();
 
 vi.mock("../../components/Footer/Footer", () => ({
   __esModule: true,

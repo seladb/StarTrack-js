@@ -3,11 +3,11 @@ import GitHubAuthForm from "./GitHubAuthForm";
 import * as GitHubUtils from "../../utils/GitHubUtils";
 
 describe(GitHubAuthForm, () => {
-  const onClose = jest.fn();
+  const onClose = vi.fn();
   const accessTokenValue = "access_token";
 
   const setup = (isTokenValid: boolean) => {
-    const validateAndStoreAccessTokenMock = jest
+    const validateAndStoreAccessTokenMock = vi
       .spyOn(GitHubUtils, "validateAndStoreAccessToken")
       .mockReturnValue(Promise.resolve(isTokenValid));
 

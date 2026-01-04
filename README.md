@@ -101,6 +101,7 @@ It uses the following `yarn` packages:
 
 - [Material UI](https://mui.com/material-ui/) for the UI components
 - [Plotly.js](https://plotly.com/javascript/) for displaying charts
+- [Vite](https://vitejs.dev/) as the build tool and development server
 - [Axios](https://github.com/axios/axios) for fetching data from GitHub API
 - [React Router](https://reactrouter.com/) for handling client side routing
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) as the testing framework

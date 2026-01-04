@@ -29,23 +29,23 @@ describe(stargazerLoader.loadStargazers, () => {
 
   const user = "user";
   const repo = "repo";
-  const handleProgressCallback = jest.fn();
-  const shouldStop = jest.fn();
+  const handleProgressCallback = vi.fn();
+  const shouldStop = vi.fn();
 
   const setup = () => {
     return {
-      loadStargazersMock: jest
+      loadStargazersMock: vi
         .spyOn(gitHubUtils, "loadStargazers")
         .mockReturnValue(Promise.resolve(stargazerData)),
-      makeColorMock: jest
+      makeColorMock: vi
         .spyOn(stargazerLoader, "makeColor")
         .mockReturnValue({ hsl: "hslColor", hex: "hexColor" }),
-      calcForecastMock: jest.spyOn(stargazerStats, "calcForecast").mockReturnValue(forecastData),
+      calcForecastMock: vi.spyOn(stargazerStats, "calcForecast").mockReturnValue(forecastData),
     };
   };
 
   it("returns null if no star data", async () => {
-    jest.spyOn(gitHubUtils, "loadStargazers").mockReturnValue(Promise.resolve(null));
+    vi.spyOn(gitHubUtils, "loadStargazers").mockReturnValue(Promise.resolve(null));
     const result = await stargazerLoader.loadStargazers(
       user,
       repo,

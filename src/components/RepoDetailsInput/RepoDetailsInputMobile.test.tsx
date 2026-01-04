@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import RepoDetailsInputMobile from "./RepoDetailsInputMobile";
 import { renderWithTheme } from "../../utils/test";
 
-const goClickHandler = jest.fn();
-const cancelClickHandler = jest.fn();
+const goClickHandler = vi.fn();
+const cancelClickHandler = vi.fn();
 
 const username = "user";
 const repo = "repo";

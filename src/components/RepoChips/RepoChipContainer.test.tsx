@@ -3,7 +3,7 @@ import RepoChipContainer from "./RepoChipContainer";
 
 describe(RepoChipContainer, () => {
   it("renders the chip container", () => {
-    const onDelete = jest.fn();
+    const onDelete = vi.fn();
 
     const reposDetails = [
       {

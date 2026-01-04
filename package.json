@@ -12,10 +12,8 @@
     "@mui/styles": "^5.15.7",
     "@mui/x-data-grid": "^7.14.0",
     "@popperjs/core": "^2.11.8",
-    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.6.1",
-    "@types/jest": "^29.5.14",
     "@types/node": "^25.0.3",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.2.18",
@@ -48,19 +46,9 @@
     "spellcheck": "cspell **/*.{ts,tsx}",
     "coverage": "vitest --coverage"
   },
-  "jest": {
-    "transformIgnorePatterns": [
-      "node_modules/(?!axios|react-github-btn/.*)"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/index.tsx",
-      "<rootDir>/src/reportWebVitals.ts"
-    ]
-  },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -77,6 +65,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@types/css-mediaquery": "^0.1.4",
     "@types/react-plotly.js": "^2.6.3",
     "@typescript-eslint/eslint-plugin": "^8.22.0",

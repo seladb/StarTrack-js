@@ -3,9 +3,9 @@ import * as StargazerLoader from "../../utils/StargazerLoader";
 import { render, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 
-const mockStartProgress = jest.fn();
-const mockSetProgress = jest.fn();
-const mockEndProgress = jest.fn();
+const mockStartProgress = vi.fn();
+const mockSetProgress = vi.fn();
+const mockEndProgress = vi.fn();
 
 vi.mock("../../shared/ProgressContext", () => ({
   useProgress: () => ({
@@ -16,8 +16,8 @@ vi.mock("../../shared/ProgressContext", () => ({
 }));
 
 describe(RepoLoader, () => {
-  const handleLoadDone = jest.fn();
-  const handleLoadError = jest.fn();
+  const handleLoadDone = vi.fn();
+  const handleLoadError = vi.fn();
 
   const repoMetadata = { username: "username", repo: "repo" };
 
@@ -32,9 +32,9 @@ describe(RepoLoader, () => {
   };
 
   it("loads repo data", async () => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
 
-    const mockLoadStargazers = jest.spyOn(StargazerLoader, "loadStargazers").mockImplementation(
+    const mockLoadStargazers = vi.spyOn(StargazerLoader, "loadStargazers").mockImplementation(
       (
         _username: string,
         _repo: string,
@@ -74,7 +74,7 @@ describe(RepoLoader, () => {
   });
 
   it("no repo data", () => {
-    const mockLoadStargazers = jest.spyOn(StargazerLoader, "loadStargazers");
+    const mockLoadStargazers = vi.spyOn(StargazerLoader, "loadStargazers");
 
     render(
       <RepoLoader
@@ -88,7 +88,7 @@ describe(RepoLoader, () => {
   });
 
   it.each([[new Error("error")], ["error"]])("load repo data error", async (error) => {
-    jest.spyOn(StargazerLoader, "loadStargazers").mockImplementation(() => {
+    vi.spyOn(StargazerLoader, "loadStargazers").mockImplementation(() => {
       return Promise.reject(error);
     });
 
@@ -111,7 +111,7 @@ describe(RepoLoader, () => {
   });
 
   it("load multiple repo data", async () => {
-    const mockLoadStargazers = jest.spyOn(StargazerLoader, "loadStargazers").mockImplementation(
+    const mockLoadStargazers = vi.spyOn(StargazerLoader, "loadStargazers").mockImplementation(
       (
         _username: string,
         _repo: string,

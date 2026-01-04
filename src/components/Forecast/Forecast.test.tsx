@@ -4,7 +4,7 @@ import Forecast from "./Forecast";
 import { ForecastInfo } from "./ForecastInfo";
 import { getLastCallArguments } from "../../utils/test";
 
-const mockForecastRow = jest.fn();
+const mockForecastRow = vi.fn();
 
 vi.mock("./ForecastRow", () => ({
   __esModule: true,
@@ -19,7 +19,7 @@ interface mockForecastFormProps {
   forecastProps: ForecastInfo | null;
 }
 
-const mockForecastForm = jest.fn();
+const mockForecastForm = vi.fn();
 
 vi.mock("./ForecastForm", () => ({
   __esModule: true,
@@ -30,7 +30,7 @@ vi.mock("./ForecastForm", () => ({
 }));
 
 describe(Forecast, () => {
-  const onForecastInfoChange = jest.fn();
+  const onForecastInfoChange = vi.fn();
 
   const setup = (forecastInfo?: ForecastInfo) => {
     const info =

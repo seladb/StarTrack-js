@@ -60,12 +60,12 @@ describe(utils.getStorage, () => {
   });
 
   it("get from session storage if token is stored in both", () => {
-    jest.spyOn(window.localStorage, "getItem");
+    vi.spyOn(window.localStorage, "getItem");
     window.localStorage.getItem = () => {
       return "localStorage";
     };
 
-    jest.spyOn(window.sessionStorage, "getItem");
+    vi.spyOn(window.sessionStorage, "getItem");
     window.sessionStorage.getItem = () => {
       return "sessionStorage";
     };
@@ -112,7 +112,7 @@ describe(utils.getAccessToken, () => {
   const storage = new StorageMock();
 
   beforeEach(() => {
-    jest.spyOn(utils, "getStorage").mockReturnValue(storage);
+    vi.spyOn(utils, "getStorage").mockReturnValue(storage);
   });
 
   it("No access token", () => {
@@ -129,7 +129,7 @@ describe(utils.removeAccessToken, () => {
   const storage = new StorageMock();
 
   beforeEach(() => {
-    jest.spyOn(utils, "getStorage").mockReturnValue(storage);
+    vi.spyOn(utils, "getStorage").mockReturnValue(storage);
   });
 
   it("Remove access token when exists", () => {
@@ -149,7 +149,7 @@ describe(utils.isLoggedIn, () => {
     ["access-token", true],
     [null, false],
   ])("return is logged in", (getAccessTokenResponse, expectedResult) => {
-    jest.spyOn(utils, "getAccessToken").mockReturnValueOnce(getAccessTokenResponse);
+    vi.spyOn(utils, "getAccessToken").mockReturnValueOnce(getAccessTokenResponse);
 
     expect(utils.isLoggedIn()).toEqual(expectedResult);
   });
@@ -184,14 +184,14 @@ const fakeHeaders = {
 
 describe(utils.validateAndStoreAccessToken, () => {
   beforeEach(() => {
-    jest.spyOn(utils, "setStorageType").mockImplementation(() => {
+    vi.spyOn(utils, "setStorageType").mockImplementation(() => {
       return new StorageMock();
     });
-    jest.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
+    vi.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
   });
 
   it("Validates an access token successfully", async () => {
-    jest.spyOn(axios, "get").mockImplementation(() => Promise.resolve());
+    vi.spyOn(axios, "get").mockImplementation(() => Promise.resolve());
 
     const result = await utils.validateAndStoreAccessToken(
       "accessToken",
@@ -204,7 +204,7 @@ describe(utils.validateAndStoreAccessToken, () => {
   });
 
   it("Fails when access token is not valid", async () => {
-    jest.spyOn(axios, "get").mockImplementation(() => Promise.reject());
+    vi.spyOn(axios, "get").mockImplementation(() => Promise.reject());
 
     const result = await utils.validateAndStoreAccessToken(
       "accessToken",
@@ -219,8 +219,8 @@ describe(utils.validateAndStoreAccessToken, () => {
 
 describe(utils.getRepoStargazerCount, () => {
   beforeEach(() => {
-    jest.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
-    jest.spyOn(utils, "getAccessToken").mockReturnValue(null);
+    vi.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
+    vi.spyOn(utils, "getAccessToken").mockReturnValue(null);
   });
 
   const createAxiosResponse = (responseCode: number, data?: unknown): AxiosResponse => {
@@ -239,7 +239,7 @@ describe(utils.getRepoStargazerCount, () => {
 
   it("return star count", async () => {
     const expectedCount = 1000;
-    jest.spyOn(axios, "get").mockImplementation(() =>
+    vi.spyOn(axios, "get").mockImplementation(() =>
       // eslint-disable-next-line camelcase
       Promise.resolve(createAxiosResponse(200, { stargazers_count: expectedCount })),
     );
@@ -250,23 +250,21 @@ describe(utils.getRepoStargazerCount, () => {
   });
 
   it("repo not found", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(createAxiosError(createAxiosResponse(404)));
+    vi.spyOn(axios, "get").mockRejectedValueOnce(createAxiosError(createAxiosResponse(404)));
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow("Repo not found");
   });
 
   it("non http error", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("some error"));
+    vi.spyOn(axios, "get").mockRejectedValueOnce(new Error("some error"));
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow("some error");
   });
 
   it("http error", async () => {
-    jest
-      .spyOn(axios, "get")
-      .mockRejectedValueOnce(
-        createAxiosError(createAxiosResponse(500, { message: "server error" })),
-      );
+    vi.spyOn(axios, "get").mockRejectedValueOnce(
+      createAxiosError(createAxiosResponse(500, { message: "server error" })),
+    );
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
       "Couldn't get repo count, error code 500 returned. Error: server error",
@@ -274,7 +272,7 @@ describe(utils.getRepoStargazerCount, () => {
   });
 
   it("http error no message", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(createAxiosError(createAxiosResponse(500)));
+    vi.spyOn(axios, "get").mockRejectedValueOnce(createAxiosError(createAxiosResponse(500)));
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
       "Couldn't get repo count, error code 500 returned",
@@ -282,7 +280,7 @@ describe(utils.getRepoStargazerCount, () => {
   });
 
   it("error no response", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new AxiosError("something went wrong"));
+    vi.spyOn(axios, "get").mockRejectedValueOnce(new AxiosError("something went wrong"));
 
     await expect(utils.getRepoStargazerCount("user1", "repo1")).rejects.toThrow(
       /^something went wrong$/,
@@ -292,12 +290,12 @@ describe(utils.getRepoStargazerCount, () => {
 
 describe(utils.loadStarGazerPage, () => {
   beforeEach(() => {
-    jest.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
+    vi.spyOn(utils, "prepareRequestHeaders").mockReturnValue(fakeHeaders);
   });
 
   it("Loads a page successfully", async () => {
-    jest.spyOn(utils, "getAccessToken").mockReturnValue("accessToken");
-    jest.spyOn(axios, "get").mockImplementation(() => Promise.resolve());
+    vi.spyOn(utils, "getAccessToken").mockReturnValue("accessToken");
+    vi.spyOn(axios, "get").mockImplementation(() => Promise.resolve());
 
     await utils.loadStarGazerPage("user", "repo", 12);
 
@@ -398,8 +396,8 @@ describe(utils.parseGitHubUrl, () => {
 describe(utils.loadStargazers, () => {
   const username = "username";
   const repo = "repo";
-  const handleProgress = jest.fn();
-  const shouldStop = jest.fn();
+  const handleProgress = vi.fn();
+  const shouldStop = vi.fn();
 
   const createAxiosResponse = (
     responseCode: number,
@@ -426,7 +424,7 @@ describe(utils.loadStargazers, () => {
 
     const startDate = moment();
 
-    jest.spyOn(utils, "loadStarGazerPage").mockImplementation((_user, _repo, pageNum) => {
+    vi.spyOn(utils, "loadStarGazerPage").mockImplementation((_user, _repo, pageNum) => {
       const data = [
         {
           // eslint-disable-next-line camelcase
@@ -445,7 +443,7 @@ describe(utils.loadStargazers, () => {
       return Promise.resolve(createAxiosResponse(200, "OK", true, data));
     });
 
-    jest.spyOn(utils, "getLastStargazerPage").mockReturnValue(numOfPages);
+    vi.spyOn(utils, "getLastStargazerPage").mockReturnValue(numOfPages);
 
     const expectedTimestamps = [...Array(numOfPages * 2).keys()].map((index) =>
       moment(startDate).add(index, "days").format(),
@@ -464,7 +462,7 @@ describe(utils.loadStargazers, () => {
   });
 
   it("stop loading", async () => {
-    jest.spyOn(utils, "loadStarGazerPage").mockImplementation(() => {
+    vi.spyOn(utils, "loadStarGazerPage").mockImplementation(() => {
       return Promise.resolve({
         data: ["ts"],
         status: 200,
@@ -474,7 +472,7 @@ describe(utils.loadStargazers, () => {
       });
     });
 
-    jest.spyOn(utils, "getLastStargazerPage").mockReturnValue(10);
+    vi.spyOn(utils, "getLastStargazerPage").mockReturnValue(10);
 
     await expect(utils.loadStargazers(username, repo, handleProgress, () => true)).resolves.toEqual(
       null,
@@ -485,13 +483,13 @@ describe(utils.loadStargazers, () => {
   it("cannot load a repo with too many stars if not logged in", async () => {
     const maxSupportedPagesWithoutAccessToken = 30;
 
-    jest
-      .spyOn(utils, "loadStarGazerPage")
-      .mockReturnValue(Promise.resolve(createAxiosResponse(200, "OK", true)));
-    jest
-      .spyOn(utils, "getLastStargazerPage")
-      .mockReturnValue(maxSupportedPagesWithoutAccessToken + 1);
-    jest.spyOn(utils, "isLoggedIn").mockReturnValue(false);
+    vi.spyOn(utils, "loadStarGazerPage").mockReturnValue(
+      Promise.resolve(createAxiosResponse(200, "OK", true)),
+    );
+    vi.spyOn(utils, "getLastStargazerPage").mockReturnValue(
+      maxSupportedPagesWithoutAccessToken + 1,
+    );
+    vi.spyOn(utils, "isLoggedIn").mockReturnValue(false);
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       "Cannot load a repo with more than " +
@@ -502,7 +500,7 @@ describe(utils.loadStargazers, () => {
   });
 
   it("handles generic error", async () => {
-    jest.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(new Error("something went wrong"));
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(new Error("something went wrong"));
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       /^something went wrong$/,
@@ -510,9 +508,9 @@ describe(utils.loadStargazers, () => {
   });
 
   it("handles error no response", async () => {
-    jest
-      .spyOn(utils, "loadStarGazerPage")
-      .mockRejectedValueOnce(new AxiosError("something went wrong"));
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
+      new AxiosError("something went wrong"),
+    );
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       /^something went wrong$/,
@@ -520,9 +518,9 @@ describe(utils.loadStargazers, () => {
   });
 
   it("handles 404 error", async () => {
-    jest
-      .spyOn(utils, "loadStarGazerPage")
-      .mockRejectedValueOnce(createAxiosError(createAxiosResponse(404, "Not Found")));
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
+      createAxiosError(createAxiosResponse(404, "Not Found")),
+    );
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       "Repo not found",
@@ -533,9 +531,9 @@ describe(utils.loadStargazers, () => {
     [403, "Forbidden"],
     [429, "Too Many Requests"],
   ])("handle API limit error", async (responseCode, responseStatus) => {
-    jest
-      .spyOn(utils, "loadStarGazerPage")
-      .mockRejectedValueOnce(createAxiosError(createAxiosResponse(responseCode, responseStatus)));
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
+      createAxiosError(createAxiosResponse(responseCode, responseStatus)),
+    );
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       // eslint-disable-next-line quotes
@@ -544,10 +542,10 @@ describe(utils.loadStargazers, () => {
   });
 
   it("handle API limit error when logged in", async () => {
-    jest
-      .spyOn(utils, "loadStarGazerPage")
-      .mockRejectedValueOnce(createAxiosError(createAxiosResponse(403, "Forbidden")));
-    jest.spyOn(utils, "isLoggedIn").mockReturnValueOnce(true);
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
+      createAxiosError(createAxiosResponse(403, "Forbidden")),
+    );
+    vi.spyOn(utils, "isLoggedIn").mockReturnValueOnce(true);
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       /^API rate limit exceeded!$/,
@@ -555,9 +553,9 @@ describe(utils.loadStargazers, () => {
   });
 
   it("handle other HTTP error", async () => {
-    jest
-      .spyOn(utils, "loadStarGazerPage")
-      .mockRejectedValueOnce(createAxiosError(createAxiosResponse(500, "Internal Server Error")));
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
+      createAxiosError(createAxiosResponse(500, "Internal Server Error")),
+    );
 
     await expect(utils.loadStargazers(username, repo, handleProgress, shouldStop)).rejects.toThrow(
       /^Couldn't fetch stargazers data, error code 500 returned$/,
@@ -565,7 +563,7 @@ describe(utils.loadStargazers, () => {
   });
 
   it("handle other HTTP error with data", async () => {
-    jest.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
+    vi.spyOn(utils, "loadStarGazerPage").mockRejectedValueOnce(
       createAxiosError(
         createAxiosResponse(500, "Internal Server Error", undefined, {
           message: "something went wrong",

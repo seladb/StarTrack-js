@@ -111,9 +111,9 @@ describe(stargazerStats.calcForecast, () => {
   });
 
   it("calculates forecast data, props cover the full data", () => {
-    jest
-      .spyOn(stargazerStats, "calcLeastSquares")
-      .mockReturnValue((val) => 2 * ((val - curDate.getTime()) / daysToMS(1)));
+    vi.spyOn(stargazerStats, "calcLeastSquares").mockReturnValue(
+      (val) => 2 * ((val - curDate.getTime()) / daysToMS(1)),
+    );
     const timestamps = calculateTimestampsFromDaysList(curDate, [-4, -3, -2, -1, 0]);
     const inputData: StarData = {
       timestamps: timestamps,
@@ -129,7 +129,7 @@ describe(stargazerStats.calcForecast, () => {
   });
 
   it("calculates forecast data, props cover part of the data", () => {
-    const calcLeastSquaresMock = jest
+    const calcLeastSquaresMock = vi
       .spyOn(stargazerStats, "calcLeastSquares")
       .mockReturnValue((x) => x);
     const inputData: StarData = {

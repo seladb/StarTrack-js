@@ -3,7 +3,7 @@ import ForecastForm from "./ForecastForm";
 import { ForecastInfo, TimeUnit } from "./ForecastInfo";
 
 describe(ForecastForm, () => {
-  const onClose = jest.fn();
+  const onClose = vi.fn();
 
   const setup = (initialValues: ForecastInfo | null) => {
     render(<ForecastForm open={true} onClose={onClose} initialValues={initialValues} />);

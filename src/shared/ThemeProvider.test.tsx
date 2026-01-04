@@ -48,7 +48,7 @@ describe(ThemeProvider, () => {
 
   it("throw an error if ThemeProvider doesn't exist", () => {
     // prevent `render` from logging the error to console
-    jest.spyOn(console, "error").mockImplementation(jest.fn());
+    vi.spyOn(console, "error").mockImplementation(vi.fn());
     expect(() => render(<TestComponent />)).toThrow(
       "useThemeActions must be used within an ThemeProvider",
     );

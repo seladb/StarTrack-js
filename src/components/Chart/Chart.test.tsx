@@ -7,8 +7,8 @@ import { getLastCallArguments } from "../../utils/test";
 import { ModeBarButton, PlotlyHTMLElement } from "plotly.js";
 import { ThemeProvider, createTheme } from "@mui/material";
 
-const mockPlot = jest.fn();
-const mockOnRelayoutEvent = jest.fn();
+const mockPlot = vi.fn();
+const mockOnRelayoutEvent = vi.fn();
 vi.mock("react-plotly.js", () => ({
   __esModule: true,
   default: (props: PlotParams) => {
@@ -27,8 +27,8 @@ vi.mock("react-plotly.js", () => ({
         return;
       }
       changeScaleButton.click(
-        jest.fn() as unknown as PlotlyHTMLElement,
-        jest.fn() as unknown as MouseEvent,
+        vi.fn() as unknown as PlotlyHTMLElement,
+        vi.fn() as unknown as MouseEvent,
       );
     };
 
@@ -43,8 +43,8 @@ vi.mock("react-plotly.js", () => ({
         return;
       }
       changeTimelineButton.click(
-        jest.fn() as unknown as PlotlyHTMLElement,
-        jest.fn() as unknown as MouseEvent,
+        vi.fn() as unknown as PlotlyHTMLElement,
+        vi.fn() as unknown as MouseEvent,
       );
     };
 
@@ -136,7 +136,7 @@ describe("Chart", () => {
   });
 
   it("fire event on zoom change", () => {
-    const zoomChangedCallback = jest.fn();
+    const zoomChangedCallback = vi.fn();
     render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback} />);
 
     const zoomMinTS = "zoomMinTS";
@@ -176,7 +176,7 @@ describe("Chart", () => {
       },
     ];
 
-    const zoomChangedCallback = jest.fn();
+    const zoomChangedCallback = vi.fn();
     render(<Chart repoInfos={repoInfos2} onZoomChanged={zoomChangedCallback} />);
 
     mockOnRelayoutEvent.mockReturnValue({ "xaxis.autorange": true });
@@ -196,7 +196,7 @@ describe("Chart", () => {
   });
 
   it("do not fire zoom changed on to other events", () => {
-    const zoomChangedCallback = jest.fn();
+    const zoomChangedCallback = vi.fn();
     render(<Chart repoInfos={repoInfos} onZoomChanged={zoomChangedCallback} />);
 
     mockOnRelayoutEvent.mockReturnValue({ someEvent: "value" });
@@ -218,10 +218,9 @@ describe("Chart", () => {
       bottom: 0,
       x: 0,
       y: 0,
-      toJSON: jest.fn(),
+      toJSON: vi.fn(),
     };
-    jest
-      .spyOn(container.children[0], "getBoundingClientRect")
+    vi.spyOn(container.children[0], "getBoundingClientRect")
       .mockReturnValueOnce({
         ...mockedPartialGetBoundingClientRect,
         width: 300,

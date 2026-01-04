@@ -57,7 +57,7 @@ describe(ForecastInfo, () => {
       },
     ],
   ])("convert to ForecastInfo", (forecastInfoData, expectedForecastProps) => {
-    jest.useFakeTimers().setSystemTime(new Date("2024-01-01"));
+    vi.useFakeTimers().setSystemTime(new Date("2024-01-01"));
 
     const forecastInfo = new ForecastInfo(
       forecastInfoData.timeBackward,

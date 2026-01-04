@@ -3,8 +3,8 @@ import { vi } from "vitest";
 import DownloadData from "./DownloadData";
 import RepoInfo from "../../utils/RepoInfo";
 
-const mockDownloadFile = jest.fn();
-const mockZipAndDownloadFiles = jest.fn();
+const mockDownloadFile = vi.fn();
+const mockZipAndDownloadFiles = vi.fn();
 
 vi.mock("../../utils/FileUtils", () => ({
   downloadFile: (fileName: string, fileContent: string, contentType: string) => {
@@ -15,8 +15,8 @@ vi.mock("../../utils/FileUtils", () => ({
   },
 }));
 
-const mockExportRepoInfosToJson = jest.fn();
-const mockExportRepoInfosToCsv = jest.fn();
+const mockExportRepoInfosToJson = vi.fn();
+const mockExportRepoInfosToCsv = vi.fn();
 
 vi.mock("../../utils/RepoInfoExporter", () => ({
   exportRepoInfosToJson: (repoInfos: Array<RepoInfo>) => {
