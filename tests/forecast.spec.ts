@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./setup";
 import { getComparator } from "playwright-core/lib/utils";
 import { localUrl, referenceUrl, username, repo1, authenticate, getChartScreenshot } from "./utils";
 
