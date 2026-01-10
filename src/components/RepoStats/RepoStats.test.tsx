@@ -101,16 +101,31 @@ describe(RepoStats, () => {
   it("calcs stats with date range", () => {
     const mockCalcStats = vi.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
-    const minDate = new Date();
-    minDate.setDate(new Date().getDate() - 30);
-    const maxDate = new Date();
-    maxDate.setDate(new Date().getDate() - 2);
-    const dateRange = {
-      min: minDate.toISOString(),
-      max: maxDate.toISOString(),
-    };
+    const minDate1 = new Date();
+    minDate1.setDate(new Date().getDate() - 30);
+    const minDate2 = new Date();
+    minDate2.setDate(new Date().getDate() - 40);
+    const maxDate1 = new Date();
+    maxDate1.setDate(new Date().getDate() - 2);
+    const maxDate2 = new Date();
+    maxDate2.setDate(new Date().getDate() - 5);
 
-    render(<RepoStats repoInfos={repoInfos} dateRange={dateRange} />);
+    const dateRanges = [
+      {
+        username: "user1",
+        repo: "repo1",
+        start: minDate1.toISOString(),
+        end: maxDate1.toISOString(),
+      },
+      {
+        username: "user2",
+        repo: "repo2",
+        start: minDate2.toISOString(),
+        end: maxDate2.toISOString(),
+      },
+    ];
+
+    render(<RepoStats repoInfos={repoInfos} dateRanges={dateRanges} />);
 
     expect(mockCalcStats.mock.calls).toEqual([
       [repoInfos[0].stargazerData, undefined],
@@ -126,20 +141,20 @@ describe(RepoStats, () => {
     fireEvent.click(checkBox);
 
     expect(mockCalcStats.mock.calls).toEqual([
-      [repoInfos[0].stargazerData, dateRange],
-      [repoInfos[1].stargazerData, dateRange],
+      [repoInfos[0].stargazerData, { min: dateRanges[0].start, max: dateRanges[0].end }],
+      [repoInfos[1].stargazerData, { min: dateRanges[1].start, max: dateRanges[1].end }],
     ]);
 
     const dateRangeElement = screen.getByText("Date range", { exact: false });
     expect(dateRangeElement.parentNode?.textContent).toEqual(
-      `Date range: ${minDate.toLocaleDateString()} → ${maxDate.toLocaleDateString()}`,
+      `Date range: ${minDate2.toLocaleDateString()} → ${maxDate1.toLocaleDateString()}`,
     );
   });
 
   it("renders correctly when date range is undefined", () => {
     const mockCalcStats = vi.spyOn(StargazerStats, "calcStats").mockReturnValue(stats);
 
-    render(<RepoStats repoInfos={repoInfos} dateRange={undefined} />);
+    render(<RepoStats repoInfos={repoInfos} dateRanges={undefined} />);
 
     mockCalcStats.mockReset();
     mockCalcStats.mockReturnValue(stats);

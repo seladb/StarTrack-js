@@ -65,7 +65,7 @@ describe("Chart", () => {
       repo: "repo1",
       color: { hsl: "hslColor1", hex: "hexColor1" },
       stargazerData: {
-        timestamps: ["ts1", "ts2"],
+        timestamps: ["2020-01-01T00:00:00.000Z", "2020-01-02T00:00:00.000Z"],
         starCounts: [1, 2],
       },
     },
@@ -74,7 +74,7 @@ describe("Chart", () => {
       repo: "repo2",
       color: { hsl: "hslColor2", hex: "hexColor2" },
       stargazerData: {
-        timestamps: ["ts3", "ts4"],
+        timestamps: ["2020-01-03T00:00:00.000Z", "2020-01-04T00:00:00.000Z"],
         starCounts: [3, 4],
       },
     },
@@ -87,7 +87,7 @@ describe("Chart", () => {
       expect.objectContaining({
         data: [
           {
-            x: ["ts1", "ts2"],
+            x: ["2020-01-01T00:00:00.000Z", "2020-01-02T00:00:00.000Z"],
             y: [1, 2],
             name: "user1/repo1",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
@@ -109,7 +109,7 @@ describe("Chart", () => {
       expect.objectContaining({
         data: [
           {
-            x: ["ts1", "ts2"],
+            x: ["2020-01-01T00:00:00.000Z", "2020-01-02T00:00:00.000Z"],
             y: [1, 2],
             name: "user1/repo1",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
@@ -120,7 +120,7 @@ describe("Chart", () => {
             },
           },
           {
-            x: ["ts3", "ts4"],
+            x: ["2020-01-03T00:00:00.000Z", "2020-01-04T00:00:00.000Z"],
             y: [3, 4],
             name: "user2/repo2",
             hovertemplate: "%{x|%d %b %Y}<br>user2/repo2: <b>%{y}</b><extra></extra>",
@@ -149,7 +149,10 @@ describe("Chart", () => {
     const mockZoomChange = screen.getByTestId("plot-zoom-change");
     fireEvent.click(mockZoomChange);
 
-    expect(zoomChangedCallback).toHaveBeenCalledWith(zoomMinTS, zoomMaxTS);
+    expect(zoomChangedCallback).toHaveBeenCalledWith([
+      { username: "user1", repo: "repo1", start: zoomMinTS, end: zoomMaxTS },
+      { username: "user2", repo: "repo2", start: zoomMinTS, end: zoomMaxTS },
+    ]);
   });
 
   it("fire zoom changed on autorange event", () => {
@@ -184,7 +187,20 @@ describe("Chart", () => {
     const mockZoomChange = screen.getByTestId("plot-zoom-change");
     fireEvent.click(mockZoomChange);
 
-    expect(zoomChangedCallback).toHaveBeenCalledWith(minDate.toISOString(), maxDate.toISOString());
+    expect(zoomChangedCallback).toHaveBeenCalledWith([
+      {
+        username: "user1",
+        repo: "repo1",
+        start: minDate.toISOString(),
+        end: new Date("01/01/2023").toISOString(),
+      },
+      {
+        username: "user2",
+        repo: "repo2",
+        start: new Date("02/01/2015").toISOString(),
+        end: maxDate.toISOString(),
+      },
+    ]);
 
     zoomChangedCallback.mockReset();
 
@@ -275,7 +291,7 @@ describe("Chart", () => {
     const repoInfosWithForecastData = repoInfos.map((repoInfo) => ({
       ...repoInfo,
       forecast: {
-        timestamps: ["ts5", "ts6"],
+        timestamps: ["2020-01-05T00:00:00.000Z", "2020-01-06T00:00:00.000Z"],
         starCounts: [11, 12],
       },
     }));
@@ -286,7 +302,7 @@ describe("Chart", () => {
       expect.objectContaining({
         data: [
           {
-            x: ["ts1", "ts2"],
+            x: ["2020-01-01T00:00:00.000Z", "2020-01-02T00:00:00.000Z"],
             y: [1, 2],
             name: "user1/repo1",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1: <b>%{y}</b><extra></extra>",
@@ -297,7 +313,7 @@ describe("Chart", () => {
             },
           },
           {
-            x: ["ts5", "ts6"],
+            x: ["2020-01-05T00:00:00.000Z", "2020-01-06T00:00:00.000Z"],
             y: [11, 12],
             name: "user1/repo1 (forecast)",
             hovertemplate: "%{x|%d %b %Y}<br>user1/repo1 (forecast): <b>%{y}</b><extra></extra>",
@@ -308,7 +324,7 @@ describe("Chart", () => {
             },
           },
           {
-            x: ["ts3", "ts4"],
+            x: ["2020-01-03T00:00:00.000Z", "2020-01-04T00:00:00.000Z"],
             y: [3, 4],
             name: "user2/repo2",
             hovertemplate: "%{x|%d %b %Y}<br>user2/repo2: <b>%{y}</b><extra></extra>",
@@ -319,7 +335,7 @@ describe("Chart", () => {
             },
           },
           {
-            x: ["ts5", "ts6"],
+            x: ["2020-01-05T00:00:00.000Z", "2020-01-06T00:00:00.000Z"],
             y: [11, 12],
             name: "user2/repo2 (forecast)",
             hovertemplate: "%{x|%d %b %Y}<br>user2/repo2 (forecast): <b>%{y}</b><extra></extra>",
@@ -471,7 +487,8 @@ describe("Chart", () => {
       },
     ];
 
-    render(<Chart repoInfos={customRepoInfos} />);
+    const zoomChangedCallback = vi.fn();
+    render(<Chart repoInfos={customRepoInfos} onZoomChanged={zoomChangedCallback} />);
 
     expect(getLastCallArguments(mockPlot)[0]).toEqual(
       expect.objectContaining({
@@ -497,6 +514,23 @@ describe("Chart", () => {
     const mockChangeTimeline = screen.getByTestId("plot-change-timeline");
     fireEvent.click(mockChangeTimeline);
 
+    expect(zoomChangedCallback).toHaveBeenCalledWith([
+      {
+        username: "alpha",
+        repo: "one",
+        start: new Date("2019-12-31").toISOString(),
+        end: new Date("2020-02-01").toISOString(),
+      },
+      {
+        username: "beta",
+        repo: "two",
+        start: new Date("2019-12-15").toISOString(),
+        end: new Date("2020-03-01").toISOString(),
+      },
+    ]);
+
+    zoomChangedCallback.mockReset();
+
     expect(getLastCallArguments(mockPlot)[0]).toEqual(
       expect.objectContaining({
         config: {
@@ -520,6 +554,21 @@ describe("Chart", () => {
     );
 
     fireEvent.click(mockChangeTimeline);
+
+    expect(zoomChangedCallback).toHaveBeenCalledWith([
+      {
+        username: "alpha",
+        repo: "one",
+        start: new Date("2019-12-31").toISOString(),
+        end: new Date("2020-02-01").toISOString(),
+      },
+      {
+        username: "beta",
+        repo: "two",
+        start: new Date("2019-12-15").toISOString(),
+        end: new Date("2020-03-01").toISOString(),
+      },
+    ]);
 
     expect(getLastCallArguments(mockPlot)[0]).toEqual(
       expect.objectContaining({
