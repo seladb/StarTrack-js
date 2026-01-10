@@ -15,17 +15,19 @@ import { useLocation } from "react-router";
 import { getRepoStargazerCount } from "../../utils/GitHubUtils";
 import { Forecast, ForecastInfo } from "../Forecast";
 
-type DateRange = {
-  min: string;
-  max: string;
-};
+interface DateRange {
+  username: string;
+  repo: string;
+  start: string;
+  end: string;
+}
 
 export const allowStarCountAndStarDataMismatch = 5;
 
 export default function MainContainer() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [repoInfos, setRepoInfos] = React.useState<Array<RepoInfo>>([]);
-  const [statsDateRange, setStatsDateRange] = React.useState<DateRange | undefined>(undefined);
+  const [dateRanges, setDateRanges] = React.useState<Array<DateRange>>([]);
   const [forecastInfo, setForecastInfo] = React.useState<ForecastInfo | null>(null);
 
   const requestStopLoading = React.useRef<boolean>(false);
@@ -114,8 +116,8 @@ export default function MainContainer() {
     requestStopLoading.current = true;
   };
 
-  const handleChartZoomChange = React.useCallback((start: string, end: string) => {
-    setStatsDateRange({ min: start, max: end });
+  const handleChartZoomChange = React.useCallback((zoomProps: Array<DateRange>) => {
+    setDateRanges(zoomProps);
   }, []);
 
   const handleForecastInfoChange = (forecastInfo: ForecastInfo | null) => {
@@ -199,7 +201,7 @@ export default function MainContainer() {
               forecastInfo={forecastInfo}
               onForecastInfoChange={handleForecastInfoChange}
             ></Forecast>
-            <RepoStats repoInfos={repoInfos} dateRange={statsDateRange} />
+            <RepoStats repoInfos={repoInfos} dateRanges={dateRanges} />
             <URLBox repoInfos={repoInfos}></URLBox>
           </>
         )}
