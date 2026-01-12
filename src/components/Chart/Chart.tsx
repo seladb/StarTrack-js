@@ -5,9 +5,16 @@ import Plotly, { ModeBarButton, PlotRelayoutEvent } from "plotly.js";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
+interface ZoomProps {
+  username: string;
+  repo: string;
+  start: string;
+  end: string;
+}
+
 interface ChartProps {
   repoInfos: Array<RepoInfo>;
-  onZoomChanged?: (start: string, end: string) => void;
+  onZoomChanged?: (repoTimeRange: Array<ZoomProps>) => void;
 }
 
 function Chart({ repoInfos, onZoomChanged }: ChartProps) {
@@ -18,6 +25,15 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
   const [timeline, setTimeline] = React.useState<"absolute" | "relative">("absolute");
 
   const plotRef = React.useRef<HTMLDivElement>();
+
+  const getDefaultZoomProps = React.useCallback((): Array<ZoomProps> => {
+    return repoInfos.map(({ username, repo, stargazerData }) => ({
+      username,
+      repo,
+      start: new Date(stargazerData.timestamps[0]).toISOString(),
+      end: new Date(stargazerData.timestamps[stargazerData.timestamps.length - 1]).toISOString(),
+    }));
+  }, [repoInfos]);
 
   const handleResize = () => {
     if (!plotRef.current) {
@@ -43,22 +59,26 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
     }
 
     if (event["xaxis.range[0]"] && event["xaxis.range[1]"]) {
-      onZoomChanged(
-        event["xaxis.range[0]"].toString().replace(/ /g, "T"),
-        event["xaxis.range[1]"].toString().replace(/ /g, "T"),
-      );
+      const startRange = event["xaxis.range[0]"];
+      const endRange = event["xaxis.range[1]"];
+      const zoomProps = repoInfos.map(({ username, repo, stargazerData }) => {
+        const startDate = new Date(stargazerData.timestamps[0]).getTime();
+        return {
+          username,
+          repo,
+          start:
+            timeline === "absolute"
+              ? startRange.toString().replace(/ /g, "T")
+              : new Date(startDate + startRange * 24 * 3600 * 1000).toISOString(),
+          end:
+            timeline === "absolute"
+              ? endRange.toString().replace(/ /g, "T")
+              : new Date(startDate + endRange * 24 * 3600 * 1000).toISOString(),
+        };
+      });
+      onZoomChanged(zoomProps);
     } else if (event["xaxis.autorange"]) {
-      const minDates = repoInfos.map((repoInfo) => repoInfo.stargazerData.timestamps[0]);
-      const maxDates = repoInfos.map(
-        (repoInfo) =>
-          repoInfo.stargazerData.timestamps[repoInfo.stargazerData.timestamps.length - 1],
-      );
-      const minTimestamps = minDates.map((dateAsString) => new Date(dateAsString).getTime());
-      const maxTimestamps = maxDates.map((dateAsString) => new Date(dateAsString).getTime());
-      onZoomChanged(
-        minDates[minTimestamps.indexOf(Math.min(...minTimestamps))].replace(/ /g, "T"),
-        maxDates[maxTimestamps.indexOf(Math.max(...maxTimestamps))].replace(/ /g, "T"),
-      );
+      onZoomChanged(getDefaultZoomProps());
     }
   };
 
@@ -92,7 +112,10 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
       height: 512,
       path: "M120 0c13.3 0 24 10.7 24 24l0 40 160 0 0-40c0-13.3 10.7-24 24-24s24 10.7 24 24l0 40 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-40c0-13.3 10.7-24 24-24zm0 112l-56 0c-8.8 0-16 7.2-16 16l0 48 352 0 0-48c0-8.8-7.2-16-16-16l-264 0zM48 224l0 192c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-192-352 0z",
     },
-    click: () => setTimeline("absolute"),
+    click: () => {
+      setTimeline("absolute");
+      onZoomChanged?.(getDefaultZoomProps());
+    },
   };
 
   const RelativeButton: ModeBarButton = {
@@ -103,7 +126,10 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
       height: 512,
       path: "M168.5 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 25.3c-108 11.9-192 103.5-192 214.7 0 119.3 96.7 216 216 216s216-96.7 216-216c0-39.8-10.8-77.1-29.6-109.2l28.2-28.2c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-23.4 23.4c-32.9-30.2-75.2-50.3-122-55.5l0-25.3 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-112 0zm80 184l0 104c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-104c0-13.3 10.7-24 24-24s24 10.7 24 24z",
     },
-    click: () => setTimeline("relative"),
+    click: () => {
+      setTimeline("relative");
+      onZoomChanged?.(getDefaultZoomProps());
+    },
   };
 
   return (

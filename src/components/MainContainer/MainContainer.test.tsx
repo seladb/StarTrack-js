@@ -217,7 +217,7 @@ describe(MainContainer, () => {
 
     expect(mockRepoStats).toHaveBeenCalledWith({
       repoInfos: expectedRepoInfos,
-      dateRange: undefined,
+      dateRanges: [],
     });
 
     expect(mockURLBox).toHaveBeenCalledWith({ repoInfos: expectedRepoInfos });
@@ -322,7 +322,7 @@ describe(MainContainer, () => {
 
     expect(mockRepoStats).toHaveBeenCalledWith({
       repoInfos: [repoInfo],
-      dateRange: undefined,
+      dateRanges: [],
     });
 
     expect(mockURLBox).toHaveBeenCalledWith({ repoInfos: [repoInfo] });
@@ -354,10 +354,16 @@ describe(MainContainer, () => {
 
     await act(() => getLastCallArguments(mockRepoDetailsInput)[0].onGoClick(username, repo));
 
-    await act(() => getLastCallArguments(mockChart)[0].onZoomChanged("fromDate", "toDate"));
+    await act(() =>
+      getLastCallArguments(mockChart)[0].onZoomChanged([
+        { username, repo, start: "fromDate", end: "toDate" },
+      ]),
+    );
 
     expect(getLastCallArguments(mockRepoStats)[0]).toEqual(
-      expect.objectContaining({ dateRange: { min: "fromDate", max: "toDate" } }),
+      expect.objectContaining({
+        dateRanges: [{ username, repo, start: "fromDate", end: "toDate" }],
+      }),
     );
   });
 
