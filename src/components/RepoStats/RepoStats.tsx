@@ -59,11 +59,16 @@ export default function RepoStats({ repoInfos, dateRanges }: RepoStatsProps) {
       return { username: "", repo: "", start, end };
     }
 
+    const startTime = new Date(start.replace(/ /g, "T")).getTime();
+    const endTime = new Date(end.replace(/ /g, "T")).getTime();
+    const prevStartTime = new Date(prev.start.replace(/ /g, "T")).getTime();
+    const prevEndTime = new Date(prev.end.replace(/ /g, "T")).getTime();
+
     return {
       repo: "",
       username: "",
-      start: start < prev.start ? start : prev.start,
-      end: end > prev.end ? end : prev.end,
+      start: startTime < prevStartTime ? start : prev.start,
+      end: endTime > prevEndTime ? end : prev.end,
     };
   }, null);
 

@@ -24,8 +24,6 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
   const [yaxisType, setYaxisType] = React.useState<Plotly.AxisType>("linear");
   const [timeline, setTimeline] = React.useState<"absolute" | "relative">("absolute");
 
-  const timelineRef = React.useRef<"absolute" | "relative">("absolute");
-
   const plotRef = React.useRef<HTMLDivElement>();
 
   const getDefaultZoomProps = React.useCallback((): Array<ZoomProps> => {
@@ -54,13 +52,6 @@ function Chart({ repoInfos, onZoomChanged }: ChartProps) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  React.useEffect(() => {
-    if (onZoomChanged && timelineRef.current !== timeline) {
-      onZoomChanged(getDefaultZoomProps());
-      timelineRef.current = timeline;
-    }
-  }, [timeline, onZoomChanged, getDefaultZoomProps]);
 
   const handleChartEvent = (event: Readonly<PlotRelayoutEvent>) => {
     if (!onZoomChanged) {
