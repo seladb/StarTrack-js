@@ -52,25 +52,26 @@ export default function RepoStats({ repoInfos, dateRanges }: RepoStatsProps) {
 
   const StatsGridComponent = smallScreen ? StatsGridSmallScreen : StatsGridLargeScreen;
 
-  const overallRange = dateRanges?.reduce<DateRange | null>((prev, current) => {
-    const { start, end } = current;
+  const overallRange = dateRanges?.reduce<Pick<DateRange, "start" | "end"> | null>(
+    (prev, current) => {
+      const { start, end } = current;
 
-    if (!prev) {
-      return { username: "", repo: "", start, end };
-    }
+      if (!prev) {
+        return { start, end };
+      }
 
-    const startTime = new Date(start.replace(/ /g, "T")).getTime();
-    const endTime = new Date(end.replace(/ /g, "T")).getTime();
-    const prevStartTime = new Date(prev.start.replace(/ /g, "T")).getTime();
-    const prevEndTime = new Date(prev.end.replace(/ /g, "T")).getTime();
+      const startTime = new Date(start.replace(/ /g, "T")).getTime();
+      const endTime = new Date(end.replace(/ /g, "T")).getTime();
+      const prevStartTime = new Date(prev.start.replace(/ /g, "T")).getTime();
+      const prevEndTime = new Date(prev.end.replace(/ /g, "T")).getTime();
 
-    return {
-      repo: "",
-      username: "",
-      start: startTime < prevStartTime ? start : prev.start,
-      end: endTime > prevEndTime ? end : prev.end,
-    };
-  }, null);
+      return {
+        start: startTime < prevStartTime ? start : prev.start,
+        end: endTime > prevEndTime ? end : prev.end,
+      };
+    },
+    null,
+  );
 
   return (
     <Stack spacing={3}>
