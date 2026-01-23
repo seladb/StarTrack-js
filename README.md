@@ -27,6 +27,15 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 - Download stargazer data to JSON or CSV file
 
+## What's new in version 3.4.0?
+
+- Migrate from `react-create-app` to `Vite`
+- Migrate from `jest` to `vitest`
+- Upgrade to ESLint v9
+- Bugfixes:
+  - Fix copy URL not working
+  - Fix repo stats calculation with different timeline types
+
 ## What's new in version 3.3.0?
 
 - Add relative time axis to the chart so the graph starts from the first star instead of an absolute date (thank @fdw !)
