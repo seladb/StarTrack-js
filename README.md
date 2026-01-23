@@ -29,7 +29,7 @@ Try it now: https://seladb.github.io/StarTrack-js/
 
 ## What's new in version 3.4.0?
 
-- Migrate from `react-create-app` to `Vite`
+- Migrate from `create-react-app` to `Vite`
 - Migrate from `jest` to `vitest`
 - Upgrade to ESLint v9
 - Bugfixes:
