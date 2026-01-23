@@ -7,14 +7,16 @@ import StatsGridLargeScreen from "./StatsGridLargeScreen";
 import StatsGridSmallScreen from "./StatsGridSmallScreen";
 import DownloadData from "./DownloadData";
 
-type DateRange = {
-  min: string;
-  max: string;
-};
+interface DateRange {
+  username: string;
+  repo: string;
+  start: string;
+  end: string;
+}
 
 interface RepoStatsProps {
   repoInfos: Array<RepoInfo>;
-  dateRange?: DateRange;
+  dateRanges?: Array<DateRange>;
 }
 
 type StatsData = Record<string, string | number>;
@@ -23,18 +25,23 @@ interface RepoInfoWithStats extends RepoInfo {
   stats: StatsData;
 }
 
-export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
+export default function RepoStats({ repoInfos, dateRanges }: RepoStatsProps) {
   const [syncStatsToDisplayedDateRange, setSyncStatsToDisplayedDateRange] =
     React.useState<boolean>(false);
 
   const theme = useTheme();
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const repoInfosWithStats: Array<RepoInfoWithStats> = repoInfos.map((repoInfo) => {
+    const dateRange = dateRanges?.find(
+      (range) => range.username === repoInfo.username && range.repo === repoInfo.repo,
+    );
     return {
       ...repoInfo,
       stats: stargazerStats.calcStats(
         repoInfo.stargazerData,
-        syncStatsToDisplayedDateRange ? dateRange : undefined,
+        syncStatsToDisplayedDateRange && dateRange
+          ? { min: dateRange.start, max: dateRange.end }
+          : undefined,
       ),
     };
   });
@@ -44,6 +51,27 @@ export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
   };
 
   const StatsGridComponent = smallScreen ? StatsGridSmallScreen : StatsGridLargeScreen;
+
+  const overallRange = dateRanges?.reduce<Pick<DateRange, "start" | "end"> | null>(
+    (prev, current) => {
+      const { start, end } = current;
+
+      if (!prev) {
+        return { start, end };
+      }
+
+      const startTime = new Date(start.replace(/ /g, "T")).getTime();
+      const endTime = new Date(end.replace(/ /g, "T")).getTime();
+      const prevStartTime = new Date(prev.start.replace(/ /g, "T")).getTime();
+      const prevEndTime = new Date(prev.end.replace(/ /g, "T")).getTime();
+
+      return {
+        start: startTime < prevStartTime ? start : prev.start,
+        end: endTime > prevEndTime ? end : prev.end,
+      };
+    },
+    null,
+  );
 
   return (
     <Stack spacing={3}>
@@ -56,10 +84,10 @@ export default function RepoStats({ repoInfos, dateRange }: RepoStatsProps) {
           label="Sync stats to chart zoom level"
           onChange={handleCheckBoxChange}
         />
-        {syncStatsToDisplayedDateRange && dateRange && (
+        {syncStatsToDisplayedDateRange && overallRange && (
           <Typography>
-            <b>Date range:</b> {new Date(dateRange.min).toLocaleDateString()} &rarr;{" "}
-            {new Date(dateRange.max).toLocaleDateString()}
+            <b>Date range:</b> {new Date(overallRange.start).toLocaleDateString()} &rarr;{" "}
+            {new Date(overallRange.end).toLocaleDateString()}
           </Typography>
         )}
       </Box>
