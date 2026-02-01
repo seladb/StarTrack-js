@@ -10,7 +10,7 @@
     "@mui/lab": "^5.0.0-alpha.169",
     "@mui/material": "^5.16.14",
     "@mui/styles": "^6.4.8",
-    "@mui/x-data-grid": "^8.23.0",
+    "@mui/x-data-grid": "^8.26.0",
     "@popperjs/core": "^2.11.8",
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.6.1",
