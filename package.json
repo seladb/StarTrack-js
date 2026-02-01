@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@playwright/test": "^1.52.0",
+    "@playwright/test": "^1.58.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/css-mediaquery": "^0.1.4",
     "@types/react-plotly.js": "^2.6.3",
