@@ -64,7 +64,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@types/css-mediaquery": "^0.1.4",
     "@types/react-plotly.js": "^2.6.3",
-    "@vitejs/plugin-react": "^5.1.2",
+    "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/ui": "^4.0.16",
     "cspell": "^9.6.3",
