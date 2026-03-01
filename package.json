@@ -28,7 +28,7 @@
     "react-github-btn": "^1.4.0",
     "react-plotly.js": "^2.6.0",
     "react-responsive": "^10.0.1",
-    "react-router-dom": "^7.13.0",
+    "react-router-dom": "^7.13.1",
     "typescript": "^5.7.2",
     "web-vitals": "^5.1.0",
     "yup": "^1.6.1"
