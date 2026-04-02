@@ -5294,10 +5294,10 @@ playwright@1.59.1:
   optionalDependencies:
     fsevents "2.3.2"
 
-plotly.js@^3.0.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/plotly.js/-/plotly.js-3.3.1.tgz#213176ea82dc08f5ec69de3c3d184cfdbd29044a"
-  integrity sha512-SrGSZ02HvCWQIYsbQX4sgjgGo7k4T+Oz8a+RQwE5Caz+yu1vputBM1UThmiOPY51B5HzO9ajym8Rl4pmLj+i9Q==
+plotly.js@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/plotly.js/-/plotly.js-3.4.0.tgz#a67a719a32e4d7bc3c0100a330be365bc531ab90"
+  integrity sha512-jdWfHLB8AxlGUmVhqJTGEKdwjCKGn9Yi8yg16067/JyqseuSado7F6IOM1XPZspdZyO/cf8IPuy7ROlVhqZZNw==
   dependencies:
     "@plotly/d3" "3.8.2"
     "@plotly/d3-sankey" "0.7.2"
