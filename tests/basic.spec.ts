@@ -1,7 +1,6 @@
 // cspell: ignore nsewdrag
 
 import { test, expect } from "./setup";
-import { getComparator } from "playwright-core/lib/utils";
 import {
   localUrl,
   referenceUrl,
@@ -84,9 +83,8 @@ test("Basic Flow", async ({ page }, testDir) => {
   );
   screenshots.push(await getChartScreenshot(page, testDir.outputPath("repo1and2-actual.png")));
 
-  const comparator = getComparator("image/png");
   screenshots.forEach((screenshot, index) => {
-    expect(comparator(expectedScreenshots[index], screenshot)).toBeNull();
+    expect(screenshot).toMatchSnapshot(expectedScreenshots[index]);
   });
 
   const gridStarsCountRepo1 = await getGridStarsCount(1);
@@ -120,7 +118,7 @@ test("Basic Flow", async ({ page }, testDir) => {
     page,
     testDir.outputPath("repo1b-actual.png"),
   );
-  expect(comparator(screenshots[0], screenshotWithRepo1)).toBeNull();
+  expect(screenshots[0]).toMatchSnapshot(screenshotWithRepo1);
 
   // Remove repo1
   await page.getByTestId("CancelIcon").last().click();

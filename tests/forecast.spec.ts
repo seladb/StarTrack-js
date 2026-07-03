@@ -1,5 +1,4 @@
 import { test, expect } from "./setup";
-import { getComparator } from "playwright-core/lib/utils";
 import { localUrl, referenceUrl, username, repo1, authenticate, getChartScreenshot } from "./utils";
 
 test("Forecast", async ({ page }, testDir) => {
@@ -45,8 +44,7 @@ test("Forecast", async ({ page }, testDir) => {
     page.getByRole("button", { name: "6 months forecast based on the last 4 months" }),
   ).toBeVisible();
 
-  const comparator = getComparator("image/png");
-  expect(comparator(expectedScreenshot, screenshot)).toBeNull();
+  expect(screenshot).toMatchSnapshot(expectedScreenshot);
 
   // Show forecast properties
   await page.getByRole("button", { name: "6 months forecast based on the last 4 months" }).click();
@@ -66,5 +64,5 @@ test("Forecast", async ({ page }, testDir) => {
     testDir.outputPath("without-forecast-actual.png"),
   );
 
-  expect(comparator(screenshot, screenshotWithoutForecast)).not.toBeNull();
+  expect(screenshot).not.toEqual(screenshotWithoutForecast);
 });
