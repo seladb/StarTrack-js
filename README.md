@@ -126,6 +126,7 @@ Dev packages:
 - [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and their plugins for code linting and formatting
 - [CSpell](https://cspell.org/) for spell check
 - [Playwright](https://playwright.dev/) for integration tests
+- [pixelmatch](https://github.com/mapbox/pixelmatch) and [pngjs](https://github.com/arian/pngjs) for comparing images in Playwright tests
 
 To run it locally follow these steps:
 
