@@ -9,6 +9,7 @@ import {
   repo2,
   authenticate,
   getChartScreenshot,
+  compareImages,
 } from "./utils";
 
 test("Basic Flow", async ({ page }, testDir) => {
@@ -23,7 +24,7 @@ test("Basic Flow", async ({ page }, testDir) => {
 
     await authenticate(page);
 
-    const screenshots: Buffer[] = [];
+    const screenshots: string[] = [];
 
     // Get screenshot for repo1
     await page.getByPlaceholder("Username").fill(username);
@@ -50,7 +51,7 @@ test("Basic Flow", async ({ page }, testDir) => {
 
   await authenticate(page);
 
-  const screenshots: Buffer[] = [];
+  const screenshots: string[] = [];
 
   // Get stats for repo1
   await page.getByPlaceholder("Username").fill(username);
@@ -84,7 +85,7 @@ test("Basic Flow", async ({ page }, testDir) => {
   screenshots.push(await getChartScreenshot(page, testDir.outputPath("repo1and2-actual.png")));
 
   screenshots.forEach((screenshot, index) => {
-    expect(screenshot).toMatchSnapshot(expectedScreenshots[index]);
+    expect(compareImages(screenshot, expectedScreenshots[index])).toBe(0);
   });
 
   const gridStarsCountRepo1 = await getGridStarsCount(1);
@@ -118,7 +119,7 @@ test("Basic Flow", async ({ page }, testDir) => {
     page,
     testDir.outputPath("repo1b-actual.png"),
   );
-  expect(screenshots[0]).toMatchSnapshot(screenshotWithRepo1);
+  expect(compareImages(screenshots[0], screenshotWithRepo1)).toBe(0);
 
   // Remove repo1
   await page.getByTestId("CancelIcon").last().click();
