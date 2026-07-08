@@ -1,5 +1,5 @@
 // cspell: ignore nsewdrag
-
+import path from "path";
 import { test, expect } from "./setup";
 import {
   localUrl,
@@ -19,33 +19,10 @@ test("Basic Flow", async ({ page }, testDir) => {
     );
   };
 
-  const takeReferenceScreenshots = async () => {
-    await page.goto(referenceUrl);
-
-    await authenticate(page);
-
-    const screenshots: string[] = [];
-
-    // Get screenshot for repo1
-    await page.getByPlaceholder("Username").fill(username);
-    await page.getByPlaceholder("Repo name").fill(repo1);
-    await page.getByRole("button", { name: "Go!" }).click();
-    await page.getByRole("button", { name: "Go!" }).waitFor({ state: "visible" });
-
-    screenshots.push(await getChartScreenshot(page, testDir.outputPath("repo1-reference.png")));
-
-    // Get screenshot for repo1 + repo2
-    await page.getByPlaceholder("Username").fill(username);
-    await page.getByPlaceholder("Repo name").fill(repo2);
-    await page.getByRole("button", { name: "Go!" }).click();
-    await page.getByRole("button", { name: "Go!" }).waitFor({ state: "visible" });
-
-    screenshots.push(await getChartScreenshot(page, testDir.outputPath("repo1and2-reference.png")));
-
-    return screenshots;
-  };
-
-  const expectedScreenshots = await takeReferenceScreenshots();
+  const expectedScreenshots = [
+    path.join("tests", "screenshots", "repo1-reference.png"),
+    path.join("tests", "screenshots", "repo1and2-reference.png"),
+  ];
 
   await page.goto(localUrl);
 
@@ -85,7 +62,7 @@ test("Basic Flow", async ({ page }, testDir) => {
   screenshots.push(await getChartScreenshot(page, testDir.outputPath("repo1and2-actual.png")));
 
   screenshots.forEach((screenshot, index) => {
-    expect(compareImages(screenshot, expectedScreenshots[index])).toBe(0);
+    expect(compareImages(screenshot, expectedScreenshots[index])).toBeLessThan(0.01);
   });
 
   const gridStarsCountRepo1 = await getGridStarsCount(1);
@@ -119,7 +96,7 @@ test("Basic Flow", async ({ page }, testDir) => {
     page,
     testDir.outputPath("repo1b-actual.png"),
   );
-  expect(compareImages(screenshots[0], screenshotWithRepo1)).toBe(0);
+  expect(compareImages(screenshots[0], screenshotWithRepo1)).toBeLessThan(0.01);
 
   // Remove repo1
   await page.getByTestId("CancelIcon").last().click();

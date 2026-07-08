@@ -12,9 +12,11 @@ export const username = "seladb";
 export const repo1 = "startrack-js";
 export const repo2 = "pickledb-rs";
 
+export const gitHubAccessToken = " ghp_123456";
+
 export const authenticate = async (page: Page) => {
   await page.getByRole("button", { name: "GitHub Authentication" }).click();
-  await page.getByLabel("GitHub Access Token *").fill(process.env.GH_ACCESS_TOKEN);
+  await page.getByLabel("GitHub Access Token *").fill(gitHubAccessToken);
   await page.getByRole("button", { name: "Login" }).click();
   await page.getByRole("button", { name: "Login" }).waitFor({ state: "detached" });
 };
@@ -45,5 +47,5 @@ export const compareImages = (file1: string, file2: string) => {
     threshold: 0.1,
   });
 
-  return numDiffPixels;
+  return numDiffPixels / (img1.width * img1.height);
 };

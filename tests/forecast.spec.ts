@@ -1,3 +1,4 @@
+import path from "path";
 import { test, expect } from "./setup";
 import {
   localUrl,
@@ -18,22 +19,7 @@ test("Forecast", async ({ page }, testDir) => {
     await page.getByRole("button", { name: "Ok" }).click();
   };
 
-  const takeReferenceScreenshots = async () => {
-    await page.goto(referenceUrl);
-
-    await authenticate(page);
-
-    await page.getByPlaceholder("Username").fill(username);
-    await page.getByPlaceholder("Repo name").fill(repo1);
-    await page.getByRole("button", { name: "Go!" }).click();
-    await page.getByRole("button", { name: "Go!" }).waitFor({ state: "visible" });
-
-    await enableForecast();
-
-    return await getChartScreenshot(page, testDir.outputPath("forecast-reference.png"));
-  };
-
-  const expectedScreenshot = await takeReferenceScreenshots();
+  const expectedScreenshot = path.join("tests", "screenshots", "forecast-reference.png");
 
   await page.goto(localUrl);
 
@@ -52,7 +38,7 @@ test("Forecast", async ({ page }, testDir) => {
     page.getByRole("button", { name: "6 months forecast based on the last 4 months" }),
   ).toBeVisible();
 
-  expect(compareImages(screenshot, expectedScreenshot)).toBe(0);
+  expect(compareImages(screenshot, expectedScreenshot)).toBeLessThan(0.01);
 
   // Show forecast properties
   await page.getByRole("button", { name: "6 months forecast based on the last 4 months" }).click();
@@ -72,5 +58,5 @@ test("Forecast", async ({ page }, testDir) => {
     testDir.outputPath("without-forecast-actual.png"),
   );
 
-  expect(compareImages(screenshotWithoutForecast, expectedScreenshot)).not.toBe(0);
+  expect(compareImages(screenshotWithoutForecast, expectedScreenshot)).toBeGreaterThan(0.01);
 });

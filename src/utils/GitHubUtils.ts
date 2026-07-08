@@ -4,10 +4,11 @@ import StarData from "./StarData";
 
 const fetchStarsPerPage = 100;
 
-const stargazersURL = `https://api.github.com/repos/{user}/{repo}/stargazers?per_page=${fetchStarsPerPage}&page={page}`;
-const validateAccessTokenURL = "https://api.github.com/user";
+const gitHubAPIBaseURL = import.meta.env.VITE_GITHUB_API_BASE_URL || "https://api.github.com";
+const stargazersURL = `${gitHubAPIBaseURL}/repos/{user}/{repo}/stargazers?per_page=${fetchStarsPerPage}&page={page}`;
+const validateAccessTokenURL = `${gitHubAPIBaseURL}/user`;
 const repoUrlTemplate = "https://github.com/{user}/{repo}";
-const repoInfoURL = "https://api.github.com/repos/{user}/{repo}";
+const repoInfoURL = `${gitHubAPIBaseURL}/repos/{user}/{repo}`;
 
 export const storageKey = "startrack_js_access_token";
 
