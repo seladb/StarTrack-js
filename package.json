@@ -44,7 +44,8 @@
     "format": "prettier --write . --config ./.prettierrc",
     "format:check": "prettier --check . --config ./.prettierrc",
     "spellcheck": "cspell **/*.{ts,tsx}",
-    "coverage": "vitest --coverage"
+    "coverage": "vitest --coverage",
+    "mock:github": "node tests/GitHubMockServer/start.ts"
   },
   "browserslist": {
     "production": [

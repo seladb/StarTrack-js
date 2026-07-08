@@ -1,20 +1,18 @@
 import { test, expect } from "./setup";
-import { localUrl } from "./utils";
+import { localUrl, gitHubAccessToken } from "./utils";
 
 test("GitHub Authentication", async ({ page }) => {
-  expect(process.env.GH_ACCESS_TOKEN).toBeDefined();
-
   await page.goto(localUrl);
   await page.getByRole("button", { name: "GitHub Authentication" }).click();
-  await page.getByLabel("GitHub Access Token *").fill(process.env.GH_ACCESS_TOKEN);
+  await page.getByLabel("GitHub Access Token *").fill(gitHubAccessToken);
   await page.getByRole("button", { name: "Login" }).click();
 
-  await page.getByRole("button", { name: process.env.GH_ACCESS_TOKEN.slice(-6) }).click();
+  await page.getByRole("button", { name: gitHubAccessToken.slice(-6) }).click();
   expect(page.getByRole("menuitem", { name: "Stored in session storage" })).toBeVisible();
 
   expect(await page.evaluate(() => sessionStorage)).toHaveProperty(
     "startrack_js_access_token",
-    process.env.GH_ACCESS_TOKEN,
+    gitHubAccessToken,
   );
 
   // Log out
@@ -26,19 +24,17 @@ test("GitHub Authentication", async ({ page }) => {
 });
 
 test("GitHub Authentication Local Storage", async ({ page }) => {
-  expect(process.env.GH_ACCESS_TOKEN).toBeDefined();
-
   await page.goto(localUrl);
   await page.getByRole("button", { name: "GitHub Authentication" }).click();
-  await page.getByLabel("GitHub Access Token *").fill(process.env.GH_ACCESS_TOKEN);
+  await page.getByLabel("GitHub Access Token *").fill(gitHubAccessToken);
   await page.getByText("Save access token in local storage").click();
   await page.getByRole("button", { name: "Login" }).click();
 
-  await page.getByRole("button", { name: process.env.GH_ACCESS_TOKEN.slice(-6) }).click();
+  await page.getByRole("button", { name: gitHubAccessToken.slice(-6) }).click();
   expect(page.getByRole("menuitem", { name: "Stored in local storage" })).toBeVisible();
 
   expect(await page.evaluate(() => localStorage)).toHaveProperty(
     "startrack_js_access_token",
-    process.env.GH_ACCESS_TOKEN,
+    gitHubAccessToken,
   );
 });

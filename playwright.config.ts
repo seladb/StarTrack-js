@@ -15,6 +15,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./tests",
+  outputDir: "tests/test-results",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -76,11 +77,21 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "yarn run start",
-    url: "http://localhost:3000/StarTrack-js/",
-    reuseExistingServer: !process.env.CI,
-    stdout: "pipe",
-    stderr: "pipe",
-  },
+  webServer: [
+    {
+      command: "yarn run mock:github",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      env: { MOCK_SERVER_PORT: "4010" },
+    },
+    {
+      command: "yarn run start",
+      url: "http://localhost:3000/StarTrack-js/",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      env: { VITE_GITHUB_API_BASE_URL: "http://localhost:4010" },
+    },
+  ],
 });
