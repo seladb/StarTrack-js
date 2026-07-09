@@ -27,6 +27,10 @@ Try it now: https://seladb.github.io/StarTrack-js/
 - Preloading repos by URL, for example: <https://seladb.github.io/StarTrack-js/#/preload?r=seladb,pickledb-rs> will preload `seladb/pickledb-rs` upon loading the page
 - Download stargazer data to JSON or CSV file
 
+## What's new in version 3.5.0?
+
+- Add a GitHub mock server to Playwright tests and configure Playwright to run against it
+
 ## What's new in version 3.4.0?
 
 - Migrate from `create-react-app` to `Vite`
