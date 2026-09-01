@@ -5487,12 +5487,10 @@ react-is@^19.0.0, react-is@^19.2.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.2.3.tgz#eec2feb69c7fb31f77d0b5c08c10ae1c88886b29"
   integrity sha512-qJNJfu81ByyabuG7hPFEbXqNcWSU3+eVus+KJs+0ncpGfMyYdvSmxiJxbWR65lYi1I+/0HBcliO029gc4F+PnA==
 
-react-plotly.js@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-2.6.0.tgz#ad6b68ee64f1b5cfa142ee92c59687f9c2c09209"
-  integrity sha512-g93xcyhAVCSt9kV1svqG1clAEdL6k3U+jjuSzfTV7owaSU9Go6Ph8bl25J+jKfKvIGAEYpe4qj++WHJuc9IaeA==
-  dependencies:
-    prop-types "^15.8.1"
+react-plotly.js@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-plotly.js/-/react-plotly.js-4.1.0.tgz#4600d25d3b87640fb914a265f0c5aea68c153486"
+  integrity sha512-+CJA9xOY4UjH1RnRqQnpBGoFSzsrB/e7CR4k8AMQ20RkBlXjqkiIVLdIA5N1hinEVdoTdhaS6krKEARyfSixXg==
 
 react-refresh@^0.18.0:
   version "0.18.0"
