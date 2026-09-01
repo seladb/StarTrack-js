@@ -69,7 +69,7 @@
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/ui": "^4.0.16",
     "cspell": "^10.0.1",
-    "csv-parse": "^6.1.0",
+    "csv-parse": "^7.0.2",
     "eslint": "^9.32.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
