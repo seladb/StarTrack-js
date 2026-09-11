@@ -5942,9 +5942,9 @@ sirv@^3.0.2:
     totalist "^3.0.0"
 
 smol-toml@^1.6.1:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/smol-toml/-/smol-toml-1.7.0.tgz#ed1b259ce7e05907df1abe758971bd0a0ef2c0dd"
-  integrity sha512-aqVvWoyO21L23mb+drl4RmMXbf6N7FdHjAhTRA9ZBL7apWBgfWC16KjrASI+1p9GAroljyMHj6fK67i0UiTNvQ==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/smol-toml/-/smol-toml-1.8.0.tgz#dc5e0936825f1fef37bdf2c569081f709d8a009f"
+  integrity sha512-kCZr2V3ch9i00x8zXRhjUNVcjG9ijES5dDudkXvUVCT5QlJNQWElSJdZqyPemffHoLNUYwOcou0Fy+ojN0uHSQ==
 
 source-map-js@^1.0.1, source-map-js@^1.2.1:
   version "1.2.1"
